@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>全角⇔半角 変換 | サクッとツール箱</title>
+  <meta name="description" content="全角と半角を相互変換する無料ツール。英数字・記号・スペースに加え、半角カナ⇔全角カナ(濁点・半濁点の結合)にも対応。入力内容はサーバーに送信されません。">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="site-title" href="./index.html">サクッとツール箱</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>全角⇔半角 変換</h1>
+    <p class="lead">テキストを貼り付けると、全角化・半角化した結果を同時に表示します。ボタンでワンクリックコピー。</p>
+
+    <div class="card">
+      <label for="input">テキスト</label>
+      <textarea id="input" placeholder="ここに文章を入力または貼り付け" autofocus></textarea>
+
+      <div class="conv">
+        <div class="conv-head">
+          <label for="toFull">全角に変換</label>
+          <button type="button" class="copy-btn" id="copyFull">コピー</button>
+        </div>
+        <textarea id="toFull" readonly></textarea>
+      </div>
+
+      <div class="conv">
+        <div class="conv-head">
+          <label for="toHalf">半角に変換</label>
+          <button type="button" class="copy-btn" id="copyHalf">コピー</button>
+        </div>
+        <textarea id="toHalf" readonly></textarea>
+      </div>
+
+      <p class="note">対応: 英数字・記号・スペース、および半角カナ⇔全角カナ(濁点・半濁点の結合も処理)。ひらがな・漢字はそのまま残します。入力内容は端末内だけで処理されます。</p>
+    </div>
+
+    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
+    <!-- ▲ AdSense ▲ -->
+
+    <div class="card">
+      <h2>使い方・補足</h2>
+      <ul>
+        <li>フォームやCSVで「全角で入力」「半角で入力」を指定されたときの整形に使えます。</li>
+        <li>半角カナ(ｱｲｳ)は文字化けやシステムエラーの原因になりやすいので、全角カナへの変換に便利です。</li>
+        <li>濁点付きの半角カナ(ｶﾞ)も全角の1文字(ガ)に正しくまとめます。</li>
+      </ul>
+      <p class="related">関連ツール: <a href="./chars.html">文字数カウント</a></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav>
+        <a href="./index.html">ホーム</a>
+        <a href="./privacy.html">プライバシーポリシー</a>
+      </nav>
+      <p>© 2026 サクッとツール箱</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { toFullWidth, toHalfWidth } from "./js/lib/zenhan.mjs";
+
+    const input = document.getElementById("input");
+    const fullOut = document.getElementById("toFull");
+    const halfOut = document.getElementById("toHalf");
+
+    function update() {
+      fullOut.value = toFullWidth(input.value);
+      halfOut.value = toHalfWidth(input.value);
+    }
+
+    function copyFrom(el, btn) {
+      btn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(el.value);
+          const old = btn.textContent;
+          btn.textContent = "✓ コピー済み";
+          setTimeout(() => { btn.textContent = old; }, 1200);
+        } catch {
+          btn.textContent = "コピー失敗";
+        }
+      });
+    }
+
+    input.addEventListener("input", update);
+    copyFrom(fullOut, document.getElementById("copyFull"));
+    copyFrom(halfOut, document.getElementById("copyHalf"));
+    update();
+  </script>
+</body>
+</html>

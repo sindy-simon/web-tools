@@ -234,6 +234,25 @@ details.quick summary {
   color: var(--muted);
 }
 
+.conv {
+  margin-top: 16px;
+}
+
+.conv-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.conv-head label {
+  margin: 0;
+}
+
+.related {
+  font-size: 0.9rem;
+  margin-top: 16px;
+}
+
 footer {
   border-top: 1px solid var(--border);
   padding: 24px 0;
