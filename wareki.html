@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>西暦⇔和暦 変換 | サクッとツール箱</title>
+  <meta name="description" content="西暦と和暦(令和・平成・昭和・大正・明治)を相互変換する無料ツール。改元日(令和は2019年5月1日など)も正確に判定します。">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="site-title" href="./index.html">サクッとツール箱</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>西暦⇔和暦 変換</h1>
+    <p class="lead">書類記入などでよく迷う「平成何年?」「西暦何年?」をすぐに変換します。</p>
+
+    <div class="card">
+      <h2>西暦 → 和暦</h2>
+      <div class="row">
+        <div>
+          <label for="s-year">年(西暦)</label>
+          <input type="number" id="s-year" min="1868" max="2999" value="2026">
+        </div>
+        <div>
+          <label for="s-month">月</label>
+          <input type="number" id="s-month" min="1" max="12" value="6">
+        </div>
+        <div>
+          <label for="s-day">日</label>
+          <input type="number" id="s-day" min="1" max="31" value="10">
+        </div>
+      </div>
+      <button id="s-convert">和暦に変換</button>
+      <div class="result" id="s-result" hidden></div>
+      <div class="error" id="s-error" hidden></div>
+      <p class="note">改元の年(2019年・1989年など)は月日まで入れると正確に判定されます。明治(1868年10月23日)より前は対象外です。</p>
+    </div>
+
+    <div class="card">
+      <h2>和暦 → 西暦</h2>
+      <div class="row">
+        <div>
+          <label for="w-era">元号</label>
+          <select id="w-era">
+            <option>令和</option>
+            <option>平成</option>
+            <option>昭和</option>
+            <option>大正</option>
+            <option>明治</option>
+          </select>
+        </div>
+        <div>
+          <label for="w-year">年</label>
+          <input type="number" id="w-year" min="1" value="1">
+        </div>
+      </div>
+      <button id="w-convert">西暦に変換</button>
+      <div class="result" id="w-result" hidden></div>
+      <div class="error" id="w-error" hidden></div>
+    </div>
+
+    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
+    <!-- ▲ AdSense ▲ -->
+
+    <div class="card">
+      <details class="quick">
+        <summary>西暦⇔和暦 早見表(明治元年〜)</summary>
+        <table class="stats" id="quick-table"></table>
+      </details>
+    </div>
+
+    <div class="card">
+      <h2>改元日の早見表</h2>
+      <ul>
+        <li>令和: 2019年5月1日〜</li>
+        <li>平成: 1989年1月8日〜2019年4月30日</li>
+        <li>昭和: 1926年12月25日〜1989年1月7日</li>
+        <li>大正: 1912年7月30日〜1926年12月24日</li>
+        <li>明治: 1868年10月23日〜1912年7月29日</li>
+      </ul>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav>
+        <a href="./index.html">ホーム</a>
+        <a href="./privacy.html">プライバシーポリシー</a>
+      </nav>
+      <p>© 2026 サクッとツール箱</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { seirekiToWareki, warekiToSeireki, warekiFormats } from "./js/lib/wareki.mjs";
+    import { copyRows } from "./js/copy-ui.mjs";
+
+    const $ = (id) => document.getElementById(id);
+
+    function show(resultEl, errorEl, fn) {
+      resultEl.hidden = true;
+      errorEl.hidden = true;
+      try {
+        resultEl.innerHTML = fn();
+        resultEl.hidden = false;
+      } catch (e) {
+        errorEl.textContent = e.message;
+        errorEl.hidden = false;
+      }
+    }
+
+    $("s-convert").addEventListener("click", () => {
+      show($("s-result"), $("s-error"), () => {
+        const y = Number($("s-year").value);
+        const m = Number($("s-month").value);
+        const d = Number($("s-day").value);
+        if (!Number.isInteger(y)) throw new Error("西暦年を入力してください");
+        const r = seirekiToWareki(y, m || 7, d || 1);
+        if (!r) throw new Error("明治より前の日付には対応していません");
+        const f = warekiFormats(r.era, r.year);
+        return `<p>西暦${y}年 は <strong>${f.standard}</strong> です</p>` + copyRows([
+          ["和暦", f.standard],
+          ["書類用", f.padded],
+          ["略記", f.initial],
+        ]);
+      });
+    });
+
+    $("w-convert").addEventListener("click", () => {
+      show($("w-result"), $("w-error"), () => {
+        const era = $("w-era").value;
+        const n = Number($("w-year").value);
+        const y = warekiToSeireki(era, n);
+        return `<p>${era}${n === 1 ? "元" : n}年 は <strong>西暦${y}年</strong> です</p>` + copyRows([
+          ["数字のみ", String(y)],
+          ["年表記", `${y}年`],
+          ["西暦表記", `西暦${y}年`],
+        ]);
+      });
+    });
+
+    // 早見表: 改元年は「前の元号 / 次の元号」を併記する
+    {
+      let rows = "<tr><th>西暦</th><th>和暦</th></tr>";
+      for (let y = new Date().getFullYear() + 1; y >= 1868; y--) {
+        const jan = seirekiToWareki(y, 1, 1);
+        const dec = seirekiToWareki(y, 12, 31);
+        const label = !jan
+          ? dec.label
+          : jan.label === dec.label
+            ? jan.label
+            : `${jan.label} / ${dec.label}`;
+        rows += `<tr><th>${y}年</th><td>${label}</td></tr>`;
+      }
+      $("quick-table").innerHTML = rows;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>文字数カウント | サクッとツール箱</title>
+  <meta name="description" content="文字数・空白を除いた文字数・行数・UTF-8バイト数・400字詰め原稿用紙換算をリアルタイムで表示する無料ツール。入力内容はサーバーに送信されません。">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="site-title" href="./index.html">サクッとツール箱</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>文字数カウント</h1>
+    <p class="lead">テキストを貼り付けると、文字数・行数・バイト数をその場で数えます。</p>
+
+    <div class="card">
+      <label for="text">テキスト</label>
+      <textarea id="text" placeholder="ここに文章を入力または貼り付け" autofocus></textarea>
+
+      <table class="stats">
+        <tr><th>文字数(空白・改行を含む)</th><td id="total">0</td></tr>
+        <tr><th>文字数(空白・改行を除く)</th><td id="noWhitespace">0</td></tr>
+        <tr><th>行数</th><td id="lines">0</td></tr>
+        <tr><th>バイト数(UTF-8)</th><td id="utf8Bytes">0</td></tr>
+        <tr><th>原稿用紙換算(400字)</th><td id="manuscriptPages">0 枚</td></tr>
+      </table>
+      <p class="note">絵文字などのサロゲートペアも 1 文字として数えます。入力内容は端末内だけで処理されます。</p>
+    </div>
+
+    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
+    <!-- ▲ AdSense ▲ -->
+
+    <div class="card">
+      <h2>使い方・補足</h2>
+      <ul>
+        <li>レポートの文字数制限、X(Twitter)・履歴書・エントリーシートの文字数確認などに使えます。</li>
+        <li>「空白・改行を除く」は、半角スペース・全角スペース・タブ・改行を除いた文字数です。</li>
+        <li>バイト数は UTF-8 換算です(日本語はおおむね 1 文字 3 バイト)。</li>
+      </ul>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav>
+        <a href="./index.html">ホーム</a>
+        <a href="./privacy.html">プライバシーポリシー</a>
+      </nav>
+      <p>© 2026 サクッとツール箱</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { textStats } from "./js/lib/textstats.mjs";
+
+    const input = document.getElementById("text");
+    const cells = ["total", "noWhitespace", "lines", "utf8Bytes", "manuscriptPages"]
+      .map((id) => [id, document.getElementById(id)]);
+
+    function update() {
+      const s = textStats(input.value);
+      for (const [key, el] of cells) {
+        el.textContent = key === "manuscriptPages" ? `${s[key]} 枚` : s[key].toLocaleString("ja-JP");
+      }
+    }
+
+    input.addEventListener("input", update);
+    update();
+  </script>
+</body>
+</html>
