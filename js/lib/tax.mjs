@@ -15,7 +15,15 @@ function rounder(rounding) {
   return fn;
 }
 
-function assertAmount(value, label) {
+// 金額は円単位なので整数のみ受け付ける(1000.5 のような小数は誤りとして弾く)。
+function assertYen(value, label) {
+  if (!Number.isInteger(value) || value < 0) {
+    throw new RangeError(`${label}には 0 以上の整数(円)を渡してください`);
+  }
+}
+
+// 税率は小数もありうる(将来の税制変更に備える)ため有限の非負数なら許可する。
+function assertRate(value, label) {
   if (!Number.isFinite(value) || value < 0) {
     throw new RangeError(`${label}には 0 以上の数値を渡してください`);
   }
@@ -23,8 +31,8 @@ function assertAmount(value, label) {
 
 /** 税抜価格から税込価格を求める。 */
 export function addTax(price, ratePercent, rounding = "floor") {
-  assertAmount(price, "税抜価格");
-  assertAmount(ratePercent, "税率");
+  assertYen(price, "税抜価格");
+  assertRate(ratePercent, "税率");
   const fn = rounder(rounding);
   const tax = fn((price * ratePercent) / 100);
   return { price, tax, total: price + tax };
@@ -32,8 +40,8 @@ export function addTax(price, ratePercent, rounding = "floor") {
 
 /** 税込価格から税抜価格と税額を逆算する。 */
 export function removeTax(total, ratePercent, rounding = "floor") {
-  assertAmount(total, "税込価格");
-  assertAmount(ratePercent, "税率");
+  assertYen(total, "税込価格");
+  assertRate(ratePercent, "税率");
   const fn = rounder(rounding);
   // total / 1.1 のような浮動小数点誤差(1100/1.1 = 999.99…)を避けるため分子分母を 100 倍する
   const price = fn((total * 100) / (100 + ratePercent));

@@ -90,7 +90,11 @@
       resultEl.hidden = true;
       errorEl.hidden = true;
       try {
-        const amount = Number($("amount").value);
+        const rawAmount = $("amount").value.trim();
+        if (rawAmount === "") {
+          throw new RangeError("金額を入力してください");
+        }
+        const amount = Number(rawAmount);
         const rate = Number($("rate").value);
         const rounding = $("rounding").value;
         const r = $("direction").value === "add"
