@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SNS文字数チェッカー | X・Instagram・Threads等の上限を一括チェック</title>
+  <meta name="description" content="入力した文章が各SNS(X・Instagram・Threads・Bluesky・TikTok・LinkedIn・YouTube等)の文字数上限に収まるか一括チェック。Xは全角2・半角1・URL23の正しい数え方に対応。入力はサーバーに送信されません。">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="site-title" href="./index.html">サクッとツール箱</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>SNS文字数チェッカー</h1>
+    <p class="lead">投稿文を貼ると、各SNSの文字数上限に収まるかを一括表示。Xは<strong>全角2・半角1・URL23</strong>の正しい数え方で計算します。</p>
+
+    <div class="card">
+      <label for="input">投稿文</label>
+      <textarea id="input" placeholder="ここに投稿文を入力または貼り付け" autofocus></textarea>
+
+      <table class="stats" id="result">
+        <thead>
+          <tr><th>SNS</th><th>使用</th><th>上限</th><th>残り</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <p class="note">Xのみ「全角=2・半角=1・URL=一律23」の重み付き、その他は文字数(コードポイント)で計算。入力内容は端末内だけで処理されます。上限値は 2026-06 時点の一般的な公開値で、各SNSの仕様変更で変わることがあります。</p>
+    </div>
+
+    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
+    <!-- ▲ AdSense ▲ -->
+
+    <div class="card">
+      <h2>SNSごとの文字数の数え方</h2>
+      <ul>
+        <li><strong>X(旧Twitter)</strong>: 日本語などの全角は2文字、半角英数記号は1文字、URLは長さに関わらず23文字、絵文字は2文字として計算されます(通常投稿の上限280=全角なら約140文字)。</li>
+        <li><strong>Instagram・TikTok・Threads など</strong>: 全角・半角を区別せず「文字数」で数えます(日本語1文字=1)。</li>
+        <li>海外製のカウンターは英語前提で全角や絵文字の数え方が異なることが多いため、日本語投稿では実際の上限とズレることがあります。</li>
+      </ul>
+      <p class="related">関連ツール: <a href="./chars.html">文字数カウント</a> ／ <a href="./zenhan.html">全角⇔半角変換</a></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav>
+        <a href="./index.html">ホーム</a>
+        <a href="./privacy.html">プライバシーポリシー</a>
+      </nav>
+      <p>© 2026 サクッとツール箱</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { analyze } from "./js/lib/sns-count.mjs";
+
+    const input = document.getElementById("input");
+    const tbody = document.querySelector("#result tbody");
+
+    function fmt(n) {
+      return n.toLocaleString("ja-JP");
+    }
+
+    function update() {
+      const rows = analyze(input.value);
+      tbody.innerHTML = rows
+        .map((p) => {
+          const cls = p.over ? ' class="over"' : "";
+          return (
+            `<tr${cls}><th>${p.name}</th>` +
+            `<td>${fmt(p.used)}</td>` +
+            `<td>${fmt(p.limit)}</td>` +
+            `<td>${fmt(p.remaining)}</td></tr>`
+          );
+        })
+        .join("");
+    }
+
+    input.addEventListener("input", update);
+    update();
+  </script>
+</body>
+</html>
