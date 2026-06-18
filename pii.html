@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>個人情報チェッカー(伏字化) | AIに貼る前のPII検出</title>
+  <meta name="description" content="文章に含まれるメール・電話番号・カード番号・マイナンバー等の個人情報を検出し、確認のうえ伏字化できる無料ツール。AIチャットに貼る前のチェックに。入力はサーバーに送信されません。">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="site-title" href="./index.html">サクッとツール箱</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>個人情報チェッカー(伏字化)</h1>
+    <p class="lead">AIチャットや問い合わせに貼る前に、メール・電話番号・カード番号などの個人情報を検出して伏字化します。</p>
+
+    <div class="card">
+      <label for="input">テキスト</label>
+      <textarea id="input" placeholder="チェックしたい文章を入力または貼り付け" autofocus></textarea>
+
+      <div id="summary" class="result" hidden></div>
+
+      <div class="conv">
+        <div class="conv-head">
+          <label for="output">伏字化した結果</label>
+          <button type="button" class="copy-btn" id="copyBtn">コピー</button>
+        </div>
+        <textarea id="output" readonly></textarea>
+      </div>
+
+      <p class="note warn">⚠️ 検出は決定論的なパターンによる補助で、<strong>完全ではありません</strong>(氏名・住所・社外秘など検出できないものがあります)。コピー前に必ずご自身で目視確認してください。入力内容は端末内だけで処理され、サーバーには送信されません。</p>
+    </div>
+
+    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
+    <!-- ▲ AdSense ▲ -->
+
+    <div class="card">
+      <h2>検出できるもの・できないもの</h2>
+      <ul>
+        <li><strong>検出する</strong>: メールアドレス / 電話番号 / クレジットカード番号(Luhn判定) / マイナンバー(12桁) / IPアドレス / 郵便番号。</li>
+        <li><strong>検出しない</strong>: 氏名・住所・口座番号・社外秘の固有名詞など、パターン化できない情報。これらは手動で確認・削除してください。</li>
+        <li>このツール自体はデータを送信・保存しません。情報が外部に出るのは「あなたが伏字化後のテキストを貼り付けた先」です。</li>
+      </ul>
+      <p class="related">関連ツール: <a href="./json.html">JSON整形・検証</a> ／ <a href="./chars.html">文字数カウント</a></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav>
+        <a href="./index.html">ホーム</a>
+        <a href="./privacy.html">プライバシーポリシー</a>
+      </nav>
+      <p>© 2026 サクッとツール箱</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { maskPII } from "./js/lib/pii.mjs";
+
+    const input = document.getElementById("input");
+    const output = document.getElementById("output");
+    const summary = document.getElementById("summary");
+    const copyBtn = document.getElementById("copyBtn");
+
+    function esc(s) {
+      return s.replace(/[&<>"]/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])
+      );
+    }
+
+    function update() {
+      const { masked, found } = maskPII(input.value);
+      output.value = masked;
+      if (input.value.trim() === "") {
+        summary.hidden = true;
+        return;
+      }
+      if (found.length === 0) {
+        summary.innerHTML = "検出された個人情報: <strong>0件</strong>(パターンに該当なし)";
+      } else {
+        const items = found
+          .map((f) => `<li>${esc(f.label)}: <code>${esc(f.value)}</code></li>`)
+          .join("");
+        summary.innerHTML =
+          `検出された個人情報: <strong>${found.length}件</strong>` +
+          `<ul class="pii-list">${items}</ul>`;
+      }
+      summary.hidden = false;
+    }
+
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(output.value);
+        copyBtn.textContent = "✓ コピー済み";
+        setTimeout(() => { copyBtn.textContent = "コピー"; }, 1200);
+      } catch {
+        copyBtn.textContent = "コピー失敗";
+      }
+    });
+
+    input.addEventListener("input", update);
+    update();
+  </script>
+</body>
+</html>
