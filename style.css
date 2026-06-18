@@ -107,6 +107,7 @@ label {
 
 textarea,
 input[type="number"],
+input[type="text"],
 select {
   width: 100%;
   padding: 10px 12px;
@@ -257,6 +258,42 @@ details.quick summary {
 .related {
   font-size: 0.9rem;
   margin-top: 16px;
+}
+
+.flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.flags label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 4px 0;
+  font-weight: 400;
+  font-size: 0.9rem;
+}
+
+.flags input {
+  width: auto;
+}
+
+.highlight {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  min-height: 3em;
+  font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
+  font-size: 0.95rem;
+}
+
+.highlight mark {
+  background: #fde68a;
+  border-radius: 3px;
 }
 
 .note.warn {

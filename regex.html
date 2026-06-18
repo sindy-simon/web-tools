@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>正規表現テスター | マッチ確認・置換ができる無料ツール</title>
+  <meta name="description" content="正規表現を入力してテキストへのマッチをその場で確認・置換できる無料ツール。フラグ(i/g/m/s/u)・キャプチャグループ・名前付きグループに対応。AIが書いた正規表現の検証にも。入力はサーバーに送信されません。">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="site-title" href="./index.html">サクッとツール箱</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>正規表現テスター</h1>
+    <p class="lead">正規表現を入力すると、テキストのどこにマッチするかをその場でハイライト表示。置換もできます。AIが書いた正規表現の検証にも。</p>
+
+    <div class="card">
+      <label for="pattern">正規表現</label>
+      <input type="text" id="pattern" placeholder="例: \d{3}-\d{4}" autofocus>
+
+      <label>フラグ</label>
+      <div class="flags">
+        <label><input type="checkbox" class="flag" value="g" checked> g(全件)</label>
+        <label><input type="checkbox" class="flag" value="i"> i(大小無視)</label>
+        <label><input type="checkbox" class="flag" value="m"> m(複数行)</label>
+        <label><input type="checkbox" class="flag" value="s"> s(.が改行含む)</label>
+        <label><input type="checkbox" class="flag" value="u"> u(Unicode)</label>
+      </div>
+
+      <label for="text">テスト対象テキスト</label>
+      <textarea id="text" placeholder="ここにテキストを入力">郵便番号は 123-4567、電話は 03-1234-5678 です。</textarea>
+
+      <div id="error" class="error" hidden></div>
+
+      <label>マッチ結果</label>
+      <div id="highlight" class="highlight"></div>
+      <p id="count" class="note"></p>
+      <div id="groups"></div>
+    </div>
+
+    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
+    <!-- ▲ AdSense ▲ -->
+
+    <div class="card">
+      <h2>置換</h2>
+      <label for="replacement">置換後(後方参照 $1, $&lt;name&gt; が使えます)</label>
+      <input type="text" id="replacement" placeholder="例: 〒$&">
+      <div class="conv">
+        <div class="conv-head">
+          <label for="replaceOut">置換結果</label>
+          <button type="button" class="copy-btn" id="copyBtn">コピー</button>
+        </div>
+        <textarea id="replaceOut" readonly></textarea>
+      </div>
+      <p class="note">処理はすべて端末内で行われ、サーバーには送信されません。</p>
+      <p class="related">関連ツール: <a href="./json.html">JSON整形・検証</a> ／ <a href="./chars.html">文字数カウント</a></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav>
+        <a href="./index.html">ホーム</a>
+        <a href="./privacy.html">プライバシーポリシー</a>
+      </nav>
+      <p>© 2026 サクッとツール箱</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { findMatches, replaceAll } from "./js/lib/regex-tool.mjs";
+
+    const patternEl = document.getElementById("pattern");
+    const textEl = document.getElementById("text");
+    const flagEls = [...document.querySelectorAll(".flag")];
+    const errorBox = document.getElementById("error");
+    const highlight = document.getElementById("highlight");
+    const countEl = document.getElementById("count");
+    const groupsEl = document.getElementById("groups");
+    const replacementEl = document.getElementById("replacement");
+    const replaceOut = document.getElementById("replaceOut");
+    const copyBtn = document.getElementById("copyBtn");
+
+    function esc(s) {
+      return s.replace(/[&<>"]/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])
+      );
+    }
+
+    function flags() {
+      return flagEls.filter((f) => f.checked).map((f) => f.value).join("");
+    }
+
+    function buildHighlight(text, matches) {
+      let html = "";
+      let pos = 0;
+      for (const m of matches) {
+        if (m.index < pos) continue; // 念のため重複防止
+        html += esc(text.slice(pos, m.index));
+        html += "<mark>" + esc(m.value) + "</mark>";
+        pos = m.index + m.value.length;
+      }
+      html += esc(text.slice(pos));
+      return html;
+    }
+
+    function update() {
+      const pattern = patternEl.value;
+      const text = textEl.value;
+      if (pattern === "") {
+        errorBox.hidden = true;
+        highlight.textContent = text;
+        countEl.textContent = "";
+        groupsEl.innerHTML = "";
+        replaceOut.value = text;
+        return;
+      }
+      const r = findMatches(pattern, flags(), text);
+      if (!r.ok) {
+        errorBox.textContent = "正規表現エラー: " + r.error;
+        errorBox.hidden = false;
+        highlight.textContent = text;
+        countEl.textContent = "";
+        groupsEl.innerHTML = "";
+        replaceOut.value = "";
+        return;
+      }
+      errorBox.hidden = true;
+      highlight.innerHTML = buildHighlight(text, r.matches) || "(マッチなし)";
+      countEl.textContent = `マッチ数: ${r.matches.length}`;
+
+      // グループの表示(最初の数件)
+      const withGroups = r.matches.filter(
+        (m) => m.groups.length > 0 || m.named
+      );
+      if (withGroups.length > 0) {
+        const rows = withGroups
+          .slice(0, 20)
+          .map((m, i) => {
+            const g = m.groups.map((v, j) => `$${j + 1}=${esc(String(v))}`).join(", ");
+            const named = m.named
+              ? " / " +
+                Object.entries(m.named)
+                  .map(([k, v]) => `${esc(k)}=${esc(String(v))}`)
+                  .join(", ")
+              : "";
+            return `<li>「${esc(m.value)}」 → ${g}${named}</li>`;
+          })
+          .join("");
+        groupsEl.innerHTML = `<p class="note">キャプチャグループ:</p><ul class="pii-list">${rows}</ul>`;
+      } else {
+        groupsEl.innerHTML = "";
+      }
+
+      const rep = replaceAll(pattern, flags(), text, replacementEl.value);
+      replaceOut.value = rep.ok ? rep.result : "";
+    }
+
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(replaceOut.value);
+        copyBtn.textContent = "✓ コピー済み";
+        setTimeout(() => { copyBtn.textContent = "コピー"; }, 1200);
+      } catch {
+        copyBtn.textContent = "コピー失敗";
+      }
+    });
+
+    [patternEl, textEl, replacementEl].forEach((el) =>
+      el.addEventListener("input", update)
+    );
+    flagEls.forEach((el) => el.addEventListener("change", update));
+    update();
+  </script>
+</body>
+</html>
