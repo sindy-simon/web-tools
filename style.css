@@ -296,6 +296,26 @@ details.quick summary {
   border-radius: 3px;
 }
 
+.diff-add {
+  background: #ecfdf5;
+  color: #065f46;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.diff-remove {
+  background: #fef2f2;
+  color: #b91c1c;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.diff-equal {
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--muted);
+}
+
 .note.warn {
   color: #92400e;
   background: #fffbeb;

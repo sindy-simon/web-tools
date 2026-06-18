@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テキスト差分(diff)チェッカー | 2つの文章の違いを比較</title>
+  <meta name="description" content="2つのテキストを行単位で比較し、追加・削除された行をハイライト表示する無料の差分(diff)ツール。AIの修正前後や原稿の比較に。入力はサーバーに送信されません。">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="site-title" href="./index.html">サクッとツール箱</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>テキスト差分(diff)チェッカー</h1>
+    <p class="lead">2つのテキストを行単位で比較し、変わった箇所をハイライト。AIの修正前後や原稿の比較に。</p>
+
+    <div class="card">
+      <div class="row">
+        <div>
+          <label for="a">元のテキスト</label>
+          <textarea id="a" placeholder="比較元を入力"></textarea>
+        </div>
+        <div>
+          <label for="b">比較するテキスト</label>
+          <textarea id="b" placeholder="比較先を入力"></textarea>
+        </div>
+      </div>
+
+      <label>差分結果</label>
+      <p id="stats" class="note"></p>
+      <div id="result" class="highlight"></div>
+      <p class="note">「− 赤」が削除、「＋ 緑」が追加された行です。処理はすべて端末内で行われ、サーバーには送信されません。</p>
+    </div>
+
+    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
+    <!-- ▲ AdSense ▲ -->
+
+    <div class="card">
+      <h2>使い方・補足</h2>
+      <ul>
+        <li>行単位で比較します。文章を推敲した前後や、AIに直してもらう前後の違いを確認できます。</li>
+        <li>1行の中の単語レベルの差ではなく、行の追加・削除として表示されます。</li>
+      </ul>
+      <p class="related">関連ツール: <a href="./regex.html">正規表現テスター</a> ／ <a href="./chars.html">文字数カウント</a></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav>
+        <a href="./index.html">ホーム</a>
+        <a href="./privacy.html">プライバシーポリシー</a>
+      </nav>
+      <p>© 2026 サクッとツール箱</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { diffLines, diffStats } from "./js/lib/diff.mjs";
+
+    const aEl = document.getElementById("a");
+    const bEl = document.getElementById("b");
+    const result = document.getElementById("result");
+    const stats = document.getElementById("stats");
+
+    function esc(s) {
+      return s.replace(/[&<>"]/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])
+      );
+    }
+
+    const SIGN = { equal: " ", add: "＋", remove: "−" };
+
+    function update() {
+      if (aEl.value === "" && bEl.value === "") {
+        result.innerHTML = "";
+        stats.textContent = "";
+        return;
+      }
+      const parts = diffLines(aEl.value, bEl.value);
+      const s = diffStats(parts);
+      stats.textContent = `追加 ${s.add} 行 / 削除 ${s.remove} 行 / 変更なし ${s.equal} 行`;
+      result.innerHTML = parts
+        .map(
+          (p) =>
+            `<div class="diff-${p.type}">${SIGN[p.type]} ${esc(p.line)}</div>`
+        )
+        .join("");
+    }
+
+    [aEl, bEl].forEach((el) => el.addEventListener("input", update));
+    update();
+  </script>
+</body>
+</html>
