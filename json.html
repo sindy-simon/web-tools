@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JSON整形・検証 | 貼るだけで整形・エラーチェック(無料)</title>
+  <meta name="description" content="JSONを貼るだけで整形・圧縮・妥当性チェックができる無料ツール。インデントは2/4スペース・タブから選択可。AIが生成したJSONの検証にも。入力はサーバーに送信されません。">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="site-title" href="./index.html">サクッとツール箱</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>JSON整形・検証</h1>
+    <p class="lead">JSONを貼ると整形して妥当性をチェック。AIが生成したJSONが正しいかの確認にも使えます。</p>
+
+    <div class="card">
+      <label for="input">JSON</label>
+      <textarea id="input" placeholder='{"example":[1,2,3]}' autofocus></textarea>
+
+      <div class="row">
+        <div>
+          <label for="mode">出力形式</label>
+          <select id="mode">
+            <option value="2">2スペース</option>
+            <option value="4">4スペース</option>
+            <option value="tab">タブ</option>
+            <option value="none">圧縮(1行)</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="error" class="error" hidden></div>
+
+      <div class="conv">
+        <div class="conv-head">
+          <label for="output">結果</label>
+          <button type="button" class="copy-btn" id="copyBtn">コピー</button>
+        </div>
+        <textarea id="output" readonly></textarea>
+      </div>
+
+      <p class="note">ブラウザ標準の JSON 解析で処理します。入力内容は端末内だけで処理され、サーバーには送信されません。</p>
+    </div>
+
+    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
+    <!-- ▲ AdSense ▲ -->
+
+    <div class="card">
+      <h2>使い方・補足</h2>
+      <ul>
+        <li>整形すると入れ子構造が見やすくなり、どこにエラーがあるかも分かります。</li>
+        <li>不正なJSONの場合はエラー内容を表示します(末尾カンマ・シングルクォート・キーの引用漏れなどが原因)。</li>
+        <li>「圧縮(1行)」は余分な空白を除いてサイズを小さくします。</li>
+      </ul>
+      <p class="related">関連ツール: <a href="./chars.html">文字数カウント</a></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav>
+        <a href="./index.html">ホーム</a>
+        <a href="./privacy.html">プライバシーポリシー</a>
+      </nav>
+      <p>© 2026 サクッとツール箱</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { formatJson } from "./js/lib/json-tool.mjs";
+
+    const input = document.getElementById("input");
+    const mode = document.getElementById("mode");
+    const output = document.getElementById("output");
+    const errorBox = document.getElementById("error");
+    const copyBtn = document.getElementById("copyBtn");
+
+    function update() {
+      if (input.value.trim() === "") {
+        output.value = "";
+        errorBox.hidden = true;
+        return;
+      }
+      const r = formatJson(input.value, mode.value);
+      if (r.ok) {
+        output.value = r.result;
+        errorBox.hidden = true;
+      } else {
+        output.value = "";
+        errorBox.textContent = "JSONエラー: " + r.error;
+        errorBox.hidden = false;
+      }
+    }
+
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(output.value);
+        copyBtn.textContent = "✓ コピー済み";
+        setTimeout(() => { copyBtn.textContent = "コピー"; }, 1200);
+      } catch {
+        copyBtn.textContent = "コピー失敗";
+      }
+    });
+
+    input.addEventListener("input", update);
+    mode.addEventListener("change", update);
+    update();
+  </script>
+</body>
+</html>
