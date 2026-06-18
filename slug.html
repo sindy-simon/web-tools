@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ローマ字スラッグ生成 | 日本語タイトルからURL用スラッグ(無料)</title>
+  <meta name="description" content="日本語(かな)や英数字のタイトルを、URLに使えるローマ字スラッグに変換する無料ツール。ヘボン式ローマ字・小文字・ハイフン区切りに対応。ブログやWordPressのパーマリンクに。入力はサーバーに送信されません。">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="site-title" href="./index.html">サクッとツール箱</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>ローマ字スラッグ生成</h1>
+    <p class="lead">日本語(かな)や英数字のタイトルを、URLに使えるローマ字スラッグに変換します。ブログ・WordPressのパーマリンクに。</p>
+
+    <div class="card">
+      <label for="input">タイトル</label>
+      <input type="text" id="input" placeholder="例: あたらしい きじ の つくりかた" autofocus>
+
+      <div class="row">
+        <div>
+          <label for="sep">区切り文字</label>
+          <select id="sep">
+            <option value="-">ハイフン ( - )</option>
+            <option value="_">アンダースコア ( _ )</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="conv">
+        <div class="conv-head">
+          <label for="output">スラッグ</label>
+          <button type="button" class="copy-btn" id="copyBtn">コピー</button>
+        </div>
+        <input type="text" id="output" readonly>
+      </div>
+
+      <p class="note warn">⚠️ <strong>漢字は読みが一意に決まらないため変換できません</strong>(無視されます)。漢字を含む場合は、かなに直してから入力してください。入力内容は端末内だけで処理されます。</p>
+    </div>
+
+    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
+    <!-- ▲ AdSense ▲ -->
+
+    <div class="card">
+      <h2>使い方・補足</h2>
+      <ul>
+        <li>ひらがな・カタカナをヘボン式ローマ字に変換し、小文字・区切り文字でつなぎます。</li>
+        <li>記号や空白は区切り文字に置き換え、前後の余分な区切りは取り除きます。</li>
+        <li>英語タイトルの整形(小文字・ハイフン化)にもそのまま使えます。</li>
+      </ul>
+      <p class="related">関連ツール: <a href="./zenhan.html">全角⇔半角変換</a> ／ <a href="./chars.html">文字数カウント</a></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav>
+        <a href="./index.html">ホーム</a>
+        <a href="./privacy.html">プライバシーポリシー</a>
+      </nav>
+      <p>© 2026 サクッとツール箱</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { slugify } from "./js/lib/slug.mjs";
+
+    const input = document.getElementById("input");
+    const sep = document.getElementById("sep");
+    const output = document.getElementById("output");
+    const copyBtn = document.getElementById("copyBtn");
+
+    function update() {
+      output.value = slugify(input.value, sep.value);
+    }
+
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(output.value);
+        copyBtn.textContent = "✓ コピー済み";
+        setTimeout(() => { copyBtn.textContent = "コピー"; }, 1200);
+      } catch {
+        copyBtn.textContent = "コピー失敗";
+      }
+    });
+
+    input.addEventListener("input", update);
+    sep.addEventListener("change", update);
+    update();
+  </script>
+</body>
+</html>
