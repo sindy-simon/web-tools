@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>海外サイズ→日本サイズ変換(靴・服) | サクッとツール箱</title>
+  <meta name="description" content="海外通販で迷うサイズ表記を日本サイズに変換する無料ツール。靴(US/UK/EU→cm)・服(XS〜XXL→日本サイズ)をメンズ・レディース別に一括表示。ブランドで差があるため目安です。">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="site-title" href="./index.html">サクッとツール箱</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>海外サイズ→日本サイズ変換(靴・服)</h1>
+    <p class="lead">海外通販でよく迷う US/UK/EU のサイズ表記を、日本サイズの目安に変換します。1つ入れると全系統を同時表示。</p>
+
+    <div class="card">
+      <h2>靴のサイズ変換</h2>
+      <div class="row">
+        <div>
+          <label for="shoe-cat">カテゴリ</label>
+          <select id="shoe-cat">
+            <option value="men">メンズ</option>
+            <option value="women">レディース</option>
+          </select>
+        </div>
+        <div>
+          <label for="shoe-sys">基準</label>
+          <select id="shoe-sys">
+            <option value="jp">日本(cm)</option>
+            <option value="us" selected>US</option>
+            <option value="uk">UK</option>
+            <option value="eu">EU</option>
+          </select>
+        </div>
+        <div>
+          <label for="shoe-val">サイズ</label>
+          <input type="number" id="shoe-val" step="0.5" value="9">
+        </div>
+      </div>
+      <button id="shoe-convert">変換する</button>
+      <div class="result" id="shoe-result" hidden></div>
+      <div class="error" id="shoe-error" hidden></div>
+      <p class="note">日本サイズ(cm)は足長の目安です。半サイズ刻みで一致が無い場合は最も近いサイズを表示します。</p>
+    </div>
+
+    <div class="card">
+      <h2>服(トップス)のサイズ変換</h2>
+      <div class="row">
+        <div>
+          <label for="cloth-cat">カテゴリ</label>
+          <select id="cloth-cat">
+            <option value="men">メンズ</option>
+            <option value="women">レディース</option>
+          </select>
+        </div>
+        <div>
+          <label for="cloth-sys">基準</label>
+          <select id="cloth-sys">
+            <option value="intl" selected>国際(XS〜XXL)</option>
+            <option value="jp">日本</option>
+            <option value="us">US</option>
+            <option value="eu">EU</option>
+            <option value="uk">UK</option>
+          </select>
+        </div>
+        <div>
+          <label for="cloth-val">サイズ</label>
+          <input type="text" id="cloth-val" value="M" list="cloth-suggest">
+          <datalist id="cloth-suggest"></datalist>
+        </div>
+      </div>
+      <button id="cloth-convert">変換する</button>
+      <div class="result" id="cloth-result" hidden></div>
+      <div class="error" id="cloth-error" hidden></div>
+      <p class="note">服のサイズはブランド差が大きいため、あくまで目安です。基準を「日本」にすると号数(レディース)や S/M/L からも引けます。</p>
+    </div>
+
+    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
+    <!-- ▲ AdSense ▲ -->
+
+    <div class="card">
+      <details class="quick">
+        <summary>靴サイズ早見表(メンズ／レディース)</summary>
+        <table class="stats" id="shoe-table-men"></table>
+        <table class="stats" id="shoe-table-women"></table>
+      </details>
+    </div>
+
+    <div class="card">
+      <details class="quick">
+        <summary>服サイズ早見表(メンズ／レディース)</summary>
+        <table class="stats" id="cloth-table-men"></table>
+        <table class="stats" id="cloth-table-women"></table>
+      </details>
+    </div>
+
+    <div class="card">
+      <h2>使い方・注意</h2>
+      <ul>
+        <li>海外通販(靴・服)で表記されている US/UK/EU サイズを、日本サイズの目安に変換できます。</li>
+        <li>入力内容は端末内だけで処理され、サーバーには送信されません。</li>
+        <li><strong>サイズはブランド・メーカーで差があります。</strong>表示は一般的な対照表に基づく目安で、フィットを保証するものではありません。実際の購入時は各ブランドのサイズ表も確認してください。</li>
+      </ul>
+      <p class="related">関連ツール: <a href="./wareki.html">西暦⇔和暦 変換</a> / <a href="./tax.html">消費税計算</a></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav>
+        <a href="./index.html">ホーム</a>
+        <a href="./privacy.html">プライバシーポリシー</a>
+      </nav>
+      <p>© 2026 サクッとツール箱</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import {
+      lookupShoe,
+      lookupClothing,
+      SHOE_TABLE_MEN,
+      SHOE_TABLE_WOMEN,
+      CLOTHING_TABLE_MEN,
+      CLOTHING_TABLE_WOMEN,
+    } from "./js/lib/size.mjs";
+    import { copyRows } from "./js/copy-ui.mjs";
+
+    const $ = (id) => document.getElementById(id);
+
+    function show(resultEl, errorEl, fn) {
+      resultEl.hidden = true;
+      errorEl.hidden = true;
+      try {
+        resultEl.innerHTML = fn();
+        resultEl.hidden = false;
+      } catch (e) {
+        errorEl.textContent = e.message;
+        errorEl.hidden = false;
+      }
+    }
+
+    // ── 靴 ──
+    $("shoe-convert").addEventListener("click", () => {
+      show($("shoe-result"), $("shoe-error"), () => {
+        const category = $("shoe-cat").value;
+        const system = $("shoe-sys").value;
+        const value = Number($("shoe-val").value);
+        const r = lookupShoe({ category, system, value });
+        const head = r.exact
+          ? "<p>変換結果(目安)</p>"
+          : "<p>ぴったり一致が無いため<strong>最も近いサイズ</strong>を表示します(目安)</p>";
+        return head + copyRows([
+          ["日本(cm)", String(r.jp)],
+          ["US", String(r.us)],
+          ["UK", String(r.uk)],
+          ["EU", String(r.eu)],
+        ]);
+      });
+    });
+
+    // ── 服 ──
+    $("cloth-convert").addEventListener("click", () => {
+      show($("cloth-result"), $("cloth-error"), () => {
+        const category = $("cloth-cat").value;
+        const system = $("cloth-sys").value;
+        const value = $("cloth-val").value;
+        const r = lookupClothing({ category, system, value });
+        return "<p>変換結果(目安)</p>" + copyRows([
+          ["国際", r.intl],
+          ["日本", r.jp],
+          ["US", r.us],
+          ["EU", r.eu],
+          ["UK", r.uk],
+        ]);
+      });
+    });
+
+    // 基準を変えたら入力欄の候補(datalist)を更新
+    function refreshClothSuggest() {
+      const category = $("cloth-cat").value;
+      const system = $("cloth-sys").value;
+      const table = category === "men" ? CLOTHING_TABLE_MEN : CLOTHING_TABLE_WOMEN;
+      $("cloth-suggest").innerHTML = table
+        .map((row) => `<option value="${row[system]}">`)
+        .join("");
+    }
+    $("cloth-cat").addEventListener("change", refreshClothSuggest);
+    $("cloth-sys").addEventListener("change", refreshClothSuggest);
+    refreshClothSuggest();
+
+    // ── 早見表 ──
+    function renderShoeTable(el, table, label) {
+      let rows = `<tr><th colspan="4">${label}</th></tr>`;
+      rows += "<tr><th>日本(cm)</th><th>US</th><th>UK</th><th>EU</th></tr>";
+      for (const r of table) {
+        rows += `<tr><th>${r.jp}</th><td>${r.us}</td><td>${r.uk}</td><td>${r.eu}</td></tr>`;
+      }
+      el.innerHTML = rows;
+    }
+    renderShoeTable($("shoe-table-men"), SHOE_TABLE_MEN, "メンズ");
+    renderShoeTable($("shoe-table-women"), SHOE_TABLE_WOMEN, "レディース");
+
+    function renderClothTable(el, table, label) {
+      let rows = `<tr><th colspan="5">${label}</th></tr>`;
+      rows += "<tr><th>国際</th><th>日本</th><th>US</th><th>EU</th><th>UK</th></tr>";
+      for (const r of table) {
+        rows += `<tr><th>${r.intl}</th><td>${r.jp}</td><td>${r.us}</td><td>${r.eu}</td><td>${r.uk}</td></tr>`;
+      }
+      el.innerHTML = rows;
+    }
+    renderClothTable($("cloth-table-men"), CLOTHING_TABLE_MEN, "メンズ");
+    renderClothTable($("cloth-table-women"), CLOTHING_TABLE_WOMEN, "レディース");
+  </script>
+</body>
+</html>
