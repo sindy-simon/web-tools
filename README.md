@@ -8,20 +8,22 @@ GitHub Pages（`main` / `(root)`）から公開。
 - 文字数カウント（`chars.html`）
 - 西暦⇔和暦変換（`wareki.html`）
 - 消費税計算（`tax.html`）
+- 海外サイズ→日本サイズ変換（`size.html`）… 靴・服を US/UK/EU→日本サイズの目安に変換
+- ほか（`slug` / `prompt` / `diff` / `regex` / `pii` / `json` / `sns` / `zenhan`）
 
 すべてクライアントサイドで完結。入力データはサーバーに送らない。
 
 ## 構成
 
 ```
-index.html chars.html wareki.html tax.html privacy.html style.css   ← Pages が root から配信
-js/copy-ui.mjs                                                       ← UI 補助
-js/lib/{tax,wareki,textstats}.mjs                                    ← 純粋関数ロジック
-test/{tax,wareki,textstats}.test.mjs                                ← 単体テスト
+index.html chars.html wareki.html tax.html size.html privacy.html style.css   ← Pages が root から配信
+js/copy-ui.mjs                                                                 ← UI 補助
+js/lib/{tax,wareki,textstats,size}.mjs                                         ← 純粋関数ロジック
+test/{tax,wareki,textstats,size}.test.mjs                                      ← 単体テスト
 ```
 
 ロジックは `js/lib/*.mjs` の純粋関数に分離し、UI と切り離して `test/` でテストしている。
-端数処理・和暦の改元境界はテストで固定済み。挙動を変える時はテストも更新すること。
+端数処理・和暦の改元境界・サイズ換算表はテストで固定済み。挙動を変える時はテストも更新すること。
 
 ## 開発・テスト
 
