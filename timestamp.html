@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unixタイムスタンプ変換（JST・ISO 8601対応）| サクッとツール箱</title>
+  <meta name="description" content="Unixタイムスタンプ（秒・ミリ秒）をJST日時に変換、またはJST日時をUnixタイムスタンプに変換する無料ツール。ISO 8601形式にも対応。端末内で完結。">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="site-title" href="./index.html">サクッとツール箱</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Unixタイムスタンプ変換（JST・ISO 8601対応）</h1>
+    <p class="lead">Unixタイムスタンプ（秒・ミリ秒を自動判別）を JST 日時に変換します。逆変換・現在値の取得も可能。</p>
+
+    <div class="card">
+      <h2>Unix タイムスタンプ → JST 日時</h2>
+      <div class="row">
+        <div>
+          <label for="unix-val">タイムスタンプ</label>
+          <input type="number" id="unix-val" placeholder="例: 1700000000">
+        </div>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem;">
+        <button id="unix-convert">変換する</button>
+        <button id="unix-now" class="secondary">現在の Unix 時刻を入力</button>
+      </div>
+      <p class="note">10桁=秒、13桁=ミリ秒として自動判別します。</p>
+      <div class="result" id="unix-result" hidden></div>
+      <div class="error" id="unix-error" hidden></div>
+    </div>
+
+    <div class="card">
+      <h2>JST 日時 → Unix タイムスタンプ</h2>
+      <div class="row">
+        <div>
+          <label for="jst-val">JST 日時</label>
+          <input type="datetime-local" id="jst-val">
+        </div>
+      </div>
+      <button id="jst-convert">変換する</button>
+      <div class="result" id="jst-result" hidden></div>
+      <div class="error" id="jst-error" hidden></div>
+    </div>
+
+    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
+    <!-- ▲ AdSense ▲ -->
+
+    <div class="card">
+      <h2>使い方・注意</h2>
+      <ul>
+        <li>Unixタイムスタンプは 1970-01-01 00:00:00 UTC からの経過秒数（またはミリ秒数）です。</li>
+        <li>このツールは日本標準時（JST = UTC+9）で表示します。夏時間はありません。</li>
+        <li>入力内容は端末内だけで処理され、サーバーには送信されません。</li>
+      </ul>
+      <p class="related">関連ツール: <a href="./timezone.html">時差計算・海外時刻→JST変換</a> / <a href="./wareki.html">西暦⇔和暦 変換</a></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav>
+        <a href="./index.html">ホーム</a>
+        <a href="./privacy.html">プライバシーポリシー</a>
+      </nav>
+      <p>© 2026 サクッとツール箱</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { unixToJst, jstToUnix, nowUnix } from "./js/lib/timestamp.mjs";
+    import { copyRows } from "./js/copy-ui.mjs";
+
+    const $ = (id) => document.getElementById(id);
+
+    function show(resultEl, errorEl, fn) {
+      resultEl.hidden = true;
+      errorEl.hidden = true;
+      try {
+        resultEl.innerHTML = fn();
+        resultEl.hidden = false;
+      } catch (e) {
+        errorEl.textContent = e.message;
+        errorEl.hidden = false;
+      }
+    }
+
+    // 現在時刻をデフォルト入力にセット
+    const now = nowUnix();
+    $("unix-val").value = now.unix;
+    const dt = new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    $("jst-val").value =
+      `${dt.getFullYear()}-${pad(dt.getMonth()+1)}-${pad(dt.getDate())}T${pad(dt.getHours())}:${pad(dt.getMinutes())}`;
+
+    // Unix → JST
+    $("unix-convert").addEventListener("click", () => {
+      show($("unix-result"), $("unix-error"), () => {
+        const val = Number($("unix-val").value);
+        if ($("unix-val").value.trim() === "") throw new TypeError("タイムスタンプを入力してください");
+        const r = unixToJst(val);
+        return "<p>変換結果（JST）</p>" + copyRows([
+          ["日付",           r.date],
+          ["時刻",           r.time],
+          ["ISO 8601",       r.iso],
+          ["Unix（秒）",     String(r.unix)],
+          ["Unix（ms）",     String(r.ms)],
+        ]);
+      });
+    });
+
+    $("unix-now").addEventListener("click", () => {
+      const n = nowUnix();
+      $("unix-val").value = n.unix;
+    });
+
+    // JST → Unix
+    $("jst-convert").addEventListener("click", () => {
+      show($("jst-result"), $("jst-error"), () => {
+        const raw = $("jst-val").value;
+        if (!raw) throw new TypeError("日時を選択してください");
+        // datetime-local は "YYYY-MM-DDTHH:mm" 形式なので秒を補完
+        const str = raw.length === 16 ? raw + ":00" : raw;
+        const r = jstToUnix(str);
+        return "<p>変換結果</p>" + copyRows([
+          ["Unix（秒）",     String(r.unix)],
+          ["Unix（ms）",     String(r.ms)],
+          ["ISO 8601",       new Date(r.ms).toISOString()],
+        ]);
+      });
+    });
+  </script>
+</body>
+</html>
