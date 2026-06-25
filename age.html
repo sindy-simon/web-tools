@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>年齢・日数計算（和暦対応）| サクッとツール箱</title>
+  <meta name="description" content="生年月日から満年齢・和暦を計算、または2つの日付の日数差を計算する無料ツール。昭和・平成・令和など和暦入力にも対応。端末内で完結。">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="site-title" href="./index.html">サクッとツール箱</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>年齢・日数計算（和暦対応）</h1>
+    <p class="lead">生年月日から満年齢・和暦を確認、または2日付の間の日数を計算します。昭和・平成・令和など和暦入力にも対応。</p>
+
+    <div class="card">
+      <h2>年齢計算</h2>
+      <div class="row">
+        <div>
+          <label for="bday-dt">生年月日</label>
+          <input type="date" id="bday-dt">
+        </div>
+        <div>
+          <label for="asof-dt">基準日（省略=今日）</label>
+          <input type="date" id="asof-dt">
+        </div>
+      </div>
+      <p class="note">和暦で入力したい場合は下の変換欄で西暦に換算できます。</p>
+      <button id="age-calc">計算する</button>
+      <div class="result" id="age-result" hidden></div>
+      <div class="error" id="age-error" hidden></div>
+    </div>
+
+    <div class="card">
+      <h2>和暦 → 西暦 変換</h2>
+      <div class="row">
+        <div>
+          <label for="era-sel">元号</label>
+          <select id="era-sel">
+            <option value="令和">令和</option>
+            <option value="平成">平成</option>
+            <option value="昭和">昭和</option>
+            <option value="大正">大正</option>
+            <option value="明治">明治</option>
+          </select>
+        </div>
+        <div>
+          <label for="era-year">年</label>
+          <input type="number" id="era-year" min="1" max="99" placeholder="例: 64">
+        </div>
+      </div>
+      <button id="era-calc">西暦に変換</button>
+      <div class="result" id="era-result" hidden></div>
+      <div class="error" id="era-error" hidden></div>
+    </div>
+
+    <div class="card">
+      <h2>日数計算</h2>
+      <div class="row">
+        <div>
+          <label for="from-dt">開始日</label>
+          <input type="date" id="from-dt">
+        </div>
+        <div>
+          <label for="to-dt">終了日</label>
+          <input type="date" id="to-dt">
+        </div>
+      </div>
+      <button id="days-calc">計算する</button>
+      <div class="result" id="days-result" hidden></div>
+      <div class="error" id="days-error" hidden></div>
+    </div>
+
+    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
+    <!-- ▲ AdSense ▲ -->
+
+    <div class="card">
+      <h2>使い方・注意</h2>
+      <ul>
+        <li>年齢は「満年齢」で計算します（誕生日当日に年齢が上がります）。</li>
+        <li>和暦入力は「和暦 → 西暦 変換」で換算し、年齢計算欄にご利用ください。</li>
+        <li>入力内容は端末内だけで処理され、サーバーには送信されません。</li>
+      </ul>
+      <details>
+        <summary>元号と西暦の対応一覧</summary>
+        <table>
+          <tr><th>元号</th><th>開始日</th><th>計算例</th></tr>
+          <tr><td>令和</td><td>2019年5月1日〜</td><td>令和N年 = 2018+N年</td></tr>
+          <tr><td>平成</td><td>1989年1月8日〜</td><td>平成N年 = 1988+N年</td></tr>
+          <tr><td>昭和</td><td>1926年12月25日〜</td><td>昭和N年 = 1925+N年</td></tr>
+          <tr><td>大正</td><td>1912年7月30日〜</td><td>大正N年 = 1911+N年</td></tr>
+          <tr><td>明治</td><td>1868年1月25日〜</td><td>明治N年 = 1867+N年</td></tr>
+        </table>
+      </details>
+      <p class="related">関連ツール: <a href="./wareki.html">西暦⇔和暦 変換</a> / <a href="./timestamp.html">Unixタイムスタンプ変換</a></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav>
+        <a href="./index.html">ホーム</a>
+        <a href="./privacy.html">プライバシーポリシー</a>
+      </nav>
+      <p>© 2026 サクッとツール箱</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { calcAge, calcDaysBetween, warekiYearToSeireki, toWareki } from "./js/lib/age.mjs";
+    import { copyRows } from "./js/copy-ui.mjs";
+
+    const $ = (id) => document.getElementById(id);
+
+    function show(resultEl, errorEl, fn) {
+      resultEl.hidden = true;
+      errorEl.hidden = true;
+      try {
+        resultEl.innerHTML = fn();
+        resultEl.hidden = false;
+      } catch (e) {
+        errorEl.textContent = e.message;
+        errorEl.hidden = false;
+      }
+    }
+
+    const todayStr = new Date().toISOString().slice(0, 10);
+    $("asof-dt").value = todayStr;
+    $("to-dt").value = todayStr;
+
+    // 年齢計算
+    $("age-calc").addEventListener("click", () => {
+      show($("age-result"), $("age-error"), () => {
+        const bday = $("bday-dt").value;
+        const asof = $("asof-dt").value || null;
+        if (!bday) throw new TypeError("生年月日を選択してください");
+        const r = calcAge(bday, asof);
+        return "<p>計算結果</p>" + copyRows([
+          ["満年齢", `${r.age}歳`],
+          ["誕生日（和暦）", r.wareki.label],
+          ["次の誕生日", `${r.nextBirthday}（あと${r.daysToNext}日）`],
+        ]);
+      });
+    });
+
+    // 和暦 → 西暦
+    $("era-calc").addEventListener("click", () => {
+      show($("era-result"), $("era-error"), () => {
+        const era = $("era-sel").value;
+        const year = parseInt($("era-year").value, 10);
+        if (!year) throw new TypeError("年を入力してください");
+        const seireki = warekiYearToSeireki(era, year);
+        return "<p>西暦</p>" + copyRows([
+          [`${era}${year}年`, `${seireki}年`],
+        ]);
+      });
+    });
+
+    // 日数計算
+    $("days-calc").addEventListener("click", () => {
+      show($("days-result"), $("days-error"), () => {
+        const from = $("from-dt").value;
+        const to = $("to-dt").value;
+        if (!from || !to) throw new TypeError("開始日と終了日を両方選択してください");
+        const r = calcDaysBetween(from, to);
+        const absDays = Math.abs(r.days);
+        const label = r.reversed ? "（逆順）" : "";
+        return "<p>計算結果</p>" + copyRows([
+          ["日数", `${absDays}日${label}`],
+          ["週数", `${r.weeks}週間 + ${r.remainingDays}日`],
+        ]);
+      });
+    });
+  </script>
+</body>
+</html>

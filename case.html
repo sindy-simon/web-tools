@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>テキストケース変換（camel/snake/Pascal/kebab）| サクッとツール箱</title>
+  <meta name="description" content="テキストを camelCase・PascalCase・snake_case・CONSTANT_CASE・kebab-case・dot.case に一括変換する無料ツール。変数名・URL設計・APIキー名などに。端末内で完結。">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="site-title" href="./index.html">サクッとツール箱</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>テキストケース変換</h1>
+    <p class="lead">変数名・関数名・URLスラッグなどを camelCase / PascalCase / snake_case / CONSTANT_CASE / kebab-case / dot.case に一括変換します。</p>
+
+    <div class="card">
+      <h2>ケース変換</h2>
+      <div>
+        <label for="case-input">変換するテキスト</label>
+        <input type="text" id="case-input" placeholder="例: hello world / helloWorld / hello-world">
+      </div>
+      <button id="case-convert" style="margin-top:.75rem;">変換する</button>
+      <div class="result" id="case-result" hidden></div>
+      <div class="error" id="case-error" hidden></div>
+    </div>
+
+    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
+    <!-- ▲ AdSense ▲ -->
+
+    <div class="card">
+      <h2>使い方・注意</h2>
+      <ul>
+        <li>スペース区切り・camelCase・snake_case・kebab-case・PascalCase など、主要な形式を自動認識して変換します。</li>
+        <li>日本語・記号が混在する場合は正確に変換されないことがあります。英数字のみを推奨します。</li>
+        <li>入力内容は端末内だけで処理され、サーバーには送信されません。</li>
+      </ul>
+      <details>
+        <summary>ケース形式の早見表</summary>
+        <table>
+          <tr><th>形式</th><th>例</th><th>主な用途</th></tr>
+          <tr><td>camelCase</td><td>helloWorld</td><td>JavaScript 変数・関数名</td></tr>
+          <tr><td>PascalCase</td><td>HelloWorld</td><td>クラス名・コンポーネント名</td></tr>
+          <tr><td>snake_case</td><td>hello_world</td><td>Python 変数・DB カラム名</td></tr>
+          <tr><td>CONSTANT_CASE</td><td>HELLO_WORLD</td><td>定数・環境変数名</td></tr>
+          <tr><td>kebab-case</td><td>hello-world</td><td>URL スラッグ・CSS クラス名</td></tr>
+          <tr><td>dot.case</td><td>hello.world</td><td>設定ファイルキー・ログ</td></tr>
+        </table>
+      </details>
+      <p class="related">関連ツール: <a href="./slug.html">ローマ字スラッグ生成</a> / <a href="./text.html">テキスト整形</a></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav>
+        <a href="./index.html">ホーム</a>
+        <a href="./privacy.html">プライバシーポリシー</a>
+      </nav>
+      <p>© 2026 サクッとツール箱</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { convertCase } from "./js/lib/case.mjs";
+    import { copyRows } from "./js/copy-ui.mjs";
+
+    const $ = (id) => document.getElementById(id);
+
+    function show(resultEl, errorEl, fn) {
+      resultEl.hidden = true;
+      errorEl.hidden = true;
+      try {
+        resultEl.innerHTML = fn();
+        resultEl.hidden = false;
+      } catch (e) {
+        errorEl.textContent = e.message;
+        errorEl.hidden = false;
+      }
+    }
+
+    $("case-convert").addEventListener("click", () => {
+      show($("case-result"), $("case-error"), () => {
+        const input = $("case-input").value;
+        if (!input.trim()) throw new TypeError("テキストを入力してください");
+        const r = convertCase(input);
+        return "<p>変換結果</p>" + copyRows([
+          ["camelCase",    r.camel],
+          ["PascalCase",   r.pascal],
+          ["snake_case",   r.snake],
+          ["CONSTANT_CASE", r.constant],
+          ["kebab-case",   r.kebab],
+          ["dot.case",     r.dot],
+        ]);
+      });
+    });
+
+    $("case-input").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") $("case-convert").click();
+    });
+  </script>
+</body>
+</html>
