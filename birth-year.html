@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>あなたが生まれた年の日本は？ | サクッとツール箱</title>
+  <meta name="description" content="生まれ年を選ぶだけで、その年の日本の人口・出生数・出生率・寿命・大学進学率・初任給・気候・首相がわかる体験型ツール。1950〜2024年対応。登録不要・無料。">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
+     crossorigin="anonymous"></script>
+  <style>
+    .year-hero {
+      text-align: center;
+      padding: 1.5rem 1rem 1rem;
+    }
+    .year-hero-label {
+      font-size: .9rem;
+      color: #64748b;
+      margin: 0 0 .35rem;
+    }
+    .year-num {
+      font-size: 4.5rem;
+      font-weight: 700;
+      color: #0ea5e9;
+      line-height: 1;
+      display: block;
+    }
+    .year-range-row {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+    .year-range-row input[type=range] {
+      flex: 1;
+      max-width: 480px;
+      height: 6px;
+      accent-color: #0ea5e9;
+      cursor: pointer;
+    }
+    .year-bound {
+      font-size: .8rem;
+      color: #94a3b8;
+      min-width: 2.5rem;
+    }
+    .notable {
+      margin-top: .75rem;
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      border-radius: .375rem;
+      padding: .65rem .9rem;
+      font-size: .875rem;
+      color: #78350f;
+      line-height: 1.5;
+    }
+    .notable strong {
+      display: block;
+      margin-bottom: .15rem;
+      color: #92400e;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+      gap: .65rem;
+      margin: 1.25rem 0;
+    }
+    .stat-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: .5rem;
+      padding: .85rem .75rem .75rem;
+      display: flex;
+      flex-direction: column;
+      gap: .15rem;
+    }
+    .stat-icon {
+      font-size: 1.4rem;
+      line-height: 1;
+      margin-bottom: .1rem;
+    }
+    .stat-label {
+      font-size: .72rem;
+      color: #64748b;
+    }
+    .stat-value {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1e293b;
+      line-height: 1.3;
+    }
+    .stat-diff {
+      font-size: .72rem;
+      color: #94a3b8;
+    }
+
+    .chart-block {
+      margin-bottom: 1.5rem;
+    }
+    .chart-block:last-child {
+      margin-bottom: 0;
+    }
+    .chart-title {
+      font-size: .875rem;
+      font-weight: 600;
+      color: #334155;
+      margin: 0 0 .4rem;
+    }
+    .chart-wrap {
+      position: relative;
+      height: 230px;
+    }
+    .chart-note {
+      font-size: .72rem;
+      color: #94a3b8;
+      margin: .3rem 0 0;
+    }
+
+    .share-center {
+      text-align: center;
+      padding: .25rem 0;
+    }
+    .share-msg {
+      font-size: .85rem;
+      color: #16a34a;
+      margin-top: .5rem;
+      min-height: 1.3em;
+    }
+
+    .sources {
+      font-size: .8rem;
+      color: #64748b;
+      line-height: 1.75;
+      margin: .5rem 0 0;
+      padding: 0;
+    }
+    .sources li {
+      list-style: none;
+      padding-left: 0;
+    }
+    .sources li::before {
+      content: "・";
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="site-title" href="./index.html">サクッとツール箱</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>あなたが生まれた年の日本は？</h1>
+    <p class="lead">生まれ年を選ぶだけで、その年の日本の姿が浮かびます。人口・出生率・寿命・初任給・気候など 10 項目を今（2023年）と比較。</p>
+
+    <div class="card">
+      <div class="year-hero">
+        <p class="year-hero-label">生まれ年</p>
+        <span id="year-num" class="year-num">1990</span>
+        <p class="year-hero-label">年</p>
+        <div class="year-range-row">
+          <span class="year-bound">1950</span>
+          <input type="range" id="year-range" min="1950" max="2024" value="1990">
+          <span class="year-bound">2024</span>
+        </div>
+      </div>
+      <div id="notable-badge" class="notable" hidden></div>
+    </div>
+
+    <div id="stats-grid" class="stats-grid"></div>
+
+    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
+    <!-- ▲ AdSense ▲ -->
+
+    <div class="card">
+      <h2>グラフで見る推移（1950〜2024年）</h2>
+
+      <div class="chart-block">
+        <p class="chart-title">合計特殊出生率</p>
+        <div class="chart-wrap"><canvas id="chart-tfr"></canvas></div>
+        <p class="chart-note">橙帯 = 第2次ベビーブーム（1971〜1974年）　赤破線 = 選択年</p>
+      </div>
+
+      <div class="chart-block">
+        <p class="chart-title">東京年平均気温（℃）</p>
+        <div class="chart-wrap"><canvas id="chart-temp"></canvas></div>
+        <p class="chart-note">気象庁統計を元にした近似値　赤破線 = 選択年</p>
+      </div>
+
+      <div class="chart-block">
+        <p class="chart-title">総人口（万人）</p>
+        <div class="chart-wrap"><canvas id="chart-pop"></canvas></div>
+        <p class="chart-note">赤破線 = 選択年</p>
+      </div>
+    </div>
+
+    <div class="card share-center">
+      <button id="share-btn">この結果をシェアする 🔗</button>
+      <p id="share-msg" class="share-msg" aria-live="polite"></p>
+    </div>
+
+    <details class="card">
+      <summary>データ出典</summary>
+      <ul class="sources">
+        <li>総人口（万人）: 総務省統計局 推計人口</li>
+        <li>出生数・合計特殊出生率: 厚生労働省 人口動態統計</li>
+        <li>平均寿命（男女）: 厚生労働省 完全生命表・簡易生命表</li>
+        <li>大学進学率: 文部科学省 学校基本調査（1954年〜）</li>
+        <li>大卒初任給: 厚生労働省 賃金構造基本統計調査（1976年〜）</li>
+        <li>東京年平均気温・年間降水量: 気象庁 東京観測所（近似値）</li>
+        <li>内閣総理大臣: 首相官邸 歴代内閣一覧</li>
+        <li>比較基準「今」: 2023年（最新確定値）</li>
+      </ul>
+    </details>
+
+    <p class="related">関連ツール: <a href="./age.html">年齢・日数計算</a> / <a href="./wareki.html">西暦⇔和暦変換</a></p>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav>
+        <a href="./index.html">ホーム</a>
+        <a href="./privacy.html">プライバシーポリシー</a>
+      </nav>
+      <p>© 2026 サクッとツール箱</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+  <script type="module">
+    import {
+      YEAR_MIN, YEAR_MAX, NOTABLE,
+      getYearData, getLatestData, getChartSeries,
+      formatBirths, formatPop, formatTfr, formatLife, formatUniv,
+      formatSalary, formatTemp, formatPrecip,
+      formatDiff, formatDiffPop, formatDiffBirths, formatDiffSalary,
+    } from "./js/lib/birth-year.mjs";
+
+    const Chart = window.Chart;
+
+    // Custom plugin: baby boom band + selected-year vertical line
+    const overlayPlugin = {
+      id: "overlay",
+      afterDraw(chart, _args, opts) {
+        const { ctx, scales: { x, y }, chartArea } = chart;
+        if (!x || !y || !chartArea) return;
+        ctx.save();
+        // 2nd baby boom band (1971–1974)
+        const bx1 = x.getPixelForValue(1971);
+        const bx2 = x.getPixelForValue(1974);
+        ctx.fillStyle = "rgba(251,191,36,0.18)";
+        ctx.fillRect(bx1, chartArea.top, bx2 - bx1, chartArea.height);
+        // Selected year line
+        if (opts.year != null) {
+          const lx = x.getPixelForValue(opts.year);
+          ctx.beginPath();
+          ctx.strokeStyle = "#ef4444";
+          ctx.lineWidth = 2;
+          ctx.setLineDash([6, 4]);
+          ctx.moveTo(lx, chartArea.top);
+          ctx.lineTo(lx, chartArea.bottom);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+        ctx.restore();
+      },
+    };
+    Chart.register(overlayPlugin);
+
+    const latest = getLatestData();
+    const rangeEl = document.getElementById("year-range");
+    const yearNumEl = document.getElementById("year-num");
+
+    // Restore year from URL ?year=YYYY
+    const urlYear = parseInt(new URLSearchParams(location.search).get("year"), 10);
+    if (urlYear >= YEAR_MIN && urlYear <= YEAR_MAX) {
+      rangeEl.value = urlYear;
+      yearNumEl.textContent = urlYear;
+    }
+
+    // Notable badge
+    function renderBadge(year) {
+      const el = document.getElementById("notable-badge");
+      const n = NOTABLE[year];
+      if (n) {
+        el.innerHTML = `<strong>${n.label}</strong>${n.note}`;
+        el.hidden = false;
+      } else {
+        el.hidden = true;
+      }
+    }
+
+    // Stat cards
+    function renderStats(year) {
+      const d = getYearData(year);
+      const l = latest;
+      const cards = [
+        {
+          icon: "👶", label: "出生数",
+          value: formatBirths(d.births),
+          diff: formatDiffBirths(d.births, l.births),
+        },
+        {
+          icon: "📈", label: "合計特殊出生率",
+          value: formatTfr(d.tfr),
+          diff: formatDiff(d.tfr, l.tfr, "", true),
+        },
+        {
+          icon: "👥", label: "総人口",
+          value: formatPop(d.pop),
+          diff: formatDiffPop(d.pop, l.pop),
+        },
+        {
+          icon: "♂", label: "男性平均寿命",
+          value: formatLife(d.lifeM),
+          diff: formatDiff(d.lifeM, l.lifeM, "歳", true),
+        },
+        {
+          icon: "♀", label: "女性平均寿命",
+          value: formatLife(d.lifeF),
+          diff: formatDiff(d.lifeF, l.lifeF, "歳", true),
+        },
+        {
+          icon: "🎓", label: "大学進学率",
+          value: formatUniv(d.univ),
+          diff: d.univ != null ? formatDiff(d.univ, l.univ, "%", true) : "",
+        },
+        {
+          icon: "💴", label: "大卒初任給",
+          value: formatSalary(d.salary),
+          diff: d.salary != null ? formatDiffSalary(d.salary, l.salary) : "",
+        },
+        {
+          icon: "🌡", label: "東京年平均気温",
+          value: formatTemp(d.temp),
+          diff: formatDiff(d.temp, l.temp, "℃", true),
+        },
+        {
+          icon: "🌧", label: "東京年間降水量",
+          value: formatPrecip(d.precip),
+          diff: formatDiff(d.precip, l.precip, "mm"),
+        },
+        {
+          icon: "🏛", label: "内閣総理大臣",
+          value: d.pm,
+          diff: "",
+        },
+      ];
+      document.getElementById("stats-grid").innerHTML = cards.map(c => `
+        <div class="stat-card">
+          <span class="stat-icon" aria-hidden="true">${c.icon}</span>
+          <span class="stat-label">${c.label}</span>
+          <span class="stat-value">${c.value}</span>
+          ${c.diff ? `<span class="stat-diff">${c.diff}</span>` : ""}
+        </div>
+      `).join("");
+    }
+
+    // Charts
+    function makeChart(canvasId, label, metric, yLabel) {
+      return new Chart(document.getElementById(canvasId), {
+        type: "line",
+        data: {
+          datasets: [{
+            label,
+            data: getChartSeries(metric),
+            parsing: false,
+            borderColor: "#0ea5e9",
+            backgroundColor: "rgba(14,165,233,0.08)",
+            borderWidth: 2,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            fill: false,
+            tension: 0.2,
+            spanGaps: true,
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                title: items => Math.round(items[0].parsed.x) + "年",
+              },
+            },
+            overlay: { year: null },
+          },
+          scales: {
+            x: {
+              type: "linear",
+              min: YEAR_MIN,
+              max: YEAR_MAX,
+              ticks: {
+                stepSize: 10,
+                callback: v => v + "年",
+                maxRotation: 0,
+                font: { size: 11 },
+              },
+              grid: { color: "rgba(0,0,0,0.06)" },
+            },
+            y: {
+              title: {
+                display: true,
+                text: yLabel,
+                font: { size: 11 },
+              },
+              grid: { color: "rgba(0,0,0,0.06)" },
+              ticks: { font: { size: 11 } },
+            },
+          },
+        },
+      });
+    }
+
+    const charts = {
+      tfr: makeChart("chart-tfr", "合計特殊出生率", "tfr", "TFR"),
+      temp: makeChart("chart-temp", "東京年平均気温", "temp", "℃"),
+      pop: makeChart("chart-pop", "総人口", "pop", "万人"),
+    };
+
+    function updateCharts(year) {
+      for (const chart of Object.values(charts)) {
+        chart.options.plugins.overlay.year = year;
+        chart.update("none");
+      }
+    }
+
+    // Share
+    document.getElementById("share-btn").addEventListener("click", () => {
+      const year = rangeEl.value;
+      const url = `${location.origin}${location.pathname}?year=${year}`;
+      const msgEl = document.getElementById("share-msg");
+      if (navigator.share) {
+        navigator.share({ title: `${year}年の日本`, url }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(url)
+          .then(() => {
+            msgEl.textContent = "URLをコピーしました！";
+            setTimeout(() => { msgEl.textContent = ""; }, 2500);
+          })
+          .catch(() => { msgEl.textContent = url; });
+      }
+    });
+
+    // Init + slider
+    function update() {
+      const year = parseInt(rangeEl.value, 10);
+      yearNumEl.textContent = year;
+      renderBadge(year);
+      renderStats(year);
+      updateCharts(year);
+    }
+
+    rangeEl.addEventListener("input", update);
+    update();
+  </script>
+</body>
+</html>

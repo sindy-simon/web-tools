@@ -96,6 +96,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://mini-tools.net/birth-year.html</loc>
+    <changefreq>never</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://mini-tools.net/privacy.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

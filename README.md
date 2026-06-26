@@ -15,6 +15,7 @@ GitHub Pages（`main` / `(root)`）から公開。
 - 年齢・日数計算（`age.html`）… 満年齢・和暦表示・2日付の日数差
 - テキストケース変換（`case.html`）… camel/Pascal/snake/CONSTANT/kebab/dot の6形式一括変換
 - テキスト整形・改行コード変換（`text.html`）… CRLF⇔LF・全角スペース正規化・空行圧縮
+- あなたが生まれた年の日本は？（`birth-year.html`）… 1950〜2024年の統計10項目を今と比較。Chart.js グラフ・URLシェア付き
 - ほか（`slug` / `prompt` / `diff` / `regex` / `pii` / `json` / `sns` / `zenhan`）
 
 すべてクライアントサイドで完結。入力データはサーバーに送らない。
@@ -23,11 +24,11 @@ GitHub Pages（`main` / `(root)`）から公開。
 
 ```
 index.html chars.html wareki.html tax.html size.html recipe.html
-timestamp.html timezone.html age.html case.html text.html
+timestamp.html timezone.html age.html case.html text.html birth-year.html
 privacy.html style.css                                 ← Pages が root から配信
 js/copy-ui.mjs                                         ← UI 補助
-js/lib/{tax,wareki,textstats,size,recipe,timestamp,timezone,age,case,text}.mjs  ← 純粋関数ロジック
-test/{tax,wareki,textstats,size,recipe,timestamp,timezone,age,case,text}.test.mjs  ← 単体テスト
+js/lib/{tax,wareki,textstats,size,recipe,timestamp,timezone,age,case,text,birth-year,birth-year-data}.mjs  ← 純粋関数ロジック
+test/{tax,wareki,textstats,size,recipe,timestamp,timezone,age,case,text,birth-year}.test.mjs  ← 単体テスト
 ```
 
 ロジックは `js/lib/*.mjs` の純粋関数に分離し、UI と切り離して `test/` でテストしている。
