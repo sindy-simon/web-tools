@@ -9,28 +9,62 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
      crossorigin="anonymous"></script>
   <style>
-    .year-hero {
-      text-align: center;
-      padding: 1.5rem 1rem 1rem;
+    .year-sticky {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: .5rem;
+      padding: .65rem .9rem .8rem;
+      margin: 0 0 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,.05);
     }
-    .year-hero-label {
-      font-size: .9rem;
+    .year-pick {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: .4rem;
+    }
+    .year-pick-label {
+      font-size: .85rem;
       color: #64748b;
-      margin: 0 0 .35rem;
+      font-weight: 600;
+      margin: 0;
     }
-    .year-num {
-      font-size: 4.5rem;
+    #year-input {
+      width: 5.4rem;
+      font-size: 2.2rem;
       font-weight: 700;
       color: #0ea5e9;
-      line-height: 1;
-      display: block;
+      text-align: center;
+      border: none;
+      border-bottom: 2px solid #cbd5e1;
+      border-radius: 0;
+      padding: 0 .15rem;
+      background: transparent;
+      font-variant-numeric: tabular-nums;
+      -moz-appearance: textfield;
+    }
+    #year-input:focus {
+      outline: none;
+      border-bottom-color: #0ea5e9;
+    }
+    #year-input::-webkit-outer-spin-button,
+    #year-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .year-pick-unit {
+      font-size: .95rem;
+      color: #64748b;
     }
     .year-range-row {
       display: flex;
       align-items: center;
       gap: .75rem;
       justify-content: center;
-      margin-top: 1rem;
+      margin-top: .7rem;
     }
     .year-range-row input[type=range] {
       flex: 1;
@@ -45,7 +79,7 @@
       min-width: 2.5rem;
     }
     .notable {
-      margin-top: .75rem;
+      margin: 0 0 1.25rem;
       background: #fef3c7;
       border-left: 4px solid #f59e0b;
       border-radius: .375rem;
@@ -59,12 +93,11 @@
       margin-bottom: .15rem;
       color: #92400e;
     }
-
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
       gap: .65rem;
-      margin: 1.25rem 0;
+      margin: 0 0 1.25rem;
     }
     .stat-card {
       background: #fff;
@@ -94,7 +127,6 @@
       font-size: .72rem;
       color: #94a3b8;
     }
-
     .chart-block {
       margin-bottom: 1.5rem;
     }
@@ -109,14 +141,13 @@
     }
     .chart-wrap {
       position: relative;
-      height: 230px;
+      height: 220px;
     }
     .chart-note {
       font-size: .72rem;
       color: #94a3b8;
       margin: .3rem 0 0;
     }
-
     .share-center {
       text-align: center;
       padding: .25rem 0;
@@ -127,7 +158,6 @@
       margin-top: .5rem;
       min-height: 1.3em;
     }
-
     .sources {
       font-size: .8rem;
       color: #64748b;
@@ -155,19 +185,20 @@
     <h1>あなたが生まれた年の日本は？</h1>
     <p class="lead">生まれ年を選ぶだけで、その年の日本の姿が浮かびます。人口・出生率・寿命・初任給・気候など 10 項目を今（2023年）と比較。</p>
 
-    <div class="card">
-      <div class="year-hero">
-        <p class="year-hero-label">生まれ年</p>
-        <span id="year-num" class="year-num">1990</span>
-        <p class="year-hero-label">年</p>
-        <div class="year-range-row">
-          <span class="year-bound">1950</span>
-          <input type="range" id="year-range" min="1950" max="2024" value="1990">
-          <span class="year-bound">2024</span>
-        </div>
+    <div class="year-sticky">
+      <div class="year-pick">
+        <label class="year-pick-label" for="year-input">生まれ年</label>
+        <input type="number" id="year-input" min="1950" max="2024" value="1990" inputmode="numeric">
+        <span class="year-pick-unit">年</span>
       </div>
-      <div id="notable-badge" class="notable" hidden></div>
+      <div class="year-range-row">
+        <span class="year-bound">1950</span>
+        <input type="range" id="year-range" min="1950" max="2024" value="1990">
+        <span class="year-bound">2024</span>
+      </div>
     </div>
+
+    <div id="notable-badge" class="notable" hidden></div>
 
     <div id="stats-grid" class="stats-grid"></div>
 
@@ -271,14 +302,7 @@
 
     const latest = getLatestData();
     const rangeEl = document.getElementById("year-range");
-    const yearNumEl = document.getElementById("year-num");
-
-    // Restore year from URL ?year=YYYY
-    const urlYear = parseInt(new URLSearchParams(location.search).get("year"), 10);
-    if (urlYear >= YEAR_MIN && urlYear <= YEAR_MAX) {
-      rangeEl.value = urlYear;
-      yearNumEl.textContent = urlYear;
-    }
+    const inputEl = document.getElementById("year-input");
 
     // Notable badge
     function renderBadge(year) {
@@ -447,17 +471,49 @@
       }
     });
 
-    // Init + slider
-    function update() {
-      const year = parseInt(rangeEl.value, 10);
-      yearNumEl.textContent = year;
+    // 年の反映（スライダー・手入力・グラフを連動）
+    function render(year) {
       renderBadge(year);
       renderStats(year);
       updateCharts(year);
     }
 
-    rangeEl.addEventListener("input", update);
-    update();
+    function clampYear(y) {
+      return Math.min(YEAR_MAX, Math.max(YEAR_MIN, y));
+    }
+
+    // source: "range" / "input" / null（両方を更新）
+    function setYear(year, source) {
+      const y = clampYear(year);
+      if (source !== "range") rangeEl.value = y;
+      if (source !== "input") inputEl.value = y;
+      render(y);
+    }
+
+    rangeEl.addEventListener("input", () => setYear(parseInt(rangeEl.value, 10), "range"));
+
+    // 手入力: 範囲内なら入力中も即反映（入力欄の文字は触らない）
+    inputEl.addEventListener("input", () => {
+      const v = parseInt(inputEl.value, 10);
+      if (Number.isInteger(v) && v >= YEAR_MIN && v <= YEAR_MAX) {
+        rangeEl.value = v;
+        render(v);
+      }
+    });
+
+    // 確定時（Enter / フォーカス外し）に範囲外・空を補正
+    inputEl.addEventListener("change", () => {
+      let v = parseInt(inputEl.value, 10);
+      if (!Number.isInteger(v)) v = parseInt(rangeEl.value, 10);
+      setYear(v, null);
+    });
+
+    // URL ?year=YYYY で初期値を復元
+    const urlYear = parseInt(new URLSearchParams(location.search).get("year"), 10);
+    const initYear = (urlYear >= YEAR_MIN && urlYear <= YEAR_MAX)
+      ? urlYear
+      : parseInt(rangeEl.value, 10);
+    setYear(initYear, null);
   </script>
 </body>
 </html>
