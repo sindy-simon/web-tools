@@ -55,6 +55,25 @@
       </details>
       <p class="related">関連ツール: <a href="./slug.html">ローマ字スラッグ生成</a> / <a href="./text.html">テキスト整形</a></p>
     </div>
+    <div class="card article">
+      <h2>テキストケースとは</h2>
+      <p>プログラミングでは、複数の単語をつなげて名前を付けるときに、単語の区切り方をルール化した「ケース(命名規則)」を使います。たとえば <code>helloWorld</code> のように2語目以降の頭を大文字にするのが camelCase、<code>hello_world</code> のようにアンダースコアでつなぐのが snake_case です。言語やフレームワークごとに推奨される形式が異なるため、変換が必要になる場面は少なくありません。このツールは、入力した文字列を主要な6形式へ一括で変換します。</p>
+
+      <h2>主なケースと用途</h2>
+      <ul>
+        <li><strong>camelCase</strong> … JavaScript の変数・関数名。</li>
+        <li><strong>PascalCase</strong> … クラス名・コンポーネント名。</li>
+        <li><strong>snake_case</strong> … Python の変数・DB のカラム名。</li>
+        <li><strong>CONSTANT_CASE</strong> … 定数・環境変数名。</li>
+        <li><strong>kebab-case</strong> … URL スラッグ・CSS クラス名。</li>
+        <li><strong>dot.case</strong> … 設定ファイルのキー・ログの項目名。</li>
+      </ul>
+
+      <h2>よくある質問</h2>
+      <details class="faq"><summary>入力はどの形式でもよいですか？</summary><p>はい。スペース区切り・camelCase・snake_case・kebab-case・PascalCase などを自動認識して単語に分解し、6形式すべてに変換します。</p></details>
+      <details class="faq"><summary>日本語は変換できますか？</summary><p>ケース変換は英数字を前提としています。日本語や記号が混在すると正しく分割できないことがあるため、英数字の文字列でのご利用をおすすめします。</p></details>
+      <details class="faq"><summary>入力した文字列は送信されますか？</summary><p>されません。変換はすべてブラウザ内で行われ、サーバーに送信されることはありません。</p></details>
+    </div>
   </main>
 
   <footer>

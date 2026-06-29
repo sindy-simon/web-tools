@@ -351,3 +351,42 @@ footer nav a {
 [hidden] {
   display: none !important;
 }
+
+/* 解説・FAQ セクション */
+.article h2 {
+  font-size: 1.15rem;
+  margin: 24px 0 8px;
+}
+.article h2:first-child {
+  margin-top: 0;
+}
+.article p {
+  margin: 0 0 12px;
+}
+.article ul,
+.article ol {
+  margin: 0 0 12px;
+  padding-left: 1.4em;
+}
+.article li {
+  margin: 4px 0;
+}
+
+.faq {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin: 8px 0;
+  background: #fff;
+}
+.faq summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.faq[open] summary {
+  margin-bottom: 8px;
+}
+.faq p {
+  margin: 0;
+  color: var(--text);
+}
