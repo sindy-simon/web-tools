@@ -101,6 +101,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://mini-tools.net/about.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://mini-tools.net/contact.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://mini-tools.net/privacy.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
