@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>海外レシピ単位変換（カップ・oz・℉→ml・g・℃）| サクッとツール箱</title>
+  <meta name="description" content="海外レシピのカップ・大さじ・小さじ・oz・℉を日本の単位（ml・g・℃）に変換する無料ツール。1カップ=何ml？1oz=何g？ブラウザだけで即計算。">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="site-title" href="./index.html">サクッとツール箱</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>海外レシピ単位変換（カップ・oz・℉→ml・g・℃）</h1>
+    <p class="lead">海外レシピでよく出る US の計量単位を、日本でなじみのある ml・g・℃ に変換します。</p>
+
+    <div class="card">
+      <h2>体積（量）の変換</h2>
+      <div class="row">
+        <div>
+          <label for="vol-val">量</label>
+          <input type="number" id="vol-val" step="0.25" value="1" min="0">
+        </div>
+        <div>
+          <label for="vol-unit">単位</label>
+          <select id="vol-unit">
+            <option value="tsp">小さじ（tsp）</option>
+            <option value="tbsp">大さじ（tbsp）</option>
+            <option value="floz">液量オンス（fl oz）</option>
+            <option value="cup" selected>カップ（cup）</option>
+            <option value="pint">パイント（pint）</option>
+          </select>
+        </div>
+      </div>
+      <button id="vol-convert">変換する</button>
+      <div class="result" id="vol-result" hidden></div>
+      <div class="error" id="vol-error" hidden></div>
+    </div>
+
+    <div class="card">
+      <h2>重さの変換</h2>
+      <div class="row">
+        <div>
+          <label for="wt-val">量</label>
+          <input type="number" id="wt-val" step="0.5" value="1" min="0">
+        </div>
+        <div>
+          <label for="wt-unit">単位</label>
+          <select id="wt-unit">
+            <option value="oz" selected>オンス（oz）</option>
+            <option value="lb">ポンド（lb）</option>
+          </select>
+        </div>
+      </div>
+      <button id="wt-convert">変換する</button>
+      <div class="result" id="wt-result" hidden></div>
+      <div class="error" id="wt-error" hidden></div>
+    </div>
+
+    <div class="card">
+      <h2>温度の変換</h2>
+      <div class="row">
+        <div>
+          <label for="temp-f">℉（华氏）</label>
+          <input type="number" id="temp-f" value="350">
+        </div>
+        <div>
+          <label for="temp-c">℃（摂氏）</label>
+          <input type="number" id="temp-c" value="177">
+        </div>
+      </div>
+      <p class="note">どちらか一方を変更すると即座に相互変換します。</p>
+      <div class="result" id="temp-result" hidden></div>
+    </div>
+
+    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
+    <!-- ▲ AdSense ▲ -->
+
+    <div class="card">
+      <details class="quick">
+        <summary>単位早見表</summary>
+        <table class="stats" id="unit-table"></table>
+      </details>
+    </div>
+
+    <div class="card">
+      <h2>使い方・注意</h2>
+      <ul>
+        <li>海外(主に米国)のレシピでよく使われる計量単位を日本の単位に変換できます。</li>
+        <li>入力内容は端末内だけで処理され、サーバーには送信されません。</li>
+        <li><strong>1カップの容量はレシピの出身国や計量カップによって微差があります</strong>（米国カップ=約237ml、英国=284ml）。このツールは米国カップ(US customary)を基準にしています。</li>
+        <li>オーブン温度の変換は各オーブンの実際の特性に合わせて調整してください。</li>
+      </ul>
+      <p class="related">関連ツール: <a href="./size.html">海外サイズ→日本サイズ変換</a> / <a href="./tax.html">消費税計算</a></p>
+    </div>
+    <div class="card article">
+      <h2>海外レシピの単位について</h2>
+      <p>海外(特に米国)のレシピでは、材料の分量を「カップ」「大さじ(tbsp)」「小さじ(tsp)」「オンス(oz)」、オーブン温度を「華氏(℉)」で表すのが一般的です。日本でなじみのある ml・g・℃ とは基準が異なるため、そのまま作ると分量を間違えがちです。このツールは、これらの単位を日本の単位に手早く変換し、海外レシピをそのまま再現しやすくします。</p>
+
+      <h2>覚えておくと便利な目安</h2>
+      <ul>
+        <li>1カップ(US) ≒ 約237ml、大さじ1 ≒ 約14.8ml、小さじ1 ≒ 約4.9ml。</li>
+        <li>1オンス ≒ 約28.3g、1ポンド ≒ 約453.6g。</li>
+        <li>オーブンで最頻出の 350℉ は約177℃です。</li>
+      </ul>
+
+      <h2>よくある質問</h2>
+      <details class="faq"><summary>カップは日本の計量カップ(200ml)と違いますか？</summary><p>はい。日本の計量カップは200mlですが、米国の1カップは約237mlです。本ツールは米国カップ(US customary)を基準にしているため、日本のカップとは差があります。</p></details>
+      <details class="faq"><summary>重さは材料によって変わりませんか？</summary><p>oz・lb からの重さ変換は材料によらず一定です。ただし「1カップの小麦粉=何g」のように体積から重さへ換算する場合は材料の密度で変わるため、本ツールの体積変換は ml までを基準としています。</p></details>
+      <details class="faq"><summary>入力した数値は送信されますか？</summary><p>されません。変換はすべてブラウザ内で行われ、サーバーに送信されることはありません。</p></details>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav>
+        <a href="./index.html">ホーム</a>
+        <a href="./privacy.html">プライバシーポリシー</a>
+      </nav>
+      <p>© 2026 サクッとツール箱</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import {
+      convertVolume,
+      convertWeight,
+      fahrenheitToCelsius,
+      celsiusToFahrenheit,
+    } from "./js/lib/recipe.mjs";
+    import { copyRows } from "./js/copy-ui.mjs";
+
+    const $ = (id) => document.getElementById(id);
+
+    function show(resultEl, errorEl, fn) {
+      resultEl.hidden = true;
+      if (errorEl) errorEl.hidden = true;
+      try {
+        resultEl.innerHTML = fn();
+        resultEl.hidden = false;
+      } catch (e) {
+        if (errorEl) {
+          errorEl.textContent = e.message;
+          errorEl.hidden = false;
+        }
+      }
+    }
+
+    // ── 体積 ──
+    $("vol-convert").addEventListener("click", () => {
+      show($("vol-result"), $("vol-error"), () => {
+        const value = Number($("vol-val").value);
+        const unit = $("vol-unit").value;
+        const ml = convertVolume(value, unit);
+        const unitLabel = $("vol-unit").options[$("vol-unit").selectedIndex].text;
+        return `<p>変換結果</p>` + copyRows([
+          [unitLabel, String(value)],
+          ["ml（ミリリットル）", String(ml)],
+        ]);
+      });
+    });
+
+    // ── 重さ ──
+    $("wt-convert").addEventListener("click", () => {
+      show($("wt-result"), $("wt-error"), () => {
+        const value = Number($("wt-val").value);
+        const unit = $("wt-unit").value;
+        const g = convertWeight(value, unit);
+        const unitLabel = $("wt-unit").options[$("wt-unit").selectedIndex].text;
+        return `<p>変換結果</p>` + copyRows([
+          [unitLabel, String(value)],
+          ["g（グラム）", String(g)],
+        ]);
+      });
+    });
+
+    // ── 温度（リアルタイム双方向） ──
+    let updatingTemp = false;
+    $("temp-f").addEventListener("input", () => {
+      if (updatingTemp) return;
+      updatingTemp = true;
+      const f = Number($("temp-f").value);
+      if (!Number.isNaN(f)) {
+        const c = fahrenheitToCelsius(f);
+        $("temp-c").value = c;
+        $("temp-result").innerHTML = copyRows([["℃（摂氏）", String(c)], ["℉（华氏）", String(f)]]);
+        $("temp-result").hidden = false;
+      }
+      updatingTemp = false;
+    });
+    $("temp-c").addEventListener("input", () => {
+      if (updatingTemp) return;
+      updatingTemp = true;
+      const c = Number($("temp-c").value);
+      if (!Number.isNaN(c)) {
+        const f = celsiusToFahrenheit(c);
+        $("temp-f").value = f;
+        $("temp-result").innerHTML = copyRows([["℃（摂氏）", String(c)], ["℉（华氏）", String(f)]]);
+        $("temp-result").hidden = false;
+      }
+      updatingTemp = false;
+    });
+
+    // ── 早見表 ──
+    const TABLE_DATA = [
+      ["小さじ1（1 tsp）", "約4.9 ml"],
+      ["大さじ1（1 tbsp）", "約14.8 ml"],
+      ["液量オンス1（1 fl oz）", "約29.6 ml"],
+      ["カップ1（1 cup）", "約236.6 ml"],
+      ["パイント1（1 pint）", "約473.2 ml"],
+      ["オンス1（1 oz）", "約28.3 g"],
+      ["ポンド1（1 lb）", "約453.6 g"],
+      ["300℉", fahrenheitToCelsius(300) + " ℃"],
+      ["325℉", fahrenheitToCelsius(325) + " ℃"],
+      ["350℉（最頻出）", fahrenheitToCelsius(350) + " ℃"],
+      ["375℉", fahrenheitToCelsius(375) + " ℃"],
+      ["400℉", fahrenheitToCelsius(400) + " ℃"],
+      ["425℉", fahrenheitToCelsius(425) + " ℃"],
+      ["450℉", fahrenheitToCelsius(450) + " ℃"],
+    ];
+    let rows = "<tr><th>海外単位</th><th>日本単位</th></tr>";
+    for (const [a, b] of TABLE_DATA) {
+      rows += `<tr><th>${a}</th><td>${b}</td></tr>`;
+    }
+    $("unit-table").innerHTML = rows;
+  </script>
+</body>
+</html>

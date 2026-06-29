@@ -61,6 +61,24 @@
       <p class="note">処理はすべて端末内で行われ、サーバーには送信されません。</p>
       <p class="related">関連ツール: <a href="./json.html">JSON整形・検証</a> ／ <a href="./chars.html">文字数カウント</a></p>
     </div>
+    <div class="card article">
+      <h2>正規表現テスターについて</h2>
+      <p>正規表現(regex)は、文字列のパターンを表現するための記法です。「数字3桁とハイフンと数字4桁」「メールアドレスらしい文字列」といった条件で、検索・抽出・置換ができます。ただし書き方が複雑で、意図どおりに動くかは実際に試さないと分かりにくいもの。このツールは、正規表現とテスト対象テキストを入力すると、マッチした箇所をその場でハイライト表示し、置換結果も確認できます。AI が生成した正規表現が正しく動くかの検証にも便利です。</p>
+
+      <h2>フラグの意味</h2>
+      <ul>
+        <li><strong>g</strong>: 最初の1件だけでなく、すべてのマッチを対象にします。</li>
+        <li><strong>i</strong>: 大文字・小文字を区別しません。</li>
+        <li><strong>m</strong>: 複数行モード。<code>^</code> と <code>$</code> が各行の先頭・末尾にマッチします。</li>
+        <li><strong>s</strong>: <code>.</code> が改行にもマッチするようになります。</li>
+        <li><strong>u</strong>: Unicode モード。絵文字や日本語を正しく1文字として扱います。</li>
+      </ul>
+
+      <h2>よくある質問</h2>
+      <details class="faq"><summary>置換で後方参照は使えますか？</summary><p>使えます。<code>$1</code> <code>$2</code> でキャプチャグループを、名前付きグループも参照できます。マッチした文字列全体は <code>$&amp;</code> で参照します。</p></details>
+      <details class="faq"><summary>「正規表現エラー」と出ます。</summary><p>カッコの閉じ忘れや、特殊文字のエスケープ漏れが原因のことが多いです。<code>.</code> や <code>(</code> などを文字そのものとして扱いたい場合は、直前に <code>\</code> を付けてください。</p></details>
+      <details class="faq"><summary>入力したテキストは送信されますか？</summary><p>されません。マッチ判定も置換もすべてブラウザ内で実行され、正規表現・テスト文字列ともに外部へ送信されることはありません。</p></details>
+    </div>
   </main>
 
   <footer>
