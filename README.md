@@ -3,6 +3,9 @@
 登録不要・無料で使える日本語ミニツール集（静的サイト）。
 GitHub Pages（`main` / `(root)`）から公開。
 
+**公開中の全ページの URL 台帳は `LINKS.md`（正本）**。ツールを追加/削除したら
+`LINKS.md`・`sitemap.xml`・トップ(`index.html`)の一覧を三点セットで更新すること。
+
 ## ツール
 
 - 文字数カウント（`chars.html`）
