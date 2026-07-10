@@ -390,3 +390,24 @@ footer nav a {
   margin: 0;
   color: var(--text);
 }
+
+/* ヘッダーのグローバルナビ(全ツールへ1タップで移動できるように) */
+.site-nav {
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  font-size: .85rem;
+}
+.site-nav a {
+  color: var(--muted, #666);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.site-nav a:hover { text-decoration: underline; }
+
+/* フッターの公開日・更新日 */
+footer .dates { font-size: .8rem; opacity: .8; margin-bottom: 2px; }
+
+/* 出典の注記(統計・仕様の根拠を示す) */
+.source { font-size: .8rem; color: #666; }
