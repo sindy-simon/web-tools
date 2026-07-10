@@ -31,18 +31,18 @@ header {
 }
 
 header .container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: block; /* サイト名の行の下にナビを置く(横並びだと狭い画面で混ざって折り返す) */
   padding-top: 12px;
-  padding-bottom: 12px;
+  padding-bottom: 10px;
 }
 
 .site-title {
+  display: inline-block;
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--text);
   text-decoration: none;
+  white-space: nowrap;
 }
 
 main {

@@ -410,7 +410,9 @@
         ctx.restore();
       },
     };
-    Chart.register(overlayPlugin);
+    // CDN の Chart.js が読めない環境でもグラフ以外(統計カード・シェア)は動くようにする
+    const hasChart = typeof Chart !== "undefined" && Chart;
+    if (hasChart) Chart.register(overlayPlugin);
 
     const latest = getLatestData();
     const rangeEl = document.getElementById("year-range");
@@ -496,6 +498,7 @@
 
     // Charts
     function makeChart(canvasId, label, metric, yLabel) {
+      if (!hasChart) return { data: { datasets: [{}, {}] }, options: { plugins: { overlay: {} } }, update() {} }; // グラフ無効時のダミー
       return new Chart(document.getElementById(canvasId), {
         type: "line",
         data: {
