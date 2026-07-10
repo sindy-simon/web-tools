@@ -6,32 +6,28 @@ GitHub Pages（`main` / `(root)`）から公開。
 **公開中の全ページの URL 台帳は `LINKS.md`（正本）**。ツールを追加/削除したら
 `LINKS.md`・`sitemap.xml`・トップ(`index.html`)の一覧を三点セットで更新すること。
 
-## ツール
+## ツール(公開中・厳選6本)
 
-- 文字数カウント（`chars.html`）
-- 西暦⇔和暦変換（`wareki.html`）
-- 消費税計算（`tax.html`）
-- 海外サイズ→日本サイズ変換（`size.html`）… 靴・服を US/UK/EU→日本サイズの目安に変換
-- 海外レシピ単位変換（`recipe.html`）… カップ/oz/℉→ml/g/℃
-- Unixタイムスタンプ変換（`timestamp.html`）… 秒・ms自動判別・JST↔Unix往復
-- 時差計算・海外時刻→JST変換（`timezone.html`）… 主要14都市・夏時間自動対応
-- 年齢・日数計算（`age.html`）… 満年齢・和暦表示・2日付の日数差
-- テキストケース変換（`case.html`）… camel/Pascal/snake/CONSTANT/kebab/dot の6形式一括変換
-- テキスト整形・改行コード変換（`text.html`）… CRLF⇔LF・全角スペース正規化・空行圧縮
-- あなたが生まれた年の日本は？（`birth-year.html`）… 1950〜2024年の統計10項目を今と比較。Chart.js グラフ・URLシェア付き
-- ほか（`slug` / `prompt` / `diff` / `regex` / `pii` / `json` / `sns` / `zenhan`）
+- あなたが生まれた年の日本は？（`birth-year.html`）… 1950〜2024年の公的統計10項目を今と比較。静的データ収録・グラフ・URLシェア付き
+- SNS文字数チェッカー（`sns.html`）… X の全角2/URL23 など日本語特有の数え方に対応
+- 文字数カウント（`chars.html`）… 文字数・行数・バイト数・原稿用紙換算。絵文字の数え方も解説
+- 西暦⇔和暦 変換（`wareki.html`）… 改元日も正確に判定。全期間の早見表つき
+- 個人情報チェッカー（`pii.html`）… AIに貼る前の検出・伏字化。端末内で完結
+- AIプロンプト トークン概算・軽量化（`prompt.html`）
 
-すべてクライアントサイドで完結。入力データはサーバーに送らない。
+## 一時非公開のツール(2026-07 AdSense対策で退避。git履歴に保存)
+
+tax / age / case / text / zenhan / diff / regex / json / slug / size / recipe / timestamp / timezone の13本。
+「量産テンプレページ」シグナルを避けるため一時退避した。**1本ずつ個別の解説・独自要素を満たす形に改善してから順次復帰**させる(一括復帰はしない)。ロジック(`js/lib/`)とテストは残してある。
 
 ## 構成
 
 ```
-index.html chars.html wareki.html tax.html size.html recipe.html
-timestamp.html timezone.html age.html case.html text.html birth-year.html
-privacy.html style.css                                 ← Pages が root から配信
-js/copy-ui.mjs                                         ← UI 補助
-js/lib/{tax,wareki,textstats,size,recipe,timestamp,timezone,age,case,text,birth-year,birth-year-data}.mjs  ← 純粋関数ロジック
-test/{tax,wareki,textstats,size,recipe,timestamp,timezone,age,case,text,birth-year}.test.mjs  ← 単体テスト
+index.html + 公開6ツール(birth-year/sns/chars/wareki/pii/prompt).html
+about.html contact.html privacy.html 404.html style.css   ← Pages が root から配信
+js/copy-ui.mjs                                            ← UI 補助
+js/lib/*.mjs                                              ← 純粋関数ロジック(退避ツール分も保持)
+test/*.test.mjs                                           ← 単体テスト(退避ツール分も保持)
 ```
 
 ロジックは `js/lib/*.mjs` の純粋関数に分離し、UI と切り離して `test/` でテストしている。

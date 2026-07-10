@@ -7,29 +7,16 @@
 - 本番: https://mini-tools.net/ （このリポジトリの main ブランチ = GitHub Pages）
 - main に push すると自動で公開される。
 
-## ツール（19本）
+## 公開中のツール（厳選6本・2026-07-02 に再編）
 
 | ツール | URL |
 |---|---|
-| 文字数カウント | https://mini-tools.net/chars.html |
+| あなたが生まれた年の日本は？ | https://mini-tools.net/birth-year.html |
 | SNS文字数チェッカー | https://mini-tools.net/sns.html |
-| 全角⇔半角 変換 | https://mini-tools.net/zenhan.html |
-| テキストケース変換（camel/snake/Pascal/kebab） | https://mini-tools.net/case.html |
-| テキスト整形・改行コード変換（CRLF⇔LF） | https://mini-tools.net/text.html |
-| テキスト差分(diff)チェッカー | https://mini-tools.net/diff.html |
-| 正規表現テスター | https://mini-tools.net/regex.html |
-| JSON整形・検証 | https://mini-tools.net/json.html |
+| 文字数カウント | https://mini-tools.net/chars.html |
+| 西暦⇔和暦 変換 | https://mini-tools.net/wareki.html |
 | 個人情報チェッカー(伏字化) | https://mini-tools.net/pii.html |
 | AIプロンプト トークン概算・軽量化 | https://mini-tools.net/prompt.html |
-| ローマ字スラッグ生成 | https://mini-tools.net/slug.html |
-| 西暦⇔和暦 変換 | https://mini-tools.net/wareki.html |
-| 年齢・日数計算（和暦対応） | https://mini-tools.net/age.html |
-| 消費税計算(税込⇔税抜) | https://mini-tools.net/tax.html |
-| Unixタイムスタンプ変換（JST・ISO 8601対応） | https://mini-tools.net/timestamp.html |
-| 時差計算・海外時刻→日本時間（JST）変換 | https://mini-tools.net/timezone.html |
-| 海外サイズ→日本サイズ変換(靴・服) | https://mini-tools.net/size.html |
-| 海外レシピ単位変換（カップ・oz・℉→ml・g・℃） | https://mini-tools.net/recipe.html |
-| あなたが生まれた年の日本は？ | https://mini-tools.net/birth-year.html |
 
 ## サイト共通ページ
 
@@ -47,3 +34,8 @@
 | sitemap | https://mini-tools.net/sitemap.xml |
 | robots.txt | https://mini-tools.net/robots.txt |
 | ads.txt（AdSense） | https://mini-tools.net/ads.txt |
+
+## 一時非公開（2026-07-02 退避。AdSense「量産ページ」対策。git 履歴に保存）
+
+tax / age / case / text / zenhan / diff / regex / json / slug / size / recipe / timestamp / timezone の13本。
+1本ずつ「個別の解説＋独自要素」を満たす形に改善してから順次復帰させる（一括復帰はしない）。
