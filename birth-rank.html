@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>あなたが生まれた年、日本では何人生まれた？| サクッとツール箱</title>
+  <meta name="description" content="生年月日を入れると、その年に日本で生まれた赤ちゃんの人数・戦後75年での順位・今の何倍かが出ます。1950〜2024年の出生数早見表つき。厚生労働省 人口動態統計より。">
+  <link rel="canonical" href="https://mini-tools.net/birth-rank.html">
+  <link rel="stylesheet" href="./style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a class="site-title" href="./">サクッとツール箱</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>あなたが生まれた年、日本では何人生まれた？</h1>
+    <p class="lead">生年月日（または年）を入れるだけ。その年に日本で生まれた赤ちゃんの人数と、それが戦後75年のどのあたりなのかが出ます。厚生労働省の人口動態統計にもとづく実測値です。</p>
+
+    <div class="card">
+      <h2>生まれた年を入れる</h2>
+      <div class="row">
+        <div>
+          <label for="bday">生年月日</label>
+          <input type="date" id="bday" min="1950-01-01" max="2024-12-31">
+        </div>
+        <div>
+          <label for="year">年だけでも可</label>
+          <input type="number" id="year" min="1950" max="2024" placeholder="例: 1973" inputmode="numeric">
+        </div>
+      </div>
+      <p class="note">対応しているのは 1950〜2024 年です。生年月日まで入れると「同学年は約何人か」も出ます。</p>
+
+      <div id="result" hidden>
+        <div class="hero">
+          <p class="hero-caption" id="hero-caption"></p>
+          <p class="hero-number" id="hero-number"></p>
+          <p class="hero-sub" id="hero-sub"></p>
+        </div>
+
+        <div class="stat-grid" id="stat-grid"></div>
+
+        <p class="note warn" id="notable" hidden></p>
+
+        <figure class="chart-wrap">
+          <figcaption id="chart-caption">前後15年の出生数</figcaption>
+          <div class="bar-chart" id="chart" role="img"></div>
+        </figure>
+
+        <p class="peak" id="peak"></p>
+
+        <div id="copy-rows"></div>
+        <p><a class="share-btn" id="share" href="#" target="_blank" rel="noopener">X で共有する</a></p>
+      </div>
+      <div class="error" id="error" hidden></div>
+    </div>
+
+    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
+    <!-- ▲ AdSense ▲ -->
+
+    <div class="card article">
+      <h2>この数字が何を表しているか</h2>
+      <p>ここで出しているのは「その年に日本で生まれた赤ちゃんの数（出生数）」です。日本人の出生数は毎年、厚生労働省が人口動態統計として公表しています。生まれた年が同じ人は、その年に一緒に生まれた仲間が何人いたのか——その人数を、戦後75年ぶんの実測値と並べて見えるようにしたのがこのページです。</p>
+      <p>出生数は、ニュースで「過去最少を更新」と言われても、単体の数字ではピンときにくいものです。たとえば2023年の出生数は727,277人ですが、これが多いのか少ないのかは、比べる相手がないと判断できません。自分の生まれた年と並べると、比較の基準が一気に自分ごとになります。1973年生まれの人にとっては、自分の年の2,091,983人が「今の2.9倍」だったと分かる、というのがこのツールの狙いです。</p>
+
+      <h2>戦後75年の山と谷</h2>
+      <p>1950年から2024年までの出生数には、はっきりした山と谷があります。</p>
+      <ul>
+        <li><strong>1950年（2,337,507人・戦後最多）</strong> … 第1次ベビーブームの末期にあたります。この年が、統計のある1950年以降でもっとも多く生まれた年です。1日あたり6,404人が生まれていた計算になります。</li>
+        <li><strong>1966年（1,360,974人）</strong> … 丙午（ひのえうま）。「丙午生まれの女性は気性が強い」という俗信で出産を避ける動きが起き、前年の1,823,697人、翌年の1,935,647人と比べて3割ほど落ち込みました。前後の年から谷が1年だけ切り取られたようなグラフになるのは、統計としてはかなり珍しい形です。</li>
+        <li><strong>1973年（2,091,983人）</strong> … 第2次ベビーブームのピーク。1950年・1951年に次ぐ戦後3番目の多さで、いわゆる団塊ジュニア世代の頂点です。</li>
+        <li><strong>1989年（1,246,802人）</strong> … 合計特殊出生率が1.57となり、「丙午の1966年（1.58）すら下回った」として少子化が社会問題として広く認識されるきっかけになった年です（1.57ショック）。</li>
+        <li><strong>2023年（727,277人）</strong> … 合計特殊出生率1.20で過去最低を更新。1950年と比べると、生まれる赤ちゃんの数は約3分の1になりました。</li>
+      </ul>
+      <p>「少子化」という言葉は毎日のように聞きますが、丙午の1966年ですら136万人が生まれていた、という事実と並べると、今の70万人台という水準の意味が変わって見えるはずです。</p>
+
+      <h2>「同学年は約何人」の出し方</h2>
+      <p>日本の学年は4月2日から翌年4月1日までで区切られるので、同じ学年の人は暦の上では2つの年にまたがっています。このツールでは、その2年ぶんの出生数を日数で按分して足し合わせ、同学年の人数を<strong>概算</strong>として出しています。</p>
+      <p>この計算には「出生数が1年を通して均等に分布している」という近似が入っています。実際の出生には季節変動があるため、按分した値はぴったりの人数ではありません。だから結果には必ず「約」と「概算」を付けています。いっぽう、その年の出生数そのもの・順位・今との比較は、公表値をそのまま使った実測値です。</p>
+
+      <h2>このツールが出さない数字</h2>
+      <p>「あなたより年上の人は日本に何人いるか」「日本人のうち上から何番目か」は、あえて出していません。出生数を足し上げても、現在生きている人の数にはならないからです。生まれたあとの死亡や国際移動が反映されないため、特に高齢の年代ほど実際より多く数えてしまい、順位が明確に間違います。この数字を出すには、年齢各歳別の人口という別の統計が必要です。<strong>正確に出せない数字は出さない</strong>、という方針でこのページを作っています。</p>
+
+      <h2>データの出典</h2>
+      <ul>
+        <li>出生数: 厚生労働省「人口動態統計」（1950〜2024年）</li>
+        <li>総人口・合計特殊出生率: 総務省「人口推計」／厚生労働省「人口動態統計」</li>
+      </ul>
+      <p class="note">比較の基準となる「今」は2023年の確定値を使っています。2024年の出生数は概数のため、表には収録していますが比較の基準には使っていません。数値は公表値の更新にあわせて見直します。</p>
+    </div>
+
+    <div class="card">
+      <h2>出生数 早見表（1950〜2024年）</h2>
+      <p class="note">順位は戦後75年を出生数の多い順に並べたときの順位です。2024年は概数。</p>
+      <details class="quick">
+        <summary>75年ぶんの表を開く</summary>
+        <div class="table-scroll">
+          <!-- BIRTH-RANK-TABLE:START （tools/gen-birth-rank-table.mjs が生成。手で編集しない） -->
+          <table class="years">
+            <tr><th>年</th><th>出生数</th><th>1日あたり</th><th>多い順</th><th>注記</th></tr>
+            <tr><th>1950年</th><td>2,337,507人</td><td>6,404人</td><td>1位</td><td class="note-cell"></td></tr>
+            <tr><th>1951年</th><td>2,138,007人</td><td>5,858人</td><td>2位</td><td class="note-cell"></td></tr>
+            <tr><th>1952年</th><td>2,005,162人</td><td>5,479人</td><td>6位</td><td class="note-cell"></td></tr>
+            <tr><th>1953年</th><td>1,868,040人</td><td>5,118人</td><td>13位</td><td class="note-cell"></td></tr>
+            <tr><th>1954年</th><td>1,769,580人</td><td>4,848人</td><td>16位</td><td class="note-cell"></td></tr>
+            <tr><th>1955年</th><td>1,730,692人</td><td>4,742人</td><td>18位</td><td class="note-cell"></td></tr>
+            <tr><th>1956年</th><td>1,665,278人</td><td>4,550人</td><td>21位</td><td class="note-cell"></td></tr>
+            <tr><th>1957年</th><td>1,566,713人</td><td>4,292人</td><td>30位</td><td class="note-cell"></td></tr>
+            <tr><th>1958年</th><td>1,653,469人</td><td>4,530人</td><td>23位</td><td class="note-cell"></td></tr>
+            <tr><th>1959年</th><td>1,626,088人</td><td>4,455人</td><td>25位</td><td class="note-cell"></td></tr>
+            <tr><th>1960年</th><td>1,606,041人</td><td>4,388人</td><td>27位</td><td class="note-cell"></td></tr>
+            <tr><th>1961年</th><td>1,589,372人</td><td>4,354人</td><td>28位</td><td class="note-cell"></td></tr>
+            <tr><th>1962年</th><td>1,618,616人</td><td>4,435人</td><td>26位</td><td class="note-cell"></td></tr>
+            <tr><th>1963年</th><td>1,659,521人</td><td>4,547人</td><td>22位</td><td class="note-cell"></td></tr>
+            <tr><th>1964年</th><td>1,716,761人</td><td>4,691人</td><td>19位</td><td class="note-cell"></td></tr>
+            <tr><th>1965年</th><td>1,823,697人</td><td>4,996人</td><td>15位</td><td class="note-cell"></td></tr>
+            <tr><th>1966年</th><td>1,360,974人</td><td>3,729人</td><td>37位</td><td class="note-cell">丙午年（ひのえうま）</td></tr>
+            <tr><th>1967年</th><td>1,935,647人</td><td>5,303人</td><td>8位</td><td class="note-cell"></td></tr>
+            <tr><th>1968年</th><td>1,871,839人</td><td>5,114人</td><td>12位</td><td class="note-cell"></td></tr>
+            <tr><th>1969年</th><td>1,889,815人</td><td>5,178人</td><td>11位</td><td class="note-cell"></td></tr>
+            <tr><th>1970年</th><td>1,934,239人</td><td>5,299人</td><td>9位</td><td class="note-cell"></td></tr>
+            <tr><th>1971年</th><td>2,000,973人</td><td>5,482人</td><td>7位</td><td class="note-cell"></td></tr>
+            <tr><th>1972年</th><td>2,038,682人</td><td>5,570人</td><td>4位</td><td class="note-cell"></td></tr>
+            <tr><th>1973年</th><td>2,091,983人</td><td>5,731人</td><td>3位</td><td class="note-cell">第2次ベビーブームピーク</td></tr>
+            <tr><th>1974年</th><td>2,029,989人</td><td>5,562人</td><td>5位</td><td class="note-cell"></td></tr>
+            <tr><th>1975年</th><td>1,901,440人</td><td>5,209人</td><td>10位</td><td class="note-cell"></td></tr>
+            <tr><th>1976年</th><td>1,832,617人</td><td>5,007人</td><td>14位</td><td class="note-cell"></td></tr>
+            <tr><th>1977年</th><td>1,755,100人</td><td>4,808人</td><td>17位</td><td class="note-cell"></td></tr>
+            <tr><th>1978年</th><td>1,708,643人</td><td>4,681人</td><td>20位</td><td class="note-cell"></td></tr>
+            <tr><th>1979年</th><td>1,642,580人</td><td>4,500人</td><td>24位</td><td class="note-cell"></td></tr>
+            <tr><th>1980年</th><td>1,576,889人</td><td>4,308人</td><td>29位</td><td class="note-cell"></td></tr>
+            <tr><th>1981年</th><td>1,529,455人</td><td>4,190人</td><td>31位</td><td class="note-cell"></td></tr>
+            <tr><th>1982年</th><td>1,515,392人</td><td>4,152人</td><td>32位</td><td class="note-cell"></td></tr>
+            <tr><th>1983年</th><td>1,508,687人</td><td>4,133人</td><td>33位</td><td class="note-cell"></td></tr>
+            <tr><th>1984年</th><td>1,489,780人</td><td>4,070人</td><td>34位</td><td class="note-cell"></td></tr>
+            <tr><th>1985年</th><td>1,431,577人</td><td>3,922人</td><td>35位</td><td class="note-cell"></td></tr>
+            <tr><th>1986年</th><td>1,382,946人</td><td>3,789人</td><td>36位</td><td class="note-cell"></td></tr>
+            <tr><th>1987年</th><td>1,346,658人</td><td>3,689人</td><td>38位</td><td class="note-cell"></td></tr>
+            <tr><th>1988年</th><td>1,314,006人</td><td>3,590人</td><td>39位</td><td class="note-cell"></td></tr>
+            <tr><th>1989年</th><td>1,246,802人</td><td>3,416人</td><td>40位</td><td class="note-cell">1.57ショック</td></tr>
+            <tr><th>1990年</th><td>1,221,585人</td><td>3,347人</td><td>43位</td><td class="note-cell"></td></tr>
+            <tr><th>1991年</th><td>1,223,245人</td><td>3,351人</td><td>42位</td><td class="note-cell"></td></tr>
+            <tr><th>1992年</th><td>1,208,989人</td><td>3,303人</td><td>44位</td><td class="note-cell"></td></tr>
+            <tr><th>1993年</th><td>1,188,282人</td><td>3,256人</td><td>49位</td><td class="note-cell"></td></tr>
+            <tr><th>1994年</th><td>1,238,328人</td><td>3,393人</td><td>41位</td><td class="note-cell"></td></tr>
+            <tr><th>1995年</th><td>1,187,064人</td><td>3,252人</td><td>50位</td><td class="note-cell"></td></tr>
+            <tr><th>1996年</th><td>1,206,555人</td><td>3,297人</td><td>45位</td><td class="note-cell"></td></tr>
+            <tr><th>1997年</th><td>1,191,665人</td><td>3,265人</td><td>47位</td><td class="note-cell"></td></tr>
+            <tr><th>1998年</th><td>1,203,147人</td><td>3,296人</td><td>46位</td><td class="note-cell"></td></tr>
+            <tr><th>1999年</th><td>1,177,669人</td><td>3,226人</td><td>51位</td><td class="note-cell"></td></tr>
+            <tr><th>2000年</th><td>1,190,547人</td><td>3,253人</td><td>48位</td><td class="note-cell"></td></tr>
+            <tr><th>2001年</th><td>1,170,662人</td><td>3,207人</td><td>52位</td><td class="note-cell"></td></tr>
+            <tr><th>2002年</th><td>1,153,855人</td><td>3,161人</td><td>53位</td><td class="note-cell"></td></tr>
+            <tr><th>2003年</th><td>1,123,610人</td><td>3,078人</td><td>54位</td><td class="note-cell"></td></tr>
+            <tr><th>2004年</th><td>1,110,721人</td><td>3,035人</td><td>55位</td><td class="note-cell"></td></tr>
+            <tr><th>2005年</th><td>1,062,530人</td><td>2,911人</td><td>61位</td><td class="note-cell">TFR 史上最低（当時）</td></tr>
+            <tr><th>2006年</th><td>1,092,674人</td><td>2,994人</td><td>56位</td><td class="note-cell"></td></tr>
+            <tr><th>2007年</th><td>1,089,818人</td><td>2,986人</td><td>58位</td><td class="note-cell"></td></tr>
+            <tr><th>2008年</th><td>1,091,156人</td><td>2,981人</td><td>57位</td><td class="note-cell"></td></tr>
+            <tr><th>2009年</th><td>1,070,035人</td><td>2,932人</td><td>60位</td><td class="note-cell"></td></tr>
+            <tr><th>2010年</th><td>1,071,304人</td><td>2,935人</td><td>59位</td><td class="note-cell"></td></tr>
+            <tr><th>2011年</th><td>1,050,806人</td><td>2,879人</td><td>62位</td><td class="note-cell"></td></tr>
+            <tr><th>2012年</th><td>1,037,231人</td><td>2,834人</td><td>63位</td><td class="note-cell"></td></tr>
+            <tr><th>2013年</th><td>1,029,816人</td><td>2,821人</td><td>64位</td><td class="note-cell"></td></tr>
+            <tr><th>2014年</th><td>1,003,539人</td><td>2,749人</td><td>66位</td><td class="note-cell"></td></tr>
+            <tr><th>2015年</th><td>1,005,677人</td><td>2,755人</td><td>65位</td><td class="note-cell"></td></tr>
+            <tr><th>2016年</th><td>976,978人</td><td>2,669人</td><td>67位</td><td class="note-cell"></td></tr>
+            <tr><th>2017年</th><td>946,065人</td><td>2,592人</td><td>68位</td><td class="note-cell"></td></tr>
+            <tr><th>2018年</th><td>918,397人</td><td>2,516人</td><td>69位</td><td class="note-cell"></td></tr>
+            <tr><th>2019年</th><td>865,234人</td><td>2,371人</td><td>70位</td><td class="note-cell"></td></tr>
+            <tr><th>2020年</th><td>840,835人</td><td>2,297人</td><td>71位</td><td class="note-cell"></td></tr>
+            <tr><th>2021年</th><td>811,604人</td><td>2,224人</td><td>72位</td><td class="note-cell"></td></tr>
+            <tr><th>2022年</th><td>770,759人</td><td>2,112人</td><td>73位</td><td class="note-cell"></td></tr>
+            <tr class="latest"><th>2023年</th><td>727,277人</td><td>1,993人</td><td>74位</td><td class="note-cell">TFR 史上最低更新</td></tr>
+            <tr><th>2024年</th><td>700,000人</td><td>1,913人</td><td>75位</td><td class="note-cell">概数</td></tr>
+          </table>
+          <!-- BIRTH-RANK-TABLE:END -->
+        </div>
+      </details>
+    </div>
+
+    <div class="card article">
+      <h2>よくある質問</h2>
+      <details class="faq"><summary>「日本で上から何番目」は分かりますか？</summary><p>分かりません。このツールが持っているのは各年の出生数で、今生きている人の年齢別人口ではないためです。出生数を足し上げても、その後の死亡や国際移動が反映されず、順位が正しく出せません。詳しくは上の「このツールが出さない数字」をご覧ください。</p></details>
+      <details class="faq"><summary>同学年の人数はどのくらい正確ですか？</summary><p>2年ぶんの出生数を日数で按分した概算です。出生数が年内で均等という近似を置いているため、実際の季節変動のぶんだけずれます。おおよその規模を掴むための数字とお考えください。その年の出生数そのものは公表値どおりの実測値です。</p></details>
+      <details class="faq"><summary>2024年だけ数字が丸いのはなぜですか？</summary><p>2024年の出生数はまだ概数（速報段階の丸めた値）だからです。そのため表には収録していますが、「今と比べて何倍か」の基準年には確定値のある2023年を使っています。</p></details>
+      <details class="faq"><summary>出生数と合計特殊出生率は何が違いますか？</summary><p>出生数は「その年に何人生まれたか」という実数、合計特殊出生率（TFR）は「1人の女性が生涯に産む子どもの数の平均」を表す指標です。出生率が同じでも、産む年代の人口が減れば出生数は減ります。1989年の1.57ショックのように、社会的な話題になるのは出生率のほうが多いですが、学校や地域の規模を左右するのは出生数です。</p></details>
+      <details class="faq"><summary>入力した生年月日はどこかに保存されますか？</summary><p>保存も送信もされません。計算に使う1950〜2024年の出生数はページ内に含まれていて、生年月日はブラウザの中だけで処理されます。共有ボタンを押した場合のみ、生まれた年と人数を含む文章がXの投稿画面に渡ります（投稿するかどうかはご自身で決められます）。</p></details>
+      <p class="related">関連ツール: <a href="./birth-year.html">あなたが生まれた年の日本は？</a> / <a href="./age.html">年齢・日数計算</a> / <a href="./wareki.html">西暦⇔和暦 変換</a></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <nav>
+        <a href="./">ホーム</a>
+        <a href="./about.html">運営者情報</a>
+        <a href="./contact.html">お問い合わせ</a>
+        <a href="./privacy.html">プライバシーポリシー</a>
+      </nav>
+      <p>© 2026 サクッとツール箱</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { summarize } from "./js/lib/birth-rank.mjs";
+    import {
+      barSeries,
+      formatCount,
+      rankSentence,
+      ratioPhrase,
+      resultRows,
+      shareText,
+    } from "./js/lib/birth-rank-view.mjs";
+    import { copyRows } from "./js/copy-ui.mjs";
+
+    const $ = (id) => document.getElementById(id);
+    const PAGE_URL = "https://mini-tools.net/birth-rank.html";
+
+    function renderChart(year) {
+      const series = barSeries(year);
+      $("chart").innerHTML = series
+        .map(
+          (b) =>
+            `<div class="bar-col${b.current ? " current" : ""}">` +
+            `<div class="bar-fill" style="height:${b.height}%"></div>` +
+            `<div class="bar-year">${b.current ? b.year : b.year % 10 === 0 ? b.year : ""}</div>` +
+            `</div>`
+        )
+        .join("");
+      const first = series[0];
+      const last = series[series.length - 1];
+      $("chart").setAttribute(
+        "aria-label",
+        `${first.year}年から${last.year}年までの出生数の推移。${year}年は${formatCount(
+          summarize(year).births
+        )}人。`
+      );
+      $("chart-caption").textContent = `${first.year}〜${last.year}年の出生数（棒の高さはこの期間の最多年を100とした比率）`;
+    }
+
+    function render(input) {
+      const s = summarize(input);
+
+      $("hero-caption").textContent = `${s.year}年に日本で生まれた赤ちゃんは`;
+      $("hero-number").textContent = `${formatCount(s.births)}人`;
+      $("hero-sub").textContent = `1日あたり ${formatCount(s.perDay)}人が生まれていました`;
+
+      const stats = [["順位", rankSentence(s.year)]];
+      if (s.schoolYear) {
+        stats.push([
+          `同学年（${s.schoolYear.startYear}年度）`,
+          `約${formatCount(s.schoolYear.births)}人 ※概算${s.isEarlyBirth ? "・早生まれ" : ""}`,
+        ]);
+      }
+      $("stat-grid").innerHTML = stats
+        .map(
+          ([label, value]) =>
+            `<div class="stat"><span class="stat-label">${label}</span>` +
+            `<span class="stat-value">${value}</span></div>`
+        )
+        .join("");
+
+      if (s.notable) {
+        $("notable").innerHTML = `<strong>${s.notable.label}</strong> — ${s.notable.note}`;
+        $("notable").hidden = false;
+      } else {
+        $("notable").hidden = true;
+      }
+
+      renderChart(s.year);
+
+      // 一番強い数字は最後に置く（Peak-End）
+      const { latestYear, per100, ratio } = s.latest;
+      $("peak").innerHTML =
+        `${latestYear}年に生まれた100人に対して、${s.year}年は<strong>${per100}人</strong>` +
+        `（${ratioPhrase(ratio)}）`;
+
+      $("copy-rows").innerHTML = copyRows(resultRows(input));
+
+      const text = shareText(input, PAGE_URL);
+      $("share").href = `https://x.com/intent/post?text=${encodeURIComponent(text)}`;
+
+      $("result").hidden = false;
+    }
+
+    function update(input) {
+      $("error").hidden = true;
+      try {
+        render(input);
+      } catch (e) {
+        $("result").hidden = true;
+        $("error").textContent = e.message;
+        $("error").hidden = false;
+      }
+    }
+
+    // 入力と同時に更新する（ボタンを押させない）
+    $("bday").addEventListener("input", () => {
+      const v = $("bday").value;
+      if (!v) return;
+      $("year").value = v.slice(0, 4);
+      update(v);
+    });
+
+    $("year").addEventListener("input", () => {
+      const v = $("year").value;
+      if (!/^\d{4}$/.test(v)) {
+        $("result").hidden = true;
+        $("error").hidden = true;
+        return;
+      }
+      $("bday").value = "";
+      update(Number(v));
+    });
+  </script>
+</body>
+</html>

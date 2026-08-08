@@ -7,7 +7,7 @@
 - 本番: https://mini-tools.net/ （このリポジトリの main ブランチ = GitHub Pages）
 - main に push すると自動で公開される。
 
-## ツール（19本）
+## ツール（20本）
 
 | ツール | URL |
 |---|---|
@@ -30,6 +30,7 @@
 | 海外サイズ→日本サイズ変換(靴・服) | https://mini-tools.net/size.html |
 | 海外レシピ単位変換（カップ・oz・℉→ml・g・℃） | https://mini-tools.net/recipe.html |
 | あなたが生まれた年の日本は？ | https://mini-tools.net/birth-year.html |
+| あなたが生まれた年、日本では何人生まれた？ | https://mini-tools.net/birth-rank.html |
 
 ## サイト共通ページ
 

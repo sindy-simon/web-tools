@@ -372,6 +372,189 @@ footer nav a {
   margin: 4px 0;
 }
 
+/* 出生数ランキング（birth-rank.html）の結果パネル
+   このページは結果そのものがシェアされる＝見せ場なので、ここだけ作り込む。
+   サイト全体の配色（青アクセント・白カード）からは外れない。 */
+#result {
+  margin-top: 20px;
+  padding: 20px 16px;
+  background: #eff6ff;
+  border-radius: 12px;
+}
+
+.hero {
+  text-align: center;
+  margin: 0 0 8px;
+}
+
+.hero-caption,
+.hero-sub {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.hero-number {
+  margin: 4px 0;
+  font-size: clamp(2rem, 11vw, 3rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-grid {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.stat-value {
+  font-weight: 700;
+  text-align: right;
+}
+
+.chart-wrap {
+  margin: 16px 0;
+}
+
+.chart-wrap figcaption {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 140px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 6px 0;
+}
+
+.bar-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.bar-fill {
+  background: #bfdbfe;
+  border-radius: 3px 3px 0 0;
+  min-height: 2px;
+}
+
+.bar-col.current .bar-fill {
+  background: var(--accent);
+}
+
+.bar-year {
+  font-size: 0.6rem;
+  color: var(--muted);
+  text-align: center;
+  height: 1.4em;
+  white-space: nowrap;
+}
+
+.bar-col.current .bar-year {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.peak {
+  margin: 16px 0;
+  padding: 14px 16px;
+  background: #fff;
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  font-size: 1.05rem;
+}
+
+.peak strong {
+  font-size: 1.5rem;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.share-btn {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 10px 24px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  background: #111827;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.share-btn:hover {
+  opacity: 0.9;
+}
+
+/* 早見表（75年ぶん・静的HTML） */
+.table-scroll {
+  overflow-x: auto;
+  max-height: 60vh;
+  overflow-y: auto;
+  margin-top: 12px;
+}
+
+table.years {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+table.years th,
+table.years td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+table.years th {
+  text-align: left;
+}
+
+table.years td {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+table.years td.note-cell {
+  text-align: left;
+  font-size: 0.8rem;
+  color: var(--muted);
+  white-space: normal;
+}
+
+table.years tr.latest th,
+table.years tr.latest td {
+  background: #eff6ff;
+  font-weight: 700;
+}
+
 .faq {
   border: 1px solid var(--border);
   border-radius: 8px;
