@@ -9,19 +9,19 @@ GitHub Pages（`main` / `(root)`）から公開。
 ## ツール
 
 - 文字数カウント（`chars.html`）
-- 西暦⇔和暦変換（`wareki.html`）
+- 和暦・西暦・年齢計算（`wareki.html`）… 元号の相互変換・満年齢・2日付の日数差
 - 消費税計算（`tax.html`）
 - 海外サイズ→日本サイズ変換（`size.html`）… 靴・服を US/UK/EU→日本サイズの目安に変換
 - 海外レシピ単位変換（`recipe.html`）… カップ/oz/℉→ml/g/℃
 - Unixタイムスタンプ変換（`timestamp.html`）… 秒・ms自動判別・JST↔Unix往復
 - 時差計算・海外時刻→JST変換（`timezone.html`）… 主要14都市・夏時間自動対応
-- 年齢・日数計算（`age.html`）… 満年齢・和暦表示・2日付の日数差
+- 旧年齢計算URL（`age.html`）… `wareki.html#age` への案内ページ
 - テキストケース変換（`case.html`）… camel/Pascal/snake/CONSTANT/kebab/dot の6形式一括変換
 - テキスト整形・改行コード変換（`text.html`）… CRLF⇔LF・全角スペース正規化・空行圧縮
 - あなたが生まれた年の日本は？（`birth-year.html`）… 1950〜2024年の統計10項目を今と比較。Chart.js グラフ・URLシェア付き
 - ほか（`slug` / `prompt` / `diff` / `regex` / `pii` / `json` / `sns` / `zenhan`）
 
-すべてクライアントサイドで完結。入力データはサーバーに送らない。
+ツールの計算処理はクライアントサイド（利用者のブラウザ内）で実行し、入力データをサイトのサーバーへ保存する機能は設けていない。広告など第三者サービスとの通信はプライバシーポリシーに記載する。
 
 ## 構成
 

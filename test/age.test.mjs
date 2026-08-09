@@ -28,6 +28,10 @@ test("令和6年: 2024-04-15", () => {
   assert.equal(r.label, "令和6年4月15日");
 });
 
+test("元年は元年表記にする", () => {
+  assert.equal(toWareki("2019-05-01").label, "令和元年5月1日");
+});
+
 test("明治以前は RangeError", () => {
   assert.throws(() => toWareki("1860-01-01"), RangeError);
 });
@@ -47,6 +51,11 @@ test("昭和64年 → 1989年", () => {
 
 test("不明な元号は RangeError", () => {
   assert.throws(() => warekiYearToSeireki("大化", 1), RangeError);
+});
+
+test("元号の範囲を超える年は RangeError", () => {
+  assert.throws(() => warekiYearToSeireki("昭和", 65), RangeError);
+  assert.throws(() => warekiYearToSeireki("平成", 32), RangeError);
 });
 
 // --- calcAge ---
@@ -69,6 +78,14 @@ test("未来の誕生日は RangeError", () => {
   assert.throws(() => calcAge("2099-01-01", "2024-01-01"), RangeError);
 });
 
+test("2月29日生まれは平年の2月28日を節目として扱う", () => {
+  assert.equal(calcAge("2000-02-29", "2023-02-27").age, 22);
+  const result = calcAge("2000-02-29", "2023-02-28");
+  assert.equal(result.age, 23);
+  assert.equal(result.nextBirthday, "2024-02-29");
+  assert.equal(result.daysToNext, 366);
+});
+
 // --- calcDaysBetween ---
 test("同日は0日", () => {
   assert.equal(calcDaysBetween("2024-01-01", "2024-01-01").days, 0);
@@ -89,4 +106,5 @@ test("逆順のとき reversed=true・days=-1", () => {
 
 test("不正な日付文字列は TypeError", () => {
   assert.throws(() => calcAge("not-a-date", "2024-01-01"), TypeError);
+  assert.throws(() => calcAge("2024-02-30", "2024-03-01"), TypeError);
 });

@@ -1,29 +1,43 @@
 // 結果のワンクリックコピー UI(各ツールページ共用)
 // import するとコピーボタンのクリックハンドラが自動で有効になる。
 
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
 /** [ラベル, コピーする値] の配列からコピー行の HTML を生成する。 */
 export function copyRows(rows) {
   return rows
     .map(
-      ([label, value]) =>
-        `<div class="copy-row"><span class="copy-label">${label}</span>` +
-        `<code>${value}</code>` +
-        `<button type="button" class="copy-btn" data-copy="${value}">コピー</button></div>`
+      ([label, value]) => {
+        const safeLabel = escapeHtml(label);
+        const safeValue = escapeHtml(value);
+        return `<div class="copy-row"><span class="copy-label">${safeLabel}</span>` +
+          `<code>${safeValue}</code>` +
+          `<button type="button" class="copy-btn" data-copy="${safeValue}">コピー</button></div>`;
+      }
     )
     .join("");
 }
 
-document.addEventListener("click", async (e) => {
-  const btn = e.target.closest(".copy-btn");
-  if (!btn) return;
-  try {
-    await navigator.clipboard.writeText(btn.dataset.copy);
-    const old = btn.textContent;
-    btn.textContent = "✓ コピー済み";
-    setTimeout(() => {
-      btn.textContent = old;
-    }, 1200);
-  } catch {
-    btn.textContent = "コピー失敗";
-  }
-});
+if (typeof document !== "undefined") {
+  document.addEventListener("click", async (event) => {
+    const button = event.target.closest(".copy-btn");
+    if (!button) return;
+    try {
+      await navigator.clipboard.writeText(button.dataset.copy);
+      const originalLabel = button.textContent;
+      button.textContent = "コピー済み";
+      setTimeout(() => {
+        button.textContent = originalLabel;
+      }, 1200);
+    } catch {
+      button.textContent = "コピー失敗";
+    }
+  });
+}

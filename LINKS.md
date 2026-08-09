@@ -22,8 +22,7 @@
 | 個人情報チェッカー(伏字化) | https://mini-tools.net/pii.html |
 | AIプロンプト トークン概算・軽量化 | https://mini-tools.net/prompt.html |
 | ローマ字スラッグ生成 | https://mini-tools.net/slug.html |
-| 西暦⇔和暦 変換 | https://mini-tools.net/wareki.html |
-| 年齢・日数計算（和暦対応） | https://mini-tools.net/age.html |
+| 和暦・西暦・年齢計算 | https://mini-tools.net/wareki.html |
 | 消費税計算(税込⇔税抜) | https://mini-tools.net/tax.html |
 | Unixタイムスタンプ変換（JST・ISO 8601対応） | https://mini-tools.net/timestamp.html |
 | 時差計算・海外時刻→日本時間（JST）変換 | https://mini-tools.net/timezone.html |
