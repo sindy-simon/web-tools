@@ -505,6 +505,153 @@ button.copy-btn:hover {
   color: var(--ink);
 }
 
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.metric {
+  display: flex;
+  min-height: 126px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface-soft);
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.metric-primary {
+  border-color: #9acbc5;
+  background: var(--brand-soft);
+}
+
+.metric-label {
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  font-weight: 720;
+}
+
+.metric-value {
+  color: var(--ink);
+  font-size: clamp(1.6rem, 4vw, 2.1rem);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+}
+
+.metric-value small {
+  margin-left: 3px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.metric-help {
+  color: var(--ink-soft);
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.technical-counts {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-soft);
+}
+
+.technical-counts summary {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.technical-counts p {
+  margin: 10px 0 0;
+}
+
+.platform-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.platform-card {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface-soft);
+}
+
+.platform-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.platform-heading h3 {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.platform-heading strong {
+  color: var(--brand-dark);
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.progress {
+  overflow: hidden;
+  height: 7px;
+  margin-top: 12px;
+  border-radius: 999px;
+  background: #dce8e6;
+}
+
+.progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--brand);
+  transition: width 120ms ease;
+}
+
+.platform-status {
+  margin: 8px 0 0;
+  color: var(--brand-dark);
+  font-size: 0.9rem;
+  font-weight: 760;
+}
+
+.platform-note {
+  margin: 3px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
+.platform-over {
+  border-color: #efb5b5;
+  background: var(--danger-soft);
+}
+
+.platform-over .platform-heading strong,
+.platform-over .platform-status {
+  color: var(--danger);
+}
+
+.platform-over .progress {
+  background: #f3d0d0;
+}
+
+.platform-over .progress span {
+  background: var(--danger);
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -763,6 +910,10 @@ footer p {
 
   .tool-list {
     grid-template-columns: 1fr;
+  }
+
+  .metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .copy-row {

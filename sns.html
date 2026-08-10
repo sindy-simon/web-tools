@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SNS文字数チェッカー | X・Instagram・Threads等の上限を一括チェック</title>
-  <meta name="description" content="入力した文章が各SNS(X・Instagram・Threads・Bluesky・TikTok・LinkedIn・YouTube等)の文字数上限に収まるか一括チェック。Xは全角2・半角1・URL23の正しい数え方に対応。入力はサーバーに送信されません。">
-  <link rel="canonical" href="https://mini-tools.net/sns.html">
+  <meta name="robots" content="noindex,follow">
+  <meta http-equiv="refresh" content="0; url=./chars.html#sns">
+  <title>SNS文字数チェックは文字数ページへ統合しました</title>
+  <meta name="description" content="SNS投稿の文字数チェックは、文字数カウントページに統合しました。">
+  <link rel="canonical" href="https://mini-tools.net/chars.html">
   <link rel="stylesheet" href="./style.css">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
-     crossorigin="anonymous"></script>
 </head>
 <body>
   <header>
@@ -16,94 +16,13 @@
       <a class="site-title" href="./">サクッとツール箱</a>
     </div>
   </header>
-
-  <main class="container">
-    <h1>SNS文字数チェッカー</h1>
-    <p class="lead">投稿文を貼ると、各SNSの文字数上限に収まるかを一括表示。Xは<strong>全角2・半角1・URL23</strong>の正しい数え方で計算します。</p>
-
-    <div class="card">
-      <label for="input">投稿文</label>
-      <textarea id="input" placeholder="ここに投稿文を入力または貼り付け" autofocus></textarea>
-
-      <table class="stats" id="result">
-        <thead>
-          <tr><th>SNS</th><th>使用</th><th>上限</th><th>残り</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-
-      <p class="note">Xのみ「全角=2・半角=1・URL=一律23」の重み付き、その他は文字数(コードポイント)で計算。入力内容は端末内だけで処理されます。上限値は 2026-06 時点の一般的な公開値で、各SNSの仕様変更で変わることがあります。</p>
-    </div>
-
-    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
-    <!-- ▲ AdSense ▲ -->
-
-    <div class="card">
-      <h2>SNSごとの文字数の数え方</h2>
-      <ul>
-        <li><strong>X(旧Twitter)</strong>: 日本語などの全角は2文字、半角英数記号は1文字、URLは長さに関わらず23文字、絵文字は2文字として計算されます(通常投稿の上限280=全角なら約140文字)。</li>
-        <li><strong>Instagram・TikTok・Threads など</strong>: 全角・半角を区別せず「文字数」で数えます(日本語1文字=1)。</li>
-        <li>海外製のカウンターは英語前提で全角や絵文字の数え方が異なることが多いため、日本語投稿では実際の上限とズレることがあります。</li>
-      </ul>
-      <p class="related">関連ツール: <a href="./chars.html">文字数カウント</a> ／ <a href="./zenhan.html">全角⇔半角変換</a></p>
-    </div>
-    <div class="card article">
-      <h2>SNS文字数チェッカーについて</h2>
-      <p>SNS はサービスごとに投稿できる文字数の上限が異なり、しかも文字の数え方も同じではありません。特に X(旧Twitter)は、日本語などの全角文字を2、半角英数字を1、URL を長さに関わらず一律23として計算する独自方式です。海外製のカウンターは英語前提のことが多く、日本語の投稿では実際の上限とズレがちです。このツールは投稿文を貼るだけで、主要 SNS の上限に収まるかを日本語の数え方に合わせて一括でチェックします。</p>
-
-      <h2>こんなときに便利</h2>
-      <ul>
-        <li>同じ文章を複数の SNS に同時投稿したいとき、どこで切れるかを事前に確認。</li>
-        <li>X で「あと何文字書けるか」を全角2の正しい数え方で把握。</li>
-        <li>プロフィール文やキャプションが上限内に収まるかのチェック。</li>
-      </ul>
-
-      <h2>よくある質問</h2>
-      <details class="faq"><summary>X の上限は280なのに、なぜ日本語は約140文字なのですか？</summary><p>X は全角1文字を2としてカウントするため、全角だけなら 280 ÷ 2 = 約140文字が目安になります。半角英数字や URL を混ぜると、その分もう少し多く書けます。</p></details>
-      <details class="faq"><summary>表示される上限値は常に最新ですか？</summary><p>表示している上限は一般的な公開値です。各 SNS は仕様を変更することがあるため、重要な投稿の前には公式の案内もあわせてご確認ください。</p></details>
-      <details class="faq"><summary>投稿文は送信されますか？</summary><p>されません。文字数の計算はすべてブラウザ内で行われ、入力した投稿文が外部に送信されることはありません。</p></details>
-    </div>
+  <main class="container content-narrow">
+    <section class="card">
+      <h1>SNS文字数チェックを移動しました</h1>
+      <p>SNS投稿の文字数確認は「文字数・SNS投稿チェック」に統合しました。</p>
+      <p><a href="./chars.html#sns">新しい投稿文字数チェックを開く</a></p>
+    </section>
   </main>
-
-  <footer>
-    <div class="container">
-      <nav>
-        <a href="./">ホーム</a>
-        <a href="./about.html">運営者情報</a>
-        <a href="./contact.html">お問い合わせ</a>
-        <a href="./privacy.html">プライバシーポリシー</a>
-      </nav>
-      <p>© 2026 サクッとツール箱</p>
-    </div>
-  </footer>
-
-  <script type="module">
-    import { analyze } from "./js/lib/sns-count.mjs";
-
-    const input = document.getElementById("input");
-    const tbody = document.querySelector("#result tbody");
-
-    function fmt(n) {
-      return n.toLocaleString("ja-JP");
-    }
-
-    function update() {
-      const rows = analyze(input.value);
-      tbody.innerHTML = rows
-        .map((p) => {
-          const cls = p.over ? ' class="over"' : "";
-          return (
-            `<tr${cls}><th>${p.name}</th>` +
-            `<td>${fmt(p.used)}</td>` +
-            `<td>${fmt(p.limit)}</td>` +
-            `<td>${fmt(p.remaining)}</td></tr>`
-          );
-        })
-        .join("");
-    }
-
-    input.addEventListener("input", update);
-    update();
-  </script>
+  <script>window.location.replace("./chars.html#sns");</script>
 </body>
 </html>

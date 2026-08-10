@@ -7,12 +7,11 @@
 - 本番: https://mini-tools.net/ （このリポジトリの main ブランチ = GitHub Pages）
 - main に push すると自動で公開される。
 
-## ツール（19本）
+## ツール（17本）
 
 | ツール | URL |
 |---|---|
-| 文字数カウント | https://mini-tools.net/chars.html |
-| SNS文字数チェッカー | https://mini-tools.net/sns.html |
+| 文字数・SNS投稿チェック | https://mini-tools.net/chars.html |
 | 全角⇔半角 変換 | https://mini-tools.net/zenhan.html |
 | テキストケース変換（camel/snake/Pascal/kebab） | https://mini-tools.net/case.html |
 | テキスト整形・改行コード変換（CRLF⇔LF） | https://mini-tools.net/text.html |
