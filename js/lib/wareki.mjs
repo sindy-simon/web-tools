@@ -15,6 +15,17 @@ const INITIALS = { 明治: "M", 大正: "T", 昭和: "S", 平成: "H", 令和: "
 
 export const ERA_NAMES = ERAS.map((e) => e.name);
 
+function isValidDate(year, month, day) {
+  if (![year, month, day].every(Number.isInteger)) return false;
+  if (year < 1 || month < 1 || month > 12 || day < 1 || day > 31) return false;
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return (
+    date.getUTCFullYear() === year &&
+    date.getUTCMonth() === month - 1 &&
+    date.getUTCDate() === day
+  );
+}
+
 /**
  * 和暦の各種表記(書類記入用)を返す。
  * 例: 令和 8 → { standard: "令和8年", padded: "令和08年", initial: "R8" }
@@ -43,6 +54,9 @@ export function warekiFormats(eraName, eraYear) {
 export function seirekiToWareki(year, month = 7, day = 1) {
   if (!Number.isInteger(year)) {
     throw new TypeError("年には整数を渡してください");
+  }
+  if (!isValidDate(year, month, day)) {
+    throw new RangeError("存在する日付を指定してください");
   }
   const k = key([year, month, day]);
   for (const era of ERAS) {
@@ -74,4 +88,27 @@ export function warekiToSeireki(eraName, eraYear) {
     }
   }
   return year;
+}
+
+
+/**
+ * YYYY-MM-DD 形式の西暦日付を、年月日を含む和暦表記へ変換する。
+ */
+export function dateStringToWareki(dateString) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateString);
+  if (!match) {
+    throw new TypeError("日付は YYYY-MM-DD 形式で指定してください");
+  }
+  const [, year, month, day] = match.map(Number);
+  const result = seirekiToWareki(year, month, day);
+  if (!result) {
+    throw new RangeError("明治元年10月23日より前の日付には対応していません");
+  }
+  const eraYear = result.year === 1 ? "元" : String(result.year);
+  return {
+    ...result,
+    month,
+    day,
+    label: `${result.era}${eraYear}年${month}月${day}日`,
+  };
 }

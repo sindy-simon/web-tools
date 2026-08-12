@@ -1,6 +1,11 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { seirekiToWareki, warekiToSeireki, warekiFormats } from "../js/lib/wareki.mjs";
+import {
+  dateStringToWareki,
+  seirekiToWareki,
+  warekiToSeireki,
+  warekiFormats,
+} from "../js/lib/wareki.mjs";
 
 test("改元日の前後で元号が切り替わる(平成→令和)", () => {
   assert.deepEqual(seirekiToWareki(2019, 4, 30), {
@@ -28,6 +33,11 @@ test("月日を省略すると 7/1 とみなす", () => {
 
 test("明治より前は null", () => {
   assert.equal(seirekiToWareki(1867), null);
+});
+
+test("明治元年の開始日を新暦で判定する", () => {
+  assert.equal(seirekiToWareki(1868, 10, 22), null);
+  assert.equal(seirekiToWareki(1868, 10, 23).label, "明治元年");
 });
 
 test("和暦→西暦の基本変換", () => {
@@ -63,4 +73,19 @@ test("不正な入力はエラー", () => {
   assert.throws(() => warekiToSeireki("慶応", 1), RangeError);
   assert.throws(() => warekiToSeireki("令和", 0), RangeError);
   assert.throws(() => seirekiToWareki("2024"), TypeError);
+  assert.throws(() => seirekiToWareki(2024, 2, 30), RangeError);
+  assert.throws(() => seirekiToWareki(2024, 13, 1), RangeError);
+});
+
+test("西暦の日付文字列を年月日付きの和暦へ変換する", () => {
+  assert.deepEqual(dateStringToWareki("2019-05-01"), {
+    era: "令和",
+    year: 1,
+    month: 5,
+    day: 1,
+    label: "令和元年5月1日",
+  });
+  assert.equal(dateStringToWareki("1989-01-07").label, "昭和64年1月7日");
+  assert.throws(() => dateStringToWareki("1868-10-22"), RangeError);
+  assert.throws(() => dateStringToWareki("2024-02-30"), RangeError);
 });

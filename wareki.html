@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>西暦⇔和暦 変換 | サクッとツール箱</title>
-  <meta name="description" content="西暦と和暦(令和・平成・昭和・大正・明治)を相互変換する無料ツール。改元日(令和は2019年5月1日など)も正確に判定します。">
+  <title>和暦・西暦・年齢計算 | 改元日まで正確に変換</title>
+  <meta name="description" content="西暦と和暦の相互変換、満年齢、2つの日付の差をまとめて計算。令和・平成・昭和・大正・明治に対応し、改元年は月日まで判定します。">
   <link rel="canonical" href="https://mini-tools.net/wareki.html">
   <link rel="stylesheet" href="./style.css">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
@@ -14,41 +14,56 @@
   <header>
     <div class="container">
       <a class="site-title" href="./">サクッとツール箱</a>
+      <nav class="site-nav" aria-label="主なページ">
+        <a href="./">ツール一覧</a>
+        <a href="./wareki.html" aria-current="page">和暦・年齢</a>
+        <a href="./chars.html">文字数</a>
+        <a href="./recipe.html">レシピ換算</a>
+      </nav>
     </div>
   </header>
 
-  <main class="container">
-    <h1>西暦⇔和暦 変換</h1>
-    <p class="lead">書類記入などでよく迷う「平成何年?」「西暦何年?」をすぐに変換します。</p>
+  <main class="container content-narrow">
+    <section class="hero">
+      <p class="eyebrow">日本の日付計算</p>
+      <h1>和暦・西暦・年齢をまとめて計算</h1>
+      <p class="lead">書類に書く元号の確認から、満年齢、日付の間隔まで。一つのページで迷わず計算できます。</p>
+      <ul class="trust-row" aria-label="このツールの特徴">
+        <li>改元日を月日まで判定</li>
+        <li>明治元年以降に対応</li>
+        <li>入力値は保存しません</li>
+      </ul>
+    </section>
 
-    <div class="card">
-      <h2>西暦 → 和暦</h2>
-      <div class="row">
-        <div>
-          <label for="s-year">年(西暦)</label>
-          <input type="number" id="s-year" min="1868" max="2999" value="2026">
-        </div>
-        <div>
-          <label for="s-month">月</label>
-          <input type="number" id="s-month" min="1" max="12" value="6">
-        </div>
-        <div>
-          <label for="s-day">日</label>
-          <input type="number" id="s-day" min="1" max="31" value="10">
-        </div>
+    <nav class="section-nav" aria-label="ページ内の計算機能">
+      <a href="#to-wareki">西暦から和暦</a>
+      <a href="#to-seireki">和暦から西暦</a>
+      <a href="#age">年齢</a>
+      <a href="#days">日数</a>
+      <a href="#reference">早見表</a>
+    </nav>
+
+    <section class="card tool-card" id="to-wareki">
+      <h2>西暦から和暦へ</h2>
+      <p class="section-intro">改元のあった年も、選んだ月日を使って正しい元号を表示します。</p>
+      <label for="seireki-date">西暦の日付</label>
+      <input type="date" id="seireki-date" min="1868-10-23">
+      <div class="actions">
+        <button type="button" id="seireki-convert">和暦を表示</button>
+        <button type="button" class="secondary" id="seireki-today">今日を入力</button>
       </div>
-      <button id="s-convert">和暦に変換</button>
-      <div class="result" id="s-result" hidden></div>
-      <div class="error" id="s-error" hidden></div>
-      <p class="note">改元の年(2019年・1989年など)は月日まで入れると正確に判定されます。明治(1868年10月23日)より前は対象外です。</p>
-    </div>
+      <div class="result" id="seireki-result" aria-live="polite" hidden></div>
+      <div class="error" id="seireki-error" role="alert" hidden></div>
+      <p class="note">例：2019年4月30日は平成31年、翌日の5月1日は令和元年です。</p>
+    </section>
 
-    <div class="card">
-      <h2>和暦 → 西暦</h2>
+    <section class="card tool-card" id="to-seireki">
+      <h2>和暦から西暦へ</h2>
+      <p class="section-intro">元号と年を選び、西暦の年を確認します。「元年」は1を入力してください。</p>
       <div class="row">
         <div>
-          <label for="w-era">元号</label>
-          <select id="w-era">
+          <label for="wareki-era">元号</label>
+          <select id="wareki-era">
             <option>令和</option>
             <option>平成</option>
             <option>昭和</option>
@@ -57,53 +72,120 @@
           </select>
         </div>
         <div>
-          <label for="w-year">年</label>
-          <input type="number" id="w-year" min="1" value="1">
+          <label for="wareki-year">年</label>
+          <input type="number" id="wareki-year" min="1" inputmode="numeric" value="1">
         </div>
       </div>
-      <button id="w-convert">西暦に変換</button>
-      <div class="result" id="w-result" hidden></div>
-      <div class="error" id="w-error" hidden></div>
-    </div>
+      <button type="button" id="wareki-convert">西暦を表示</button>
+      <div class="result" id="wareki-result" aria-live="polite" hidden></div>
+      <div class="error" id="wareki-error" role="alert" hidden></div>
+      <p class="note">元号の最初と最後の年は一年に満たない場合があります。日付の判定には上の「西暦から和暦」をお使いください。</p>
+    </section>
 
-    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
-    <!-- ▲ AdSense ▲ -->
+    <section class="card tool-card" id="age">
+      <h2>満年齢を計算</h2>
+      <p class="section-intro">生年月日と基準日から、一般的に使われる満年齢を計算します。</p>
+      <div class="row">
+        <div>
+          <label for="birthday-date">生年月日</label>
+          <input type="date" id="birthday-date" min="1868-10-23">
+        </div>
+        <div>
+          <label for="reference-date">いつ時点の年齢か</label>
+          <input type="date" id="reference-date">
+        </div>
+      </div>
+      <button type="button" id="age-calculate">年齢を計算</button>
+      <div class="result" id="age-result" aria-live="polite" hidden></div>
+      <div class="error" id="age-error" role="alert" hidden></div>
+      <p class="note">2月29日生まれの方は、うるう年でない年には2月28日を年齢計算上の節目として表示します。法令や制度ごとの厳密な判定は、提出先の案内も確認してください。</p>
+    </section>
 
-    <div class="card">
+    <section class="card tool-card" id="days">
+      <h2>2つの日付の間隔を計算</h2>
+      <p class="section-intro">開始日から終了日まで、何日離れているかを計算します。同じ日なら0日です。</p>
+      <div class="row">
+        <div>
+          <label for="from-date">開始日</label>
+          <input type="date" id="from-date">
+        </div>
+        <div>
+          <label for="to-date">終了日</label>
+          <input type="date" id="to-date">
+        </div>
+      </div>
+      <button type="button" id="days-calculate">日数を計算</button>
+      <div class="result" id="days-result" aria-live="polite" hidden></div>
+      <div class="error" id="days-error" role="alert" hidden></div>
+      <p class="note">開始日と終了日を両方含めた日数ではなく、二つの暦日の差を表示します。1月1日から1月2日までは1日です。</p>
+    </section>
+
+    <!-- AdSenseの広告枠は、審査承認後にツール操作を妨げない位置へ設置する -->
+
+    <section class="card" id="reference">
+      <h2>西暦・和暦の早見表</h2>
+      <p class="section-intro">直近30年と、改元があった年を確認できます。改元年は二つの元号を併記しています。</p>
       <details class="quick">
-        <summary>西暦⇔和暦 早見表(明治元年〜)</summary>
-        <table class="stats" id="quick-table"></table>
+        <summary>早見表を開く</summary>
+        <div class="table-wrap">
+          <table id="quick-table">
+            <thead><tr><th>西暦</th><th>和暦</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </details>
-    </div>
+    </section>
 
-    <div class="card">
-      <h2>改元日の早見表</h2>
+    <section class="card article">
+      <h2>判定基準</h2>
+      <p>このツールは、令和・平成・昭和・大正・明治の開始日を基準に元号を判定します。同じ西暦年に二つの元号が存在する改元年は、年だけで決めず月日まで確認します。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>元号</th><th>開始日</th><th>前の元号の最終日</th></tr></thead>
+          <tbody>
+            <tr><td>令和</td><td>2019年5月1日</td><td>平成31年4月30日</td></tr>
+            <tr><td>平成</td><td>1989年1月8日</td><td>昭和64年1月7日</td></tr>
+            <tr><td>昭和</td><td>1926年12月25日</td><td>大正15年12月24日</td></tr>
+            <tr><td>大正</td><td>1912年7月30日</td><td>明治45年7月29日</td></tr>
+            <tr><td>明治</td><td>1868年10月23日（新暦換算）</td><td>対象外</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>このページで扱う範囲</h2>
+      <p>明治元年10月23日より前の元号には対応していません。また、明治5年まで日本で使われていた旧暦の日付を入力する機能はありません。入力欄の日付は現在の太陽暦として扱います。</p>
+      <p>計算はこのページのプログラムがブラウザ内で行い、入力した日付をサイトのサーバーへ保存・送信する処理はありません。広告など第三者サービスとの通信については、<a href="./privacy.html">プライバシーポリシー</a>をご確認ください。</p>
+
+      <h2>参照資料</h2>
       <ul>
-        <li>令和: 2019年5月1日〜</li>
-        <li>平成: 1989年1月8日〜2019年4月30日</li>
-        <li>昭和: 1926年12月25日〜1989年1月7日</li>
-        <li>大正: 1912年7月30日〜1926年12月24日</li>
-        <li>明治: 1868年10月23日〜1912年7月29日</li>
+        <li><a href="https://www.archives.go.jp/naj_news/16/anohi.html" rel="noopener">国立公文書館「近年の元号改定のあゆみ」</a></li>
+        <li><a href="https://www.archives.go.jp/ayumi/kobetsu/t15_1926_01.html" rel="noopener">国立公文書館「昭和と改元」</a></li>
+        <li><a href="https://crd.ndl.go.jp/reference/entry/index.php?id=1000255208&amp;page=ref_view" rel="noopener">国立国会図書館「明治に改元したのは何月何日か」</a></li>
       </ul>
-    </div>
-    <div class="card article">
-      <h2>西暦と和暦について</h2>
-      <p>和暦(元号)は、令和・平成・昭和のように天皇の在位ごとに区切られる日本独自の年の数え方です。役所の書類や契約書では和暦が使われることが多い一方、ニュースや海外とのやり取りでは西暦が一般的なため、両者の変換が頻繁に必要になります。このツールは、西暦から和暦、和暦から西暦の双方向に変換でき、改元の年も月日まで入力すれば正確に判定します。</p>
-
-      <h2>改元の年に注意</h2>
-      <p>改元のあった年は、同じ西暦年でも月日によって元号が変わります。たとえば2019年は4月30日まで平成、5月1日から令和です。1989年も1月7日まで昭和、1月8日から平成でした。こうした年は、年だけでなく月日まで入力することで正しい和暦が得られます。</p>
+      <div class="data-note">
+        <strong>最終確認</strong><span>2026年8月9日</span>
+        <strong>対応範囲</strong><span>明治元年10月23日以降</span>
+      </div>
 
       <h2>よくある質問</h2>
-      <details class="faq"><summary>「平成元年」と「平成1年」はどちらが正しいですか？</summary><p>どちらも同じ年を指しますが、改元した最初の年は正式には「元年」と表記します。本ツールも元年表記に対応しています。</p></details>
-      <details class="faq"><summary>明治より前の年は変換できますか？</summary><p>本ツールは明治(1868年10月23日)以降に対応しています。それより前の元号には対応していません。</p></details>
-      <details class="faq"><summary>入力した日付は送信されますか？</summary><p>されません。西暦・和暦の変換はお使いのブラウザ内で行われ、入力した日付が外部へ送信されることはありません。</p></details>
-      <p class="related">関連ツール: <a href="./age.html">年齢・日数計算</a> ／ <a href="./tax.html">消費税計算</a></p>
-    </div>
+      <details class="faq">
+        <summary>平成元年と平成1年は同じですか？</summary>
+        <p>同じ年を指します。元号が始まった最初の年は、一般に「元年」と表記します。コピー結果では元年表記を使います。</p>
+      </details>
+      <details class="faq">
+        <summary>昭和64年は一年間ありますか？</summary>
+        <p>ありません。昭和64年は1989年1月1日から1月7日までで、1月8日から平成元年です。</p>
+      </details>
+      <details class="faq">
+        <summary>年齢はどの日に上がる計算ですか？</summary>
+        <p>画面上では、日常的な満年齢として誕生日を迎えた日に一歳加算します。特定の法律や制度の適用日を判断する用途では、所管機関の説明を優先してください。</p>
+      </details>
+    </section>
   </main>
 
   <footer>
     <div class="container">
-      <nav>
+      <nav aria-label="サイト情報">
         <a href="./">ホーム</a>
         <a href="./about.html">運営者情報</a>
         <a href="./contact.html">お問い合わせ</a>
@@ -114,68 +196,128 @@
   </footer>
 
   <script type="module">
-    import { seirekiToWareki, warekiToSeireki, warekiFormats } from "./js/lib/wareki.mjs";
+    import {
+      dateStringToWareki,
+      seirekiToWareki,
+      warekiFormats,
+      warekiToSeireki,
+    } from "./js/lib/wareki.mjs";
+    import { calcAge, calcDaysBetween } from "./js/lib/age.mjs";
     import { copyRows } from "./js/copy-ui.mjs";
 
-    const $ = (id) => document.getElementById(id);
+    const element = (id) => document.getElementById(id);
 
-    function show(resultEl, errorEl, fn) {
-      resultEl.hidden = true;
-      errorEl.hidden = true;
+    function todayInJapan() {
+      const parts = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Tokyo",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).formatToParts(new Date());
+      const value = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+      return `${value.year}-${value.month}-${value.day}`;
+    }
+
+    function showResult(resultElement, errorElement, render) {
+      resultElement.hidden = true;
+      errorElement.hidden = true;
       try {
-        resultEl.innerHTML = fn();
-        resultEl.hidden = false;
-      } catch (e) {
-        errorEl.textContent = e.message;
-        errorEl.hidden = false;
+        resultElement.innerHTML = render();
+        resultElement.hidden = false;
+      } catch (error) {
+        errorElement.textContent = error.message;
+        errorElement.hidden = false;
       }
     }
 
-    $("s-convert").addEventListener("click", () => {
-      show($("s-result"), $("s-error"), () => {
-        const y = Number($("s-year").value);
-        const m = Number($("s-month").value);
-        const d = Number($("s-day").value);
-        if (!Number.isInteger(y)) throw new Error("西暦年を入力してください");
-        const r = seirekiToWareki(y, m || 7, d || 1);
-        if (!r) throw new Error("明治より前の日付には対応していません");
-        const f = warekiFormats(r.era, r.year);
-        return `<p>西暦${y}年 は <strong>${f.standard}</strong> です</p>` + copyRows([
-          ["和暦", f.standard],
-          ["書類用", f.padded],
-          ["略記", f.initial],
+    const today = todayInJapan();
+    element("seireki-date").value = today;
+    element("reference-date").value = today;
+    element("to-date").value = today;
+
+    element("seireki-today").addEventListener("click", () => {
+      element("seireki-date").value = todayInJapan();
+    });
+
+    element("seireki-convert").addEventListener("click", () => {
+      showResult(element("seireki-result"), element("seireki-error"), () => {
+        const date = element("seireki-date").value;
+        if (!date) throw new TypeError("日付を選択してください");
+        const result = dateStringToWareki(date);
+        const [year, month, day] = date.split("-").map(Number);
+        const formats = warekiFormats(result.era, result.year);
+        return `<p class="result-heading">変換結果</p><p><strong>${result.label}</strong></p>` + copyRows([
+          ["和暦の日付", result.label],
+          ["元号と年", formats.standard],
+          ["西暦の日付", `${year}年${month}月${day}日`],
         ]);
       });
     });
 
-    $("w-convert").addEventListener("click", () => {
-      show($("w-result"), $("w-error"), () => {
-        const era = $("w-era").value;
-        const n = Number($("w-year").value);
-        const y = warekiToSeireki(era, n);
-        return `<p>${era}${n === 1 ? "元" : n}年 は <strong>西暦${y}年</strong> です</p>` + copyRows([
-          ["数字のみ", String(y)],
-          ["年表記", `${y}年`],
-          ["西暦表記", `西暦${y}年`],
+    element("wareki-convert").addEventListener("click", () => {
+      showResult(element("wareki-result"), element("wareki-error"), () => {
+        const era = element("wareki-era").value;
+        const eraYear = Number(element("wareki-year").value);
+        const year = warekiToSeireki(era, eraYear);
+        const formats = warekiFormats(era, eraYear);
+        return `<p class="result-heading">変換結果</p><p><strong>西暦${year}年</strong></p>` + copyRows([
+          ["和暦", formats.standard],
+          ["西暦", `${year}年`],
+          ["略記", formats.initial],
         ]);
       });
     });
 
-    // 早見表: 改元年は「前の元号 / 次の元号」を併記する
-    {
-      let rows = "<tr><th>西暦</th><th>和暦</th></tr>";
-      for (let y = new Date().getFullYear() + 1; y >= 1868; y--) {
-        const jan = seirekiToWareki(y, 1, 1);
-        const dec = seirekiToWareki(y, 12, 31);
-        const label = !jan
-          ? dec.label
-          : jan.label === dec.label
-            ? jan.label
-            : `${jan.label} / ${dec.label}`;
-        rows += `<tr><th>${y}年</th><td>${label}</td></tr>`;
-      }
-      $("quick-table").innerHTML = rows;
-    }
+    element("age-calculate").addEventListener("click", () => {
+      showResult(element("age-result"), element("age-error"), () => {
+        const birthday = element("birthday-date").value;
+        const referenceDate = element("reference-date").value;
+        if (!birthday || !referenceDate) {
+          throw new TypeError("生年月日と基準日を両方選択してください");
+        }
+        const result = calcAge(birthday, referenceDate);
+        return `<p class="result-heading">${referenceDate} 時点</p><p><strong>満${result.age}歳</strong></p>` + copyRows([
+          ["満年齢", `${result.age}歳`],
+          ["生年月日の和暦", result.wareki.label],
+          ["次の誕生日", `${result.nextBirthday}（あと${result.daysToNext}日）`],
+        ]);
+      });
+    });
+
+    element("days-calculate").addEventListener("click", () => {
+      showResult(element("days-result"), element("days-error"), () => {
+        const from = element("from-date").value;
+        const to = element("to-date").value;
+        if (!from || !to) throw new TypeError("開始日と終了日を両方選択してください");
+        const result = calcDaysBetween(from, to);
+        const days = Math.abs(result.days);
+        const direction = result.reversed ? "（終了日が開始日より前です）" : "";
+        return `<p class="result-heading">計算結果</p><p><strong>${days}日</strong> ${direction}</p>` + copyRows([
+          ["日数", `${days}日`],
+          ["週と日", `${result.weeks}週間と${result.remainingDays}日`],
+        ]);
+      });
+    });
+
+    const currentYear = Number(today.slice(0, 4));
+    const years = new Set();
+    for (let year = currentYear; year >= currentYear - 29; year -= 1) years.add(year);
+    [2019, 1989, 1926, 1912, 1868].forEach((year) => years.add(year));
+
+    const rows = [...years]
+      .sort((a, b) => b - a)
+      .map((year) => {
+        const first = seirekiToWareki(year, 1, 1);
+        const last = seirekiToWareki(year, 12, 31);
+        const label = !first
+          ? last.label
+          : first.label === last.label
+            ? first.label
+            : `${first.label} / ${last.label}`;
+        return `<tr><th>${year}年</th><td>${label}</td></tr>`;
+      })
+      .join("");
+    element("quick-table").tBodies[0].innerHTML = rows;
   </script>
 </body>
 </html>
