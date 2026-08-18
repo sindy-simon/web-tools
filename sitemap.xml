@@ -6,37 +6,7 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://mini-tools.net/chars.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mini-tools.net/slug.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mini-tools.net/prompt.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mini-tools.net/diff.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mini-tools.net/regex.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mini-tools.net/pii.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mini-tools.net/json.html</loc>
+    <loc>https://mini-tools.net/birth-year.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -46,7 +16,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mini-tools.net/zenhan.html</loc>
+    <loc>https://mini-tools.net/chars.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -56,43 +26,13 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mini-tools.net/tax.html</loc>
+    <loc>https://mini-tools.net/pii.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://mini-tools.net/size.html</loc>
+    <loc>https://mini-tools.net/prompt.html</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mini-tools.net/recipe.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mini-tools.net/timestamp.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mini-tools.net/timezone.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mini-tools.net/case.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mini-tools.net/text.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://mini-tools.net/birth-year.html</loc>
-    <changefreq>never</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
