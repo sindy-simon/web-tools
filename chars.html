@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>文字数カウント | サクッとツール箱</title>
-  <meta name="description" content="文字数・空白を除いた文字数・行数・UTF-8バイト数・400字詰め原稿用紙換算をリアルタイムで表示する無料ツール。入力内容はサーバーに送信されません。">
+  <meta name="description" content="文字数・空白を除いた文字数・行数・UTF-8バイト数・400字詰め原稿用紙換算をリアルタイムで表示する無料ツール。計算はブラウザ内で行います。データの扱いはプライバシーポリシーをご確認ください。">
   <link rel="canonical" href="https://mini-tools.net/chars.html">
   <link rel="stylesheet" href="./style.css">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
@@ -32,7 +32,7 @@
         <tr><th>バイト数(UTF-8)</th><td id="utf8Bytes">0</td></tr>
         <tr><th>原稿用紙換算(400字)</th><td id="manuscriptPages">0 枚</td></tr>
       </table>
-      <p class="note">文字数は Unicode のコードポイント単位で数えます。多くの絵文字は 1 文字ですが、🇯🇵(国旗)や 👨‍👩‍👧‍👦(複数人の絵文字)など複数のコードポイントで構成される絵文字は複数文字として数えます。入力内容は端末内だけで処理されます。</p>
+      <p class="note">文字数は Unicode のコードポイント単位で数えます。多くの絵文字は 1 文字ですが、🇯🇵(国旗)や 👨‍👩‍👧‍👦(複数人の絵文字)など複数のコードポイントで構成される絵文字は複数文字として数えます。文字数を計算するコードには、入力内容を送信・保存する処理を設けていません。</p>
     </div>
 
     <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
@@ -57,7 +57,7 @@
       <h2>よくある質問</h2>
       <details class="faq"><summary>原稿用紙の換算はどう計算していますか？</summary><p>400字詰め原稿用紙を基準に、全文字数を400で割って枚数を算出しています。提出先によって字詰め(360字・200字など)が異なる場合は、表示枚数を目安としてご利用ください。</p></details>
       <details class="faq"><summary>Word の文字数と数が合いません。</summary><p>Word は「単語数」と「文字数」を別に数え、スペースの扱いも設定で変わります。本ツールはコードポイント単位での文字数表示なので、Word の「文字数(スペースを含めない)」に近い値になります。</p></details>
-      <details class="faq"><summary>入力した文章は外部に送られませんか？</summary><p>送られません。文字数の計算はすべてお使いのブラウザ内(JavaScript)で完結し、入力内容がネットワークに送信されることはありません。機密文書の文字数確認にも安心してお使いいただけます。</p></details>
+      <details class="faq"><summary>入力した文章は送信されますか？</summary><p>文字数を計算するこのページのコードには、入力内容を送信・保存する処理を設けていません。ただし、ページ表示時には広告配信サービスへ通信します。機密情報は入力せず、詳細は<a href="./privacy.html">プライバシーポリシー</a>をご確認ください。</p></details>
       <p class="related">関連ツール: <a href="./sns.html">SNS文字数チェッカー</a></p>
     </div>
   </main>
