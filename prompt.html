@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AIプロンプト トークン概算・軽量化 | 日本語対応(無料)</title>
-  <meta name="description" content="AIプロンプトのトークン数を日本語特性を考慮して概算し、全角→半角・余分な空白の圧縮などでトークンを機械的に削減できる無料ツール。主要モデルの文脈長に収まるかも確認。入力はサーバーに送信されません。">
+  <meta name="description" content="AIプロンプトのトークン数を日本語特性を考慮して概算し、全角→半角・余分な空白の圧縮などでトークンを機械的に削減できる無料ツール。主要モデルの文脈長に収まるかも確認。計算はブラウザ内で行います。データの扱いはプライバシーポリシーをご確認ください。">
   <link rel="canonical" href="https://mini-tools.net/prompt.html">
   <link rel="stylesheet" href="./style.css">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
@@ -53,7 +53,7 @@
         </div>
         <textarea id="output" readonly></textarea>
       </div>
-      <p class="note">全角の英数字・記号を半角に、連続する空白や余分な空行を圧縮します。日本語(かな・漢字)はそのまま残します。処理は端末内で行われ、サーバーには送信されません。</p>
+      <p class="note">全角の英数字・記号を半角に、連続する空白や余分な空行を圧縮します。日本語(かな・漢字)はそのまま残します。概算・整形を行うコードには、入力内容を送信・保存する処理を設けていません。</p>
       <p class="related">関連ツール: <a href="./chars.html">文字数カウント</a></p>
     </div>
     <div class="card article">
@@ -71,7 +71,7 @@
       <h2>よくある質問</h2>
       <details class="faq"><summary>表示されるトークン数は正確ですか？</summary><p>あくまで目安です。実際のトークン分割はモデルごとのトークナイザ(BPE など)によって異なります。本ツールは「漢字≒1・かな≒0.67・英数≒4文字で1トークン」というヒューリスティックで概算しているため、誤差が出ることがあります。</p></details>
       <details class="faq"><summary>軽量化で文章の意味は変わりませんか？</summary><p>変わりません。変換するのは見た目がほぼ同じ全角英数記号の半角化と、余分な空白の削除だけです。日本語の本文や改行による段落構造は保持されます。</p></details>
-      <details class="faq"><summary>プロンプトの内容は送信されますか？</summary><p>送信されません。トークン概算も軽量化もすべてブラウザ内で処理されるため、社外秘を含むプロンプトでも安心して文字数・トークン数を確認できます。</p></details>
+      <details class="faq"><summary>プロンプトの内容は送信されますか？</summary><p>概算・整形を行うこのページのコードには、入力内容を送信・保存する処理を設けていません。ただし、ページ表示時には広告配信サービスへ通信します。社外秘などの機密情報は入力せず、詳細は<a href="./privacy.html">プライバシーポリシー</a>をご確認ください。</p></details>
     </div>
   </main>
 
