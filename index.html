@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>サクッとツール箱 | 登録不要・無料のブラウザミニツール集</title>
-  <meta name="description" content="文字数カウント・和暦と年齢の計算・海外レシピ換算など、日常で使う無料ツール集。登録不要で、入力内容は各ツールのプログラムがブラウザ内で処理します。">
+  <meta name="description" content="生まれ年の公的統計、SNS文字数、和暦、個人情報チェックなど、日本語・日本の実務に固有の条件へ対応する厳選ブラウザツール集。">
   <link rel="canonical" href="https://mini-tools.net/">
   <link rel="stylesheet" href="./style.css">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
@@ -19,12 +19,24 @@
 
   <main class="container">
     <section class="hero">
-      <p class="eyebrow">毎日のミニツール</p>
-      <h1>迷わず使える、日常の計算ツール</h1>
-      <p class="lead">書類の日付、文章の文字数、海外レシピの単位など、調べ直しが面倒な作業を短い手順で片付けます。</p>
+      <p class="eyebrow">日本向けの厳選ツール</p>
+      <h1>日本語と日本の実務で、迷いやすいところだけ</h1>
+      <p class="lead">日本語の文字数、元号、公的統計など、海外製や汎用ツールでは判断しにくい作業を短い手順で確認できます。</p>
     </section>
 
     <ul class="tool-list">
+      <li>
+        <a href="./birth-year.html">
+          <span class="name">あなたが生まれた年の日本は？</span><br>
+          <span class="desc">1950〜2024年の人口・出生・寿命・気候などを公的統計から比較</span>
+        </a>
+      </li>
+      <li>
+        <a href="./sns.html">
+          <span class="name">SNS文字数チェッカー</span><br>
+          <span class="desc">XなどSNS固有の数え方と投稿上限をまとめて確認</span>
+        </a>
+      </li>
       <li>
         <a href="./chars.html">
           <span class="name">文字数カウント</span><br>
@@ -32,122 +44,38 @@
         </a>
       </li>
       <li>
-        <a href="./slug.html">
-          <span class="name">ローマ字スラッグ生成</span><br>
-          <span class="desc">かな・英数字のタイトルをURL用のローマ字スラッグに。ブログのパーマリンクに</span>
+        <a href="./wareki.html">
+          <span class="name">和暦・西暦・年齢計算</span><br>
+          <span class="desc">改元日の境界を含む和暦変換と、基準日時点の満年齢を確認</span>
+        </a>
+      </li>
+      <li>
+        <a href="./pii.html">
+          <span class="name">個人情報チェッカー（伏字化）</span><br>
+          <span class="desc">AIへ貼る前に定型的な個人情報候補を検出。最終確認は利用者が行います</span>
         </a>
       </li>
       <li>
         <a href="./prompt.html">
           <span class="name">AIプロンプト トークン概算・軽量化</span><br>
-          <span class="desc">日本語込みでトークン数を概算し、全角→半角等で機械的に軽量化</span>
-        </a>
-      </li>
-      <li>
-        <a href="./diff.html">
-          <span class="name">テキスト差分(diff)</span><br>
-          <span class="desc">2つの文章の違いを行単位でハイライト。推敲前後やAI修正前後の比較に</span>
-        </a>
-      </li>
-      <li>
-        <a href="./regex.html">
-          <span class="name">正規表現テスター</span><br>
-          <span class="desc">マッチをハイライト表示・置換も可能。AIが書いた正規表現の検証に</span>
-        </a>
-      </li>
-      <li>
-        <a href="./pii.html">
-          <span class="name">個人情報チェッカー(伏字化)</span><br>
-          <span class="desc">AIに貼る前にメール・電話・カード番号等を検出して伏字化。端末内で完結</span>
-        </a>
-      </li>
-      <li>
-        <a href="./json.html">
-          <span class="name">JSON整形・検証</span><br>
-          <span class="desc">貼るだけで整形・圧縮・エラーチェック。AI生成JSONの検証にも</span>
-        </a>
-      </li>
-      <li>
-        <a href="./sns.html">
-          <span class="name">SNS文字数チェッカー</span><br>
-          <span class="desc">X・Instagram・Threads等の上限を一括チェック。Xの全角2・URL23の数え方に対応</span>
-        </a>
-      </li>
-      <li>
-        <a href="./zenhan.html">
-          <span class="name">全角⇔半角 変換</span><br>
-          <span class="desc">英数字・記号・スペースと半角カナ⇔全角カナ(濁点対応)を相互変換</span>
-        </a>
-      </li>
-      <li>
-        <a href="./wareki.html">
-          <span class="name">和暦・西暦・年齢計算</span><br>
-          <span class="desc">元号の相互変換、満年齢、日付の間隔を一つのページで計算</span>
-        </a>
-      </li>
-      <li>
-        <a href="./tax.html">
-          <span class="name">消費税計算(税込⇔税抜)</span><br>
-          <span class="desc">10%・軽減税率 8% 対応。端数処理も切り捨て/四捨五入/切り上げから選択可</span>
-        </a>
-      </li>
-      <li>
-        <a href="./size.html">
-          <span class="name">海外サイズ→日本サイズ変換</span><br>
-          <span class="desc">靴(US/UK/EU→cm)・服(XS〜XXL→日本サイズ)をメンズ・レディース別に変換。海外通販の目安に</span>
-        </a>
-      </li>
-      <li>
-        <a href="./recipe.html">
-          <span class="name">海外レシピ単位変換</span><br>
-          <span class="desc">カップ・大さじ・oz・℉を ml・g・℃に変換。海外レシピの計量をかんたんに</span>
-        </a>
-      </li>
-      <li>
-        <a href="./timestamp.html">
-          <span class="name">Unixタイムスタンプ変換</span><br>
-          <span class="desc">Unixタイムスタンプ（秒・ms）をJST日時に変換。ISO 8601対応・逆変換も可能</span>
-        </a>
-      </li>
-      <li>
-        <a href="./timezone.html">
-          <span class="name">時差計算・海外時刻→日本時間変換</span><br>
-          <span class="desc">ニューヨーク・ロンドン・LAなど主要都市の時刻をJSTに変換。夏時間も自動対応</span>
-        </a>
-      </li>
-      <li>
-        <a href="./case.html">
-          <span class="name">テキストケース変換</span><br>
-          <span class="desc">camelCase・PascalCase・snake_case・kebab-case など6形式を一括変換。変数名・URLスラッグに</span>
-        </a>
-      </li>
-      <li>
-        <a href="./text.html">
-          <span class="name">テキスト整形・改行コード変換</span><br>
-          <span class="desc">CRLF⇔LF 変換・全角スペース正規化・連続空行圧縮などをまとめて整形</span>
-        </a>
-      </li>
-      <li>
-        <a href="./birth-year.html">
-          <span class="name">あなたが生まれた年の日本は？</span><br>
-          <span class="desc">生まれ年を選ぶだけで、人口・出生率・寿命・初任給・気候など 10 項目を今と比較。1950〜2024年対応。グラフ・SNSシェア付き</span>
+          <span class="desc">日本語を含むトークン数の目安を確認。現在、概算精度を監査中です</span>
         </a>
       </li>
     </ul>
 
     <div class="card article">
-      <h2>サクッとツール箱について</h2>
-      <p>「サクッとツール箱」は、日常のちょっとした計算・変換・整形を、ブラウザだけで素早く片付けられる無料ツール集です。文字数のカウント、西暦と和暦の変換、消費税の計算、海外サイズや海外レシピの単位変換、正規表現テスター、JSON整形、タイムスタンプや時差の変換など、「アプリを入れるほどではないけれど、その場でサッと使いたい」作業をまとめています。すべて登録不要・無料で、ページを開けばすぐに使えます。</p>
+      <h2>掲載するツールの基準</h2>
+      <p>「サクッとツール箱」は、数を増やすことよりも、汎用ツールでは迷いやすい日本語・日本の制度や実務に固有の問題を、根拠と限界を示しながら解決することを優先します。</p>
 
-      <h2>3つの特長</h2>
+      <h2>3つの方針</h2>
       <ul>
-        <li><strong>入力を保存しない設計</strong> … 各ツールの計算処理はブラウザ内で実行し、入力内容をサイトのサーバーへ保存する機能は設けていません。第三者サービスとの通信はプライバシーポリシーに記載します。</li>
-        <li><strong>日本向けの仕様</strong> … 和暦・全角半角・日本の消費税・JST(日本標準時)など、日本で実際に使われる基準に合わせて作っています。海外製ツールで数え方がずれて不便なところを、日本向けに作り直しています。</li>
-        <li><strong>根拠と限界を明示</strong> … 公的資料や仕様を参照したツールには出典と確認日を記載し、概算や対象外の範囲も画面上で説明します。</li>
+        <li><strong>独自の利用価値</strong> … 日本語の数え方、改元日の境界、公的統計との比較など、そのページを使う理由が明確なものだけを掲載します。</li>
+        <li><strong>根拠と確認日</strong> … 公的資料やサービス仕様を使う場合は参照元と確認日を示し、推計や概算は実測値と区別します。</li>
+        <li><strong>限界を隠さない</strong> … 検出漏れ、誤差、対象外の範囲を説明し、「安全」「正確」と一律には保証しません。</li>
       </ul>
 
-      <h2>こんな方に</h2>
-      <p>レポートやエントリーシートの文字数を確認したい学生・社会人、書類で西暦と和暦を行き来する方、海外通販や海外レシピで単位に迷う方、コードを書く中でJSON・正規表現・タイムスタンプをサッと確認したい開発者まで。上の一覧から使いたいツールを選んでください。サイトの方針は<a href="./about.html">運営者情報</a>、データの扱いは<a href="./privacy.html">プライバシーポリシー</a>でご確認いただけます。</p>
+      <h2>入力データについて</h2>
+      <p>各ツールの計算処理はブラウザ内で実行し、入力内容をこのサイトのサーバーへ保存する機能は設けていません。広告など第三者サービスとの通信は<a href="./privacy.html">プライバシーポリシー</a>、運営と更新の方針は<a href="./about.html">運営者情報</a>で確認できます。</p>
     </div>
 
     <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
