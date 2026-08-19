@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>和暦・西暦・年齢計算 | 改元日まで正確に変換</title>
+  <title>和暦・西暦・年齢計算 | 改元日を含めて判定</title>
   <meta name="description" content="西暦と和暦の相互変換、満年齢、2つの日付の差をまとめて計算。令和・平成・昭和・大正・明治に対応し、改元年は月日まで判定します。">
   <link rel="canonical" href="https://mini-tools.net/wareki.html">
   <link rel="stylesheet" href="./style.css">
@@ -18,7 +18,7 @@
         <a href="./">ツール一覧</a>
         <a href="./wareki.html" aria-current="page">和暦・年齢</a>
         <a href="./chars.html">文字数</a>
-        <a href="./birth-year.html">生まれ年統計</a>
+        <a href="./sns.html">SNS文字数</a>
       </nav>
     </div>
   </header>
@@ -45,7 +45,7 @@
 
     <section class="card tool-card" id="to-wareki">
       <h2>西暦から和暦へ</h2>
-      <p class="section-intro">改元のあった年も、選んだ月日を使って正しい元号を表示します。</p>
+      <p class="section-intro">改元のあった年も、選んだ月日を使って該当する元号を表示します。</p>
       <label for="seireki-date">西暦の日付</label>
       <input type="date" id="seireki-date" min="1868-10-23">
       <div class="actions">
@@ -158,12 +158,14 @@
 
       <h2>参照資料</h2>
       <ul>
-        <li><a href="https://www.archives.go.jp/naj_news/16/anohi.html" rel="noopener">国立公文書館「近年の元号改定のあゆみ」</a></li>
+        <li><a href="https://elaws.e-gov.go.jp/document?lawid=431CO0000000143" rel="noopener">e-Gov法令検索「元号を改める政令」（令和）</a></li>
+        <li><a href="https://www.archives.go.jp/naj_news/16/anohi.html" rel="noopener">国立公文書館「平成が始まった日」</a></li>
         <li><a href="https://www.archives.go.jp/ayumi/kobetsu/t15_1926_01.html" rel="noopener">国立公文書館「昭和と改元」</a></li>
+        <li><a href="https://www.archives.go.jp/ayumi/kobetsu/m45_1912_01.html" rel="noopener">国立公文書館「大正と改元」</a></li>
         <li><a href="https://crd.ndl.go.jp/reference/entry/index.php?id=1000255208&amp;page=ref_view" rel="noopener">国立国会図書館「明治に改元したのは何月何日か」</a></li>
       </ul>
       <div class="data-note">
-        <strong>最終確認</strong><span>2026年8月9日</span>
+        <strong>最終確認</strong><span>2026年8月19日</span>
         <strong>対応範囲</strong><span>明治元年10月23日以降</span>
       </div>
 
