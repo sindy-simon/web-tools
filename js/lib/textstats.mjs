@@ -3,7 +3,6 @@
 import {
   assertText,
   graphemeSegments,
-  wordLength,
 } from "./text-count.mjs";
 
 /**
@@ -12,7 +11,6 @@ import {
  * - codePoints: コンピューター内部の文字番号（Unicodeコードポイント）の数
  * - noWhitespace: 空白・改行を除いた書記素クラスターの数
  * - lines: 行数（末尾の改行は新しい行として数えない）
- * - words: ブラウザ標準の日本語単語分割による単語数
  * - utf8Bytes: UTF-8形式でのデータ量
  * - manuscriptPages: 400字詰め原稿用紙の換算枚数（切り上げ）
  */
@@ -23,8 +21,7 @@ export function textStats(text) {
   const codePoints = [...text].length;
   const noWhitespace = graphemes.filter((segment) => !/^\s+$/u.test(segment)).length;
   const lines = text === "" ? 0 : text.split(/\r\n|\r|\n/u).length - (/\r\n$|[\r\n]$/u.test(text) ? 1 : 0);
-  const words = wordLength(text);
   const utf8Bytes = new TextEncoder().encode(text).length;
   const manuscriptPages = Math.ceil(total / 400);
-  return { total, codePoints, noWhitespace, lines, words, utf8Bytes, manuscriptPages };
+  return { total, codePoints, noWhitespace, lines, utf8Bytes, manuscriptPages };
 }

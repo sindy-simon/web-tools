@@ -56,8 +56,7 @@ function findHttpUrls(text) {
 }
 
 /** Xの一般投稿に使われる重み付き文字数。 */
-export function xWeightedLength(text) {
-  assertText(text);
+function fallbackXWeightedLength(text) {
   const normalized = text.normalize("NFC");
   const urls = findHttpUrls(normalized);
   let weight = 0;
@@ -72,6 +71,19 @@ export function xWeightedLength(text) {
   return weight;
 }
 
+export function hasOfficialXParser() {
+  return typeof globalThis.twttr?.txt?.parseTweet === "function";
+}
+
+/** X公式文書が案内するtwitter-textを優先し、未読込時だけ簡易計算へ戻る。 */
+export function xWeightedLength(text) {
+  assertText(text);
+  if (hasOfficialXParser()) {
+    return globalThis.twttr.txt.parseTweet(text).weightedLength;
+  }
+  return fallbackXWeightedLength(text);
+}
+
 export const PLATFORMS = [
   {
     id: "x",
@@ -80,6 +92,7 @@ export const PLATFORMS = [
     count: xWeightedLength,
     note: "日本語・絵文字は原則2、httpから始まるURLは23",
     source: "https://docs.x.com/fundamentals/counting-characters",
+    sourceLabel: "X開発者向け文書「文字数の数え方」",
   },
   {
     id: "threads",
@@ -88,6 +101,7 @@ export const PLATFORMS = [
     count: graphemeLength,
     note: "公式上限500。Unicodeの厳密な数え方は公開資料にないため目安",
     source: "https://help.instagram.com/1217144552251333/",
+    sourceLabel: "Threadsヘルプ「新しいスレッドを開始する」",
   },
   {
     id: "bluesky",
@@ -95,7 +109,16 @@ export const PLATFORMS = [
     limit: 300,
     count: graphemeLength,
     note: "Unicode書記素クラスター単位で300",
-    source: "https://docs.bsky.app/docs/advanced-guides/intent-links",
+    source: "https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json",
+    sourceLabel: "Bluesky公式Lexicon「投稿本文」",
+  },
+];
+
+export const REFERENCES = [
+  ...PLATFORMS.map(({ source, sourceLabel }) => ({ url: source, label: sourceLabel })),
+  {
+    url: "https://github.com/twitter/twitter-text",
+    label: "X公式文書が案内するtwitter-text",
   },
 ];
 
@@ -109,6 +132,7 @@ export function analyze(text) {
       remaining: platform.limit - used,
       over: used > platform.limit,
       ratio: platform.limit === 0 ? 0 : used / platform.limit,
+      approximate: platform.id === "x" && !hasOfficialXParser(),
     };
   });
 }

@@ -62,11 +62,6 @@
           <span class="metric-help">末尾の改行は追加しない</span>
         </div>
         <div class="metric">
-          <span class="metric-label">単語数</span>
-          <strong class="metric-value" id="words">0</strong>
-          <span class="metric-help">ブラウザの日本語分割</span>
-        </div>
-        <div class="metric">
           <span class="metric-label">原稿用紙</span>
           <strong class="metric-value"><span id="manuscriptPages">0</span><small>枚</small></strong>
           <span class="metric-help">400字詰め・切り上げ</span>
@@ -99,25 +94,19 @@
     <section class="card article" id="method">
       <h2>画面上の1文字として数える</h2>
       <p>通常の文字数は、見た目が一つの文字なら一つとして数えます。たとえば「👨‍👩‍👧‍👦」は複数の絵文字を内部で組み合わせていますが、画面上では一つなので1文字です。国旗や肌の色を指定した絵文字も同様です。</p>
-      <p>単語数はブラウザに備わる日本語の分割機能を使います。固有名詞や記号を含む文章では、文書作成ソフトと結果が異なる場合があります。</p>
-
-      <h2>Xの文字数</h2>
-      <p>Xの一般投稿は上限280ですが、すべての文字を同じ数では数えません。日本語・中国語・韓国語の文字と絵文字は原則2、ラテン文字や一般的な半角記号は1として計算します。<code>http://</code>または<code>https://</code>から始まるURL（Webページの住所）は、長さにかかわらず23として計算します。</p>
-      <p>入力文はNFC（Normalization Form C：同じ見た目の文字表現を一つにそろえるUnicodeの標準方式）へそろえてから計算します。公式文書と公開されているtwitter-textの重み付けを基にしていますが、複雑なURL、返信の宛先、有料プランなどX側だけが判断できる条件もあるため、結果は投稿前の確認用です。</p>
+            <h2>Xの文字数</h2>
+      <p>Xの一般投稿は上限<span data-platform-limit="x">280</span>ですが、すべての文字を同じ数では数えません。日本語・中国語・韓国語の文字と絵文字は原則2、ラテン文字や一般的な半角記号は1として計算します。<code>http://</code>または<code>https://</code>から始まるURL（Webページの住所）は、長さにかかわらず23として計算します。</p>
+      <p>Xの判定には、公式文書が案内するtwitter-text 3.1.0をサイト内に同梱して使います。返信の宛先や有料プランなどX側だけが判断できる条件は対象外です。ライブラリを読み込めない場合だけ簡易計算へ切り替わり、結果欄にその旨を表示します。</p>
 
       <h2>ThreadsとBluesky</h2>
-      <p>Threadsの公式ヘルプでは、500文字を超えると続きの投稿が自動的に追加されると案内されています。ただし、結合絵文字などUnicodeの厳密な数え方は公開資料で確認できないため、本ツールのThreads欄は画面上の1文字に近い単位による目安です。Blueskyは公式仕様どおりUnicode書記素クラスター単位で300文字を判定します。</p>
+      <p>Threadsの公式ヘルプでは、<span data-platform-limit="threads">500</span>文字を超えると続きの投稿が自動的に追加されると案内されています。ただし、結合絵文字などUnicodeの厳密な数え方は公開資料で確認できないため、本ツールのThreads欄は画面上の1文字に近い単位による目安です。Blueskyは公式仕様どおりUnicode書記素クラスター単位で<span data-platform-limit="bluesky">300</span>文字を判定します。</p>
 
       <h2>入力内容の取り扱い</h2>
       <p>文字数の計算はこのページのプログラムがブラウザ内で行い、入力した文章をサイトのサーバーへ保存・送信する処理はありません。広告など第三者サービスとの通信については、<a href="./privacy.html">プライバシーポリシー</a>をご確認ください。公開できない機密情報や個人情報は入力しないでください。</p>
 
       <h2 id="sources">参照資料</h2>
-      <ul>
-        <li><a href="https://docs.x.com/fundamentals/counting-characters" rel="noopener">X開発者向け文書「文字数の数え方」</a></li>
-        <li><a href="https://github.com/twitter/twitter-text" rel="noopener">X公式文書が案内するtwitter-text</a></li>
-        <li><a href="https://help.instagram.com/1217144552251333/" rel="noopener">Threadsヘルプ「新しいスレッドを開始する」</a></li>
-        <li><a href="https://docs.bsky.app/docs/advanced-guides/intent-links" rel="noopener">Bluesky開発者向け文書「投稿作成リンク」</a></li>
-      </ul>
+      <ul id="platform-sources"></ul>
+      <p class="note">Xの判定にはtwitter-text 3.1.0（Apache License 2.0）を同梱しています。<a href="./js/vendor/twitter-text-LICENSE.txt">ライセンス全文</a></p>
       <div class="data-note">
         <strong>仕様確認日</strong><span id="spec-checked">2026年8月19日</span>
         <strong>対象</strong><span>一般的な短文投稿</span>
@@ -147,16 +136,31 @@
     </div>
   </footer>
 
+  <script src="./js/vendor/twitter-text-3.1.0.min.js"></script>
   <script type="module">
     import { textStats } from "./js/lib/textstats.mjs";
-    import { analyze, SPEC_CHECKED_DATE } from "./js/lib/sns-count.mjs";
+    import { analyze, PLATFORMS, REFERENCES, SPEC_CHECKED_DATE } from "./js/lib/sns-count.mjs";
 
     const input = document.getElementById("text");
     const resultContainer = document.getElementById("platform-results");
     const numberFormat = new Intl.NumberFormat("ja-JP");
-    const statKeys = ["total", "codePoints", "noWhitespace", "lines", "words", "utf8Bytes", "manuscriptPages"];
+    const statKeys = ["total", "codePoints", "noWhitespace", "lines", "utf8Bytes", "manuscriptPages"];
     const [year, month, day] = SPEC_CHECKED_DATE.split("-");
     document.getElementById("spec-checked").textContent = `${year}年${Number(month)}月${Number(day)}日`;
+    for (const platform of PLATFORMS) {
+      document.querySelectorAll(`[data-platform-limit="${platform.id}"]`)
+        .forEach((element) => { element.textContent = numberFormat.format(platform.limit); });
+    }
+    const sourceList = document.getElementById("platform-sources");
+    for (const reference of REFERENCES) {
+      const item = document.createElement("li");
+      const link = document.createElement("a");
+      link.href = reference.url;
+      link.rel = "noopener";
+      link.textContent = reference.label;
+      item.append(link);
+      sourceList.append(item);
+    }
 
     function platformCard(platform) {
       const percentage = Math.min(Math.max(platform.ratio * 100, 0), 100);
@@ -164,6 +168,9 @@
         ? `${numberFormat.format(Math.abs(platform.remaining))}超過`
         : `残り${numberFormat.format(platform.remaining)}`;
       const className = platform.over ? "platform-card platform-over" : "platform-card";
+      const note = platform.approximate
+        ? "公式twitter-textを読み込めないため簡易計算中"
+        : platform.note;
       return `<article class="${className}">
         <div class="platform-heading">
           <h3>${platform.name}</h3>
@@ -171,7 +178,7 @@
         </div>
         <div class="progress" aria-hidden="true"><span style="width:${percentage}%"></span></div>
         <p class="platform-status">${status}</p>
-        <p class="platform-note">${platform.note}</p>
+        <p class="platform-note">${note}</p>
       </article>`;
     }
 

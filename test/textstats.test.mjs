@@ -8,7 +8,6 @@ test("空文字列はすべて0", () => {
     codePoints: 0,
     noWhitespace: 0,
     lines: 0,
-    words: 0,
     utf8Bytes: 0,
     manuscriptPages: 0,
   });
@@ -61,10 +60,6 @@ test("Windows形式の改行を1つの改行として扱う", () => {
   assert.equal(result.noWhitespace, 2);
 });
 
-test("単語数を数える", () => {
-  assert.equal(textStats("hello world").words, 2);
-  assert.equal(textStats("  ").words, 0);
-});
 
 test("原稿用紙換算は400文字ごとに切り上げる", () => {
   assert.equal(textStats("あ".repeat(400)).manuscriptPages, 1);

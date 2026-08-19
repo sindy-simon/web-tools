@@ -1,12 +1,28 @@
+import { readFileSync } from "node:fs";
+import vm from "node:vm";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { graphemeLength } from "../js/lib/text-count.mjs";
 import {
   analyze,
+  hasOfficialXParser,
   PLATFORMS,
+  REFERENCES,
   SPEC_CHECKED_DATE,
   xWeightedLength,
 } from "../js/lib/sns-count.mjs";
+
+const twitterTextCode = readFileSync(
+  new URL("../js/vendor/twitter-text-3.1.0.min.js", import.meta.url),
+  "utf8"
+);
+const twitterTextContext = {};
+vm.runInNewContext(twitterTextCode, twitterTextContext);
+globalThis.twttr = twitterTextContext.twttr;
+
+test("公式twitter-textをテストでも使用する", () => {
+  assert.equal(hasOfficialXParser(), true);
+});
 
 test("画面上の文字数は結合絵文字を1文字として数える", () => {
   assert.equal(graphemeLength("あいうえお"), 5);
@@ -42,8 +58,10 @@ test("X方式は同じ見た目の文字をNFC方式へそろえる", () => {
   assert.equal(xWeightedLength("e\u0301"), 1);
 });
 
-test("X方式はhttpから始まるURLを23として数える", () => {
+test("X方式は公式twitter-textと同じURL判定を使う", () => {
   assert.equal(xWeightedLength("https://example.com/very/long/path/to/page"), 23);
+  assert.equal(xWeightedLength("example.com"), 23);
+  assert.equal(xWeightedLength("(example.com)"), 25);
   assert.equal(xWeightedLength("テスト https://t.co/abc"), 30);
   assert.equal(xWeightedLength("https://example.com。"), 25);
 });
@@ -54,9 +72,12 @@ test("仕様確認日は更新箇所として公開する", () => {
 
 test("対象は根拠を確認できた3サービスだけ", () => {
   assert.deepEqual(PLATFORMS.map(({ id }) => id), ["x", "threads", "bluesky"]);
+  assert.deepEqual(PLATFORMS.map(({ limit }) => limit), [280, 500, 300]);
   for (const platform of PLATFORMS) {
     assert.match(platform.source, /^https:\/\//);
+    assert.ok(platform.sourceLabel);
   }
+  assert.equal(REFERENCES.length, 4);
 });
 
 test("Xは重み付き、ThreadsとBlueskyは画面上の文字数で計算する", () => {
@@ -71,6 +92,17 @@ test("Xは重み付き、ThreadsとBlueskyは画面上の文字数で計算す�
   assert.equal(threads.over, false);
   assert.equal(bluesky.used, 150);
   assert.equal(bluesky.over, false);
+});
+
+test("各サービスは上限ちょうどを許可し、1文字超過を検出する", () => {
+  for (const platform of PLATFORMS) {
+    const atLimit = analyze("a".repeat(platform.limit)).find(({ id }) => id === platform.id);
+    const overLimit = analyze("a".repeat(platform.limit + 1)).find(({ id }) => id === platform.id);
+    assert.equal(atLimit.over, false, platform.id);
+    assert.equal(atLimit.remaining, 0, platform.id);
+    assert.equal(overLimit.over, true, platform.id);
+    assert.equal(overLimit.remaining, -1, platform.id);
+  }
 });
 
 test("空文字は使用0・残りは上限のまま", () => {

@@ -15,9 +15,13 @@
 | 個人情報チェッカー（伏字化） | https://mini-tools.net/pii.html |
 | AIプロンプト トークン概算・軽量化 | https://mini-tools.net/prompt.html |
 
-> `sns.html` は `chars.html#sns` への noindex 案内ページ。公開ツール数には含めない。
->
 > 上記も品質監査中の候補。根拠が不足する場合は公開対象から外す。
+
+## 旧URLの案内ページ
+
+| ページ | URL | 扱い |
+|---|---|---|
+| 旧SNS文字数チェッカー | https://mini-tools.net/sns.html | `chars.html#sns` への noindex 案内。公開ツール数・サイトマップには含めない |
 
 ## サイト共通ページ
 

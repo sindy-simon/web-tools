@@ -20,12 +20,3 @@ export function graphemeLength(text) {
   return graphemeSegments(text).length;
 }
 
-export function wordLength(text) {
-  assertText(text);
-  if (text.trim() === "") return 0;
-  if (typeof Intl !== "undefined" && typeof Intl.Segmenter === "function") {
-    const segmenter = new Intl.Segmenter("ja", { granularity: "word" });
-    return [...segmenter.segment(text)].filter(({ isWordLike }) => isWordLike).length;
-  }
-  return text.trim().split(/\s+/u).length;
-}
