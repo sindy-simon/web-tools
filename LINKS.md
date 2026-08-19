@@ -6,16 +6,17 @@
 - 本番: https://mini-tools.net/
 - `main` へのpushでGitHub Pagesへ公開される。
 
-## 公開候補のツール（5本）
+## 公開候補のツール（4本）
 
 | ツール | URL |
 |---|---|
-| SNS文字数チェッカー | https://mini-tools.net/sns.html |
-| 文字数カウント | https://mini-tools.net/chars.html |
+| 文字数・SNS投稿チェック | https://mini-tools.net/chars.html |
 | 和暦・西暦・年齢計算 | https://mini-tools.net/wareki.html |
 | 個人情報チェッカー（伏字化） | https://mini-tools.net/pii.html |
 | AIプロンプト トークン概算・軽量化 | https://mini-tools.net/prompt.html |
 
+> `sns.html` は `chars.html#sns` への noindex 案内ページ。公開ツール数には含めない。
+>
 > 上記も品質監査中の候補。根拠が不足する場合は公開対象から外す。
 
 ## サイト共通ページ
