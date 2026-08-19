@@ -12,7 +12,7 @@
 |---|---|
 | 文字数・SNS投稿チェック | https://mini-tools.net/chars.html |
 | 和暦・西暦・年齢計算 | https://mini-tools.net/wareki.html |
-| 個人情報チェッカー（伏字化） | https://mini-tools.net/pii.html |
+| 個人情報候補チェッカー（伏字化） | https://mini-tools.net/pii.html |
 | AIプロンプト トークン概算・軽量化 | https://mini-tools.net/prompt.html |
 
 > 上記も品質監査中の候補。根拠が不足する場合は公開対象から外す。
