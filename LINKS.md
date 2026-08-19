@@ -6,11 +6,10 @@
 - 本番: https://mini-tools.net/
 - `main` へのpushでGitHub Pagesへ公開される。
 
-## 公開候補のツール（6本）
+## 公開候補のツール（5本）
 
 | ツール | URL |
 |---|---|
-| あなたが生まれた年の日本は？ | https://mini-tools.net/birth-year.html |
 | SNS文字数チェッカー | https://mini-tools.net/sns.html |
 | 文字数カウント | https://mini-tools.net/chars.html |
 | 和暦・西暦・年齢計算 | https://mini-tools.net/wareki.html |
@@ -36,8 +35,8 @@
 | robots.txt | https://mini-tools.net/robots.txt |
 | ads.txt（AdSense） | https://mini-tools.net/ads.txt |
 
-## 保留中（13本）
+## 保留中（14本）
 
-`tax` / `age` / `case` / `text` / `zenhan` / `diff` / `regex` / `json` / `slug` / `size` / `recipe` / `timestamp` / `timezone`
+`birth-year` / `tax` / `age` / `case` / `text` / `zenhan` / `diff` / `regex` / `json` / `slug` / `size` / `recipe` / `timestamp` / `timezone`
 
-コードとテストは保持し、個別の品質条件を満たしたものだけ1本ずつ復帰を検討する。
+`birth-year` は一次情報との対応を再構築するまで公開しない。コードとテストは保持し、個別の品質条件を満たしたものだけ1本ずつ復帰を検討する。
