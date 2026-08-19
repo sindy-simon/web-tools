@@ -12,6 +12,7 @@ import {
   xWeightedLength,
 } from "../js/lib/sns-count.mjs";
 
+const charsHtml = readFileSync(new URL("../chars.html", import.meta.url), "utf8");
 const twitterTextCode = readFileSync(
   new URL("../js/vendor/twitter-text-3.1.0.min.js", import.meta.url),
   "utf8"
@@ -66,8 +67,16 @@ test("X方式は公式twitter-textと同じURL判定を使う", () => {
   assert.equal(xWeightedLength("https://example.com。"), 25);
 });
 
-test("仕様確認日は更新箇所として公開する", () => {
+test("仕様確認日と上限のHTML初期表示は設定値と一致する", () => {
   assert.equal(SPEC_CHECKED_DATE, "2026-08-19");
+  const [year, month, day] = SPEC_CHECKED_DATE.split("-");
+  assert.match(charsHtml, new RegExp(`${year}年${Number(month)}月${Number(day)}日`));
+  for (const platform of PLATFORMS) {
+    assert.match(
+      charsHtml,
+      new RegExp(`data-platform-limit="${platform.id}">${platform.limit}<`)
+    );
+  }
 });
 
 test("対象は根拠を確認できた3サービスだけ", () => {
