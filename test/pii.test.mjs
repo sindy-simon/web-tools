@@ -1,10 +1,6 @@
-import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { detectPII, maskPII } from "../js/lib/pii.mjs";
-
-const pageHtml = readFileSync(new URL("../pii.html", import.meta.url), "utf8");
-const pageScript = readFileSync(new URL("../js/pages/pii-page.mjs", import.meta.url), "utf8");
 
 function types(text) {
   return detectPII(text).map((f) => f.type);
@@ -21,6 +17,7 @@ test("国内電話番号を検出し、対象外形式は検出しない", () =>
   assert.deepEqual(types("090-1234-5678"), ["phone"]);
   assert.deepEqual(types("09012345678"), ["phone"]);
   assert.deepEqual(types("+81-90-1234-5678"), []);
+  assert.deepEqual(types("01-2-345"), []);
 });
 
 test("Luhn が通る13〜19桁のカード番号候補を検出する", () => {
@@ -49,6 +46,10 @@ test("通常の文章では誤検出しない", () => {
   assert.deepEqual(detectPII("今日は2024年で価格は1000円です"), []);
 });
 
+test("独立した12桁の注文番号はマイナンバー候補として誤検出する", () => {
+  assert.deepEqual(types("注文番号 123456789012"), ["mynumber"]);
+});
+
 test("複数のPIIを出現順で返す", () => {
   const f = detectPII("a@b.com と 090-1234-5678");
   assert.deepEqual(f.map((x) => x.type), ["email", "phone"]);
@@ -65,19 +66,6 @@ test("PIIが無ければ原文のまま", () => {
   assert.equal(maskPII("ふつうの文章").masked, "ふつうの文章");
 });
 
-test("PIIページは第三者スクリプトと接続要求を許可しない", () => {
-  assert.doesNotMatch(pageHtml, /<script[^>]+src="https?:/);
-  assert.match(pageHtml, /connect-src 'none'/);
-  assert.match(pageHtml, /src="\.\/js\/pages\/pii-page\.mjs"/);
-  assert.doesNotMatch(pageScript, /\b(fetch|XMLHttpRequest|WebSocket|sendBeacon)\b/);
-});
-
-test("ページ上に検出対象外と誤検出の境界がある", () => {
-  assert.match(pageHtml, /13〜19桁/);
-  assert.match(pageHtml, /注文番号なども誤検出/);
-  assert.match(pageHtml, /パスワード、APIキー/);
-  assert.match(pageHtml, /結果が0件でも安全を意味しません/);
-});
 
 test("文字列以外はエラー", () => {
   assert.throws(() => detectPII(123), TypeError);

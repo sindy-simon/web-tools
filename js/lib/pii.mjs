@@ -26,6 +26,11 @@ function luhn(s) {
   return sum % 10 === 0;
 }
 
+function isDomesticPhone(value) {
+  const digits = value.replace(/\D/g, "");
+  return digits.startsWith("0") && (digits.length === 10 || digits.length === 11);
+}
+
 function isIPv4(value) {
   return value.split(".").every((part) => {
     if (!/^(0|[1-9]\d{0,2})$/.test(part)) return false;
@@ -38,7 +43,7 @@ function isIPv4(value) {
 const DETECTORS = [
   { type: "email", label: "メールアドレス", re: /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g },
   { type: "creditcard", label: "カード番号候補", re: /\b\d(?:[ -]?\d){12,18}\b/g, validate: luhn },
-  { type: "phone", label: "国内電話番号候補", re: /\b0\d{1,4}-\d{1,4}-\d{3,4}\b|\b0\d{9,10}\b/g },
+  { type: "phone", label: "国内電話番号候補", re: /\b0\d{1,4}-\d{1,4}-\d{3,4}\b|\b0\d{9,10}\b/g, validate: isDomesticPhone },
   { type: "mynumber", label: "マイナンバー候補（12桁）", re: /\b\d{12}\b/g },
   { type: "ip", label: "IPv4アドレス候補", re: /\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/g, validate: isIPv4 },
   { type: "postal", label: "郵便番号候補", re: /(?<!\d)〒?\d{3}-\d{4}(?!\d)/g },
