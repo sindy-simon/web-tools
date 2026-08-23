@@ -15,7 +15,7 @@ test("漢字は約1トークン/字", () => {
 });
 
 test("ASCIIは約4文字で1トークン", () => {
-  assert.equal(estimateTokens("hello world"), 3);
+  assert.equal(estimateTokens("hello world"), 3); // 11/4 ≈ 2.75 → 3
 });
 
 test("トークン数は文字が増えれば増える(単調)", () => {
