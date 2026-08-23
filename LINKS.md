@@ -6,14 +6,13 @@
 - 本番: https://mini-tools.net/
 - `main` へのpushでGitHub Pagesへ公開される。
 
-## 公開候補のツール（4本）
+## 公開候補のツール（3本）
 
 | ツール | URL |
 |---|---|
 | 文字数・SNS投稿チェック | https://mini-tools.net/chars.html |
 | 和暦・西暦・年齢計算 | https://mini-tools.net/wareki.html |
 | 個人情報候補チェッカー（伏字化） | https://mini-tools.net/pii.html |
-| AIプロンプト トークン概算・軽量化 | https://mini-tools.net/prompt.html |
 
 > 上記も品質監査中の候補。根拠が不足する場合は公開対象から外す。
 
@@ -40,8 +39,8 @@
 | robots.txt | https://mini-tools.net/robots.txt |
 | ads.txt（AdSense） | https://mini-tools.net/ads.txt |
 
-## 保留中（14本）
+## 保留中（15本）
 
-`birth-year` / `tax` / `age` / `case` / `text` / `zenhan` / `diff` / `regex` / `json` / `slug` / `size` / `recipe` / `timestamp` / `timezone`
+`prompt` / `birth-year` / `tax` / `age` / `case` / `text` / `zenhan` / `diff` / `regex` / `json` / `slug` / `size` / `recipe` / `timestamp` / `timezone`
 
-`birth-year` は一次情報との対応を再構築するまで公開しない。コードとテストは保持し、個別の品質条件を満たしたものだけ1本ずつ復帰を検討する。
+`prompt` はモデル別の実測と誤差分布がなく、正規化が意味を変える反例もあるため公開保留。`birth-year` は一次情報との対応を再構築するまで公開しない。コードとテストは保持し、個別の品質条件を満たしたものだけ1本ずつ復帰を検討する。
