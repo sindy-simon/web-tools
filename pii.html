@@ -3,12 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>個人情報チェッカー(伏字化) | AIに貼る前のPII検出</title>
-  <meta name="description" content="文章に含まれるメール・電話番号・カード番号・マイナンバー等の個人情報を検出し、確認のうえ伏字化できる無料ツール。AIチャットに貼る前のチェックに。入力はサーバーに送信されません。">
+  <title>個人情報候補チェッカー(伏字化) | AIへ貼る前の補助確認</title>
+  <meta name="description" content="文章に含まれるメール、国内電話番号、カード番号、12桁番号などの候補をパターン検出して伏字化する補助ツール。検出漏れと誤検出があるため、必ず目視確認してください。">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <link rel="canonical" href="https://mini-tools.net/pii.html">
   <link rel="stylesheet" href="./style.css">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
-     crossorigin="anonymous"></script>
 </head>
 <body>
   <header>
@@ -18,8 +17,8 @@
   </header>
 
   <main class="container">
-    <h1>個人情報チェッカー(伏字化)</h1>
-    <p class="lead">AIチャットや問い合わせに貼る前に、メール・電話番号・カード番号などの個人情報を検出して伏字化します。</p>
+    <h1>個人情報候補チェッカー(伏字化)</h1>
+    <p class="lead">AIチャットや問い合わせに貼る前に、メール・国内電話番号・カード番号などの候補をパターン検出して伏字化します。</p>
 
     <div class="card">
       <label for="input">テキスト</label>
@@ -35,24 +34,28 @@
         <textarea id="output" readonly></textarea>
       </div>
 
-      <p class="note warn">⚠️ 検出は決定論的なパターンによる補助で、<strong>完全ではありません</strong>(氏名・住所・社外秘など検出できないものがあります)。コピー前に必ずご自身で目視確認してください。入力内容は端末内だけで処理され、サーバーには送信されません。</p>
+      <p class="note warn">⚠️ 結果は<strong>個人情報であることを確定する判定ではありません</strong>。検出漏れと誤検出があります。伏字化後もコピー前に全文を目視し、氏名・住所・口座番号・パスワード・APIキー・社外秘などが残っていないか確認してください。</p>
     </div>
-
-    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
-    <!-- ▲ AdSense ▲ -->
 
     <div class="card">
-      <h2>検出できるもの・できないもの</h2>
+      <h2>このツールが検出する候補</h2>
       <ul>
-        <li><strong>検出する</strong>: メールアドレス / 電話番号 / クレジットカード番号(Luhn判定) / マイナンバー(12桁) / IPアドレス / 郵便番号。</li>
-        <li><strong>検出しない</strong>: 氏名・住所・口座番号・社外秘の固有名詞など、パターン化できない情報。これらは手動で確認・削除してください。</li>
-        <li>このツール自体はデータを送信・保存しません。情報が外部に出るのは「あなたが伏字化後のテキストを貼り付けた先」です。</li>
+        <li><strong>メール</strong>: 一般的な半角英数字の <code>名前@ドメイン</code> 形式。引用符を使う特殊形式、国際化ドメインなどは対象外です。</li>
+        <li><strong>国内電話番号</strong>: 0から始まる10桁または11桁で、ハイフンあり／なしの形式。+81、空白区切り、内線は対象外です。</li>
+        <li><strong>カード番号候補</strong>: 13〜19桁で、空白／ハイフン区切りを許し、Luhnチェックを通る数字列。実在するカード番号かは確認できません。</li>
+        <li><strong>マイナンバー候補</strong>: 前後が数字でない独立した12桁。チェックディジットや本人との対応は確認せず、注文番号なども誤検出します。</li>
+        <li><strong>IPv4候補</strong>: ピリオド区切りの4組がそれぞれ0〜255。IPv6は対象外です。</li>
+        <li><strong>郵便番号候補</strong>: <code>123-4567</code> または <code>〒123-4567</code> 形式。住所自体は検出しません。</li>
       </ul>
-      <p class="related">関連ツール: <a href="./json.html">JSON整形・検証</a> ／ <a href="./chars.html">文字数カウント</a></p>
+      <h2>検出しないもの</h2>
+      <p>氏名、住所、口座番号、ユーザーID、パスワード、APIキー、契約情報、社外秘の固有名詞など、文脈で機密性が決まる情報は検出しません。対応形式でも表記ゆれにより見逃すことがあります。</p>
+      <h2>入力時の通信</h2>
+      <p>このページは第三者の広告・解析スクリプトを読み込まず、入力内容を送る接続APIを禁止するブラウザ制約も設定しています。当サイトの検出コードは入力内容をネットワーク送信せず、コピー操作時だけ端末のクリップボードへ書き込みます。ブラウザ拡張機能や端末自体の動作までは管理できないため、本当に機密な原文は入力しないでください。</p>
+      <p class="related">関連ツール: <a href="./chars.html">文字数・SNS投稿チェック</a></p>
     </div>
     <div class="card article">
-      <h2>個人情報チェッカーの目的</h2>
-      <p>生成 AI のチャットや、社外の問い合わせフォームに文章を貼り付けるとき、メールアドレスや電話番号、クレジットカード番号などの個人情報(PII)がうっかり混ざっていないか心配になることがあります。このツールは、貼り付けた文章からそうしたパターンを自動で検出し、確認のうえ伏字(マスキング)に置き換えます。検出と伏字化はすべてあなたのブラウザ内で完結するため、チェックの過程で情報が外部に出ることはありません。</p>
+      <h2>個人情報候補チェッカーの目的</h2>
+      <p>生成 AI のチャットや、社外の問い合わせフォームに文章を貼り付けるとき、メールアドレスや電話番号、クレジットカード番号などの個人情報(PII)がうっかり混ざっていないか心配になることがあります。このツールは、貼り付けた文章から定型パターンに一致する候補を検出し、確認のうえ伏字(マスキング)に置き換えます。検出と伏字化はブラウザ内で実行しますが、結果が0件でも安全を意味しません。機密情報は入力せず、データの扱いは<a href="./privacy.html">プライバシーポリシー</a>をご確認ください。</p>
 
       <h2>個人情報を守る基本の考え方</h2>
       <ul>
@@ -63,8 +66,9 @@
 
       <h2>よくある質問</h2>
       <details class="faq"><summary>検出されなかった情報は安全ですか？</summary><p>いいえ。本ツールはパターンに基づく補助であり、完全ではありません。特に氏名や住所はパターン化できないため検出されません。コピー前に必ず全文を読み返して、残っている個人情報がないか確認してください。</p></details>
-      <details class="faq"><summary>チェックした文章はどこかに保存されますか？</summary><p>保存されません。入力・検出・伏字化のすべてがブラウザ内で行われ、サーバーに送信されることはありません。情報が外部に出るのは「あなたが伏字化後のテキストを貼り付けた先」だけです。</p></details>
-      <details class="faq"><summary>カード番号の判定はどのように行っていますか？</summary><p>数字の並びが Luhn(ルーン)アルゴリズムというチェックディジットの計算を満たすかで判定します。これにより、単なる数字の羅列とカード番号らしき並びをある程度区別しています。</p></details>
+      <details class="faq"><summary>チェックした文章は送信・保存されますか？</summary><p>当サイトの検出コードは入力内容を送信・保存しません。このページでは第三者の広告・解析スクリプトも読み込まず、入力内容を送る接続APIをブラウザ制約で禁止しています。ただし、ブラウザ拡張機能や端末の動作までは管理できないため、機密情報は入力しないでください。詳細は<a href="./privacy.html">プライバシーポリシー</a>をご確認ください。</p></details>
+      <details class="faq"><summary>カード番号の判定はどのように行っていますか？</summary><p>13〜19桁の数字列がLuhn(ルーン)アルゴリズムというチェックディジットの計算を満たすかで候補判定します。通過しても実在するカード番号とは限りません。</p></details>
+      <details class="faq"><summary>12桁ならマイナンバーですか？</summary><p>いいえ。このツールは独立した12桁を候補として拾うだけで、番号の有効性や本人との対応を確認しません。マイナンバーが12桁であることは<a href="https://www.kojinbango-card.go.jp/mynumber/number_notices/" rel="noopener">マイナンバーカード総合サイト</a>を参照しています。</p></details>
     </div>
   </main>
 
@@ -80,52 +84,6 @@
     </div>
   </footer>
 
-  <script type="module">
-    import { maskPII } from "./js/lib/pii.mjs";
-
-    const input = document.getElementById("input");
-    const output = document.getElementById("output");
-    const summary = document.getElementById("summary");
-    const copyBtn = document.getElementById("copyBtn");
-
-    function esc(s) {
-      return s.replace(/[&<>"]/g, (c) =>
-        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])
-      );
-    }
-
-    function update() {
-      const { masked, found } = maskPII(input.value);
-      output.value = masked;
-      if (input.value.trim() === "") {
-        summary.hidden = true;
-        return;
-      }
-      if (found.length === 0) {
-        summary.innerHTML = "検出された個人情報: <strong>0件</strong>(パターンに該当なし)";
-      } else {
-        const items = found
-          .map((f) => `<li>${esc(f.label)}: <code>${esc(f.value)}</code></li>`)
-          .join("");
-        summary.innerHTML =
-          `検出された個人情報: <strong>${found.length}件</strong>` +
-          `<ul class="pii-list">${items}</ul>`;
-      }
-      summary.hidden = false;
-    }
-
-    copyBtn.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(output.value);
-        copyBtn.textContent = "✓ コピー済み";
-        setTimeout(() => { copyBtn.textContent = "コピー"; }, 1200);
-      } catch {
-        copyBtn.textContent = "コピー失敗";
-      }
-    });
-
-    input.addEventListener("input", update);
-    update();
-  </script>
+  <script type="module" src="./js/pages/pii-page.mjs"></script>
 </body>
 </html>

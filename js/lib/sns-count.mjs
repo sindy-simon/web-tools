@@ -1,72 +1,138 @@
-// SNS 文字数チェックのロジック(ブラウザ・Node 共用の純粋関数)
-// 肝は「日本語特化のカウント」: X(旧Twitter)は全角=2・半角=1・URL=23 の重み付け。
-// 他SNSはコードポイント数で数える。上限値は変わりやすいので PLATFORMS のデータ表を更新する。
-// （上限は 2026-06 時点の一般的な公開値。最新は各SNSの仕様を要確認）
+// SNS（ソーシャル・ネットワーキング・サービス）の投稿文字数を確認する処理。
+// 仕様確認日: 2026-08-19
 
-// X の重み 2(全角扱い)になるコードポイント範囲。半角カナ(U+FF61〜)は範囲外＝重み1。
-const WIDE_RANGES = [
-  [0x1100, 0x115f], // Hangul Jamo
-  [0x2e80, 0xa4cf], // CJK 各種(漢字・かな・記号など)
-  [0xac00, 0xd7a3], // Hangul 音節
-  [0xf900, 0xfaff], // CJK 互換漢字
-  [0xfe30, 0xfe4f], // CJK 互換形
-  [0xff00, 0xff60], // 全角 ASCII・記号
-  [0xffe0, 0xffe6], // 全角通貨記号など
-  [0x2600, 0x27bf], // 記号・絵文字(一部)
-  [0x2b00, 0x2bff], // 各種記号
-  [0x1f000, 0x1ffff], // 絵文字
+import {
+  assertText,
+  graphemeLength,
+  graphemeSegments,
+} from "./text-count.mjs";
+
+const X_SINGLE_WEIGHT_RANGES = [
+  [0, 4351],
+  [8192, 8205],
+  [8208, 8223],
+  [8242, 8247],
 ];
 
-const URL_RE = /https?:\/\/[^\s]+/g;
-const X_URL_WEIGHT = 23; // X は URL を一律 23 文字で計算(t.co 短縮)
+export const SPEC_CHECKED_DATE = "2026-08-19";
 
-function assertString(text) {
-  if (typeof text !== "string") {
-    throw new TypeError("text には文字列を渡してください");
-  }
+const X_URL_WEIGHT = 23;
+const URL_PATTERN = /https?:\/\/[^\s<>"'`]+/giu;
+const TRAILING_URL_PUNCTUATION = /[.,!?;:。、！？；：）\)\]】}〉》」』]+$/u;
+const EMOJI_CLUSTER = /\p{Extended_Pictographic}|\p{Regional_Indicator}|\u20e3/u;
+
+function isSingleWeight(codePoint) {
+  return X_SINGLE_WEIGHT_RANGES.some(([start, end]) => codePoint >= start && codePoint <= end);
 }
 
-function isWide(cp) {
-  return WIDE_RANGES.some(([lo, hi]) => cp >= lo && cp <= hi);
-}
-
-/** コードポイント数で数える(全角・半角を区別しない一般的な文字数)。 */
-export function charLength(text) {
-  assertString(text);
-  return [...text].length;
-}
-
-/** X(旧Twitter)方式の重み付き文字数。全角=2・半角=1・URL=23。 */
-export function xWeightedLength(text) {
-  assertString(text);
-  const urls = text.match(URL_RE) || [];
-  const rest = text.replace(URL_RE, "");
-  let weight = urls.length * X_URL_WEIGHT;
-  for (const ch of rest) {
-    weight += isWide(ch.codePointAt(0)) ? 2 : 1;
+function xTextWeight(text) {
+  let weight = 0;
+  for (const segment of graphemeSegments(text)) {
+    if (EMOJI_CLUSTER.test(segment)) {
+      weight += 2;
+      continue;
+    }
+    for (const character of segment) {
+      weight += isSingleWeight(character.codePointAt(0)) ? 1 : 2;
+    }
   }
   return weight;
 }
 
-// 上限データ表(type: "x"=重み付き / "char"=コードポイント数)
+function findHttpUrls(text) {
+  const urls = [];
+  for (const match of text.matchAll(URL_PATTERN)) {
+    const raw = match[0];
+    const url = raw.replace(TRAILING_URL_PUNCTUATION, "");
+    if (url === "") continue;
+    try {
+      new URL(url);
+      urls.push({ start: match.index, end: match.index + url.length });
+    } catch {
+      // URLとして解釈できない文字列は通常の文章として数える。
+    }
+  }
+  return urls;
+}
+
+/** Xの一般投稿に使われる重み付き文字数。 */
+function fallbackXWeightedLength(text) {
+  const normalized = text.normalize("NFC");
+  const urls = findHttpUrls(normalized);
+  let weight = 0;
+  let cursor = 0;
+
+  for (const url of urls) {
+    weight += xTextWeight(normalized.slice(cursor, url.start));
+    weight += X_URL_WEIGHT;
+    cursor = url.end;
+  }
+  weight += xTextWeight(normalized.slice(cursor));
+  return weight;
+}
+
+export function hasOfficialXParser() {
+  return typeof globalThis.twttr?.txt?.parseTweet === "function";
+}
+
+/** X公式文書が案内するtwitter-textを優先し、未読込時だけ簡易計算へ戻る。 */
+export function xWeightedLength(text) {
+  assertText(text);
+  if (hasOfficialXParser()) {
+    return globalThis.twttr.txt.parseTweet(text).weightedLength;
+  }
+  return fallbackXWeightedLength(text);
+}
+
 export const PLATFORMS = [
-  { id: "x", name: "X(旧Twitter)", limit: 280, type: "x", note: "全角2・半角1・URL23" },
-  { id: "threads", name: "Threads", limit: 500, type: "char" },
-  { id: "bluesky", name: "Bluesky", limit: 300, type: "char" },
-  { id: "instagram", name: "Instagram(キャプション)", limit: 2200, type: "char" },
-  { id: "instagram_bio", name: "Instagram(プロフィール)", limit: 150, type: "char" },
-  { id: "tiktok", name: "TikTok(キャプション)", limit: 2200, type: "char" },
-  { id: "linkedin", name: "LinkedIn(投稿)", limit: 3000, type: "char" },
-  { id: "facebook", name: "Facebook(投稿)", limit: 63206, type: "char" },
-  { id: "youtube_title", name: "YouTube(タイトル)", limit: 100, type: "char" },
-  { id: "youtube_desc", name: "YouTube(説明)", limit: 5000, type: "char" },
+  {
+    id: "x",
+    name: "Xの一般投稿",
+    limit: 280,
+    count: xWeightedLength,
+    note: "日本語・絵文字は原則2、httpから始まるURLは23",
+    source: "https://docs.x.com/fundamentals/counting-characters",
+    sourceLabel: "X開発者向け文書「文字数の数え方」",
+  },
+  {
+    id: "threads",
+    name: "Threadsの1投稿",
+    limit: 500,
+    count: graphemeLength,
+    note: "公式上限500。Unicodeの厳密な数え方は公開資料にないため目安",
+    source: "https://help.instagram.com/1217144552251333/",
+    sourceLabel: "Threadsヘルプ「新しいスレッドを開始する」",
+  },
+  {
+    id: "bluesky",
+    name: "Blueskyの投稿",
+    limit: 300,
+    count: graphemeLength,
+    note: "Unicode書記素クラスター単位で300",
+    source: "https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json",
+    sourceLabel: "Bluesky公式Lexicon「投稿本文」",
+  },
 ];
 
-/** 全プラットフォームについて 使用数・残り・超過 を計算して返す。 */
+export const REFERENCES = [
+  ...PLATFORMS.map(({ source, sourceLabel }) => ({ url: source, label: sourceLabel })),
+  {
+    url: "https://github.com/twitter/twitter-text",
+    label: "X公式文書が案内するtwitter-text",
+  },
+];
+
 export function analyze(text) {
-  assertString(text);
-  return PLATFORMS.map((p) => {
-    const used = p.type === "x" ? xWeightedLength(text) : charLength(text);
-    return { ...p, used, remaining: p.limit - used, over: used > p.limit };
+  assertText(text);
+  return PLATFORMS.map(({ count, ...platform }) => {
+    const used = count(text);
+    return {
+      ...platform,
+      used,
+      remaining: platform.limit - used,
+      over: used > platform.limit,
+      ratio: platform.limit === 0 ? 0 : used / platform.limit,
+      approximate: platform.id === "x" && !hasOfficialXParser(),
+    };
   });
 }

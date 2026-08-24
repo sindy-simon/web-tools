@@ -1,48 +1,36 @@
 # web-tools — サクッとツール箱
 
-登録不要・無料で使える日本語ミニツール集（静的サイト）。
+登録不要・無料で使える、日本語・日本の制度や実務に固有の落とし穴へ対応するブラウザツール集（静的サイト）。
 GitHub Pages（`main` / `(root)`）から公開。
 
-**公開中の全ページの URL 台帳は `LINKS.md`（正本）**。ツールを追加/削除したら
-`LINKS.md`・`sitemap.xml`・トップ(`index.html`)の一覧を三点セットで更新すること。
+**公開中の全ページのURL台帳は `LINKS.md`（正本）**。ツールを追加・保留・復帰するときは、
+`LINKS.md`・`sitemap.xml`・トップ（`index.html`）の一覧を三点セットで更新すること。
 
-## ツール
+## 初期公開候補（3本）
 
-- 文字数カウント（`chars.html`）
-- 和暦・西暦・年齢計算（`wareki.html`）… 元号の相互変換・満年齢・2日付の日数差
-- 消費税計算（`tax.html`）
-- 海外サイズ→日本サイズ変換（`size.html`）… 靴・服を US/UK/EU→日本サイズの目安に変換
-- 海外レシピ単位変換（`recipe.html`）… カップ/oz/℉→ml/g/℃
-- Unixタイムスタンプ変換（`timestamp.html`）… 秒・ms自動判別・JST↔Unix往復
-- 時差計算・海外時刻→JST変換（`timezone.html`）… 主要14都市・夏時間自動対応
-- 旧年齢計算URL（`age.html`）… `wareki.html#age` への案内ページ
-- テキストケース変換（`case.html`）… camel/Pascal/snake/CONSTANT/kebab/dot の6形式一括変換
-- テキスト整形・改行コード変換（`text.html`）… CRLF⇔LF・全角スペース正規化・空行圧縮
-- あなたが生まれた年の日本は？（`birth-year.html`）… 1950〜2024年の統計10項目を今と比較。Chart.js グラフ・URLシェア付き
-- ほか（`slug` / `prompt` / `diff` / `regex` / `pii` / `json` / `sns` / `zenhan`）
+- 文字数・SNS投稿チェック（`chars.html`。旧 `sns.html` は統合先への案内）
+- 和暦・西暦・年齢計算（`wareki.html`）
+- 個人情報候補チェッカー（`pii.html`）
+
+この3本も無条件に公開品質を満たすものとは扱わない。一次情報、正確性、独自価値、説明、限界を個別に監査し、根拠が不足するツールは公開候補から外す。
+
+## 保留中（15本）
+
+`prompt` / `birth-year` / `tax` / `age` / `case` / `text` / `zenhan` / `diff` / `regex` / `json` / `slug` / `size` / `recipe` / `timestamp` / `timezone`
+
+`prompt` は対象モデルとトークナイザを固定した実測、誤差分布、適用限界がなく、機械的な正規化でもコード・データ・書式の意味を変える反例があるため保留した。推定式と正規化ロジック、テストは検証用に保持する。
+
+`birth-year` は各年・各指標と一次情報の対応が追跡できず、2024年に確定値と異なる値を含むため保留した。公開ページ数を増やす目的では復帰させない。1本ずつ個別の解説、一次情報または検証可能な根拠、独自の利用価値を満たした場合だけ再検討する。計算ロジック（`js/lib/`）とテストは保持する。
+
+## データ処理
 
 ツールの計算処理はクライアントサイド（利用者のブラウザ内）で実行し、入力データをサイトのサーバーへ保存する機能は設けていない。広告など第三者サービスとの通信はプライバシーポリシーに記載する。
-
-## 構成
-
-```
-index.html chars.html wareki.html tax.html size.html recipe.html
-timestamp.html timezone.html age.html case.html text.html birth-year.html
-privacy.html style.css                                 ← Pages が root から配信
-js/copy-ui.mjs                                         ← UI 補助
-js/lib/{tax,wareki,textstats,size,recipe,timestamp,timezone,age,case,text,birth-year,birth-year-data}.mjs  ← 純粋関数ロジック
-test/{tax,wareki,textstats,size,recipe,timestamp,timezone,age,case,text,birth-year}.test.mjs  ← 単体テスト
-```
-
-ロジックは `js/lib/*.mjs` の純粋関数に分離し、UI と切り離して `test/` でテストしている。
-端数処理・和暦の改元境界・サイズ換算表はテストで固定済み。挙動を変える時はテストも更新すること。
 
 ## 開発・テスト
 
 ```bash
-node --test        # 単体テスト（Node 18+ / 依存パッケージなし）
+node --test
 ```
 
-ページの動作確認はビルド不要。`index.html` をブラウザで開くだけ
-（ES Modules のため `npx serve .` などローカルサーバー経由を推奨）。
-push / PR で CI（`node --test`）が走る。
+ページの動作確認はビルド不要。ES Modulesを使うため、`npx serve .` などのローカルサーバー経由を推奨する。
+push / PRでCI（`node --test`）が走る。

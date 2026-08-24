@@ -25,6 +25,16 @@ test("改元日の前後で元号が切り替わる(昭和→平成)", () => {
   assert.equal(seirekiToWareki(1989, 1, 8).label, "平成元年");
 });
 
+test("改元日の前後で元号が切り替わる(大正→昭和)", () => {
+  assert.equal(seirekiToWareki(1926, 12, 24).label, "大正15年");
+  assert.equal(seirekiToWareki(1926, 12, 25).label, "昭和元年");
+});
+
+test("改元日の前後で元号が切り替わる(明治→大正)", () => {
+  assert.equal(seirekiToWareki(1912, 7, 29).label, "明治45年");
+  assert.equal(seirekiToWareki(1912, 7, 30).label, "大正元年");
+});
+
 test("月日を省略すると 7/1 とみなす", () => {
   // 1912 年は 7/30 に大正へ改元 → 7/1 時点ではまだ明治
   assert.equal(seirekiToWareki(1912).era, "明治");

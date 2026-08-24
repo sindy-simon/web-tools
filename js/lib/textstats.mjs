@@ -1,23 +1,27 @@
-// 文字数カウントのロジック(ブラウザ・Node 共用の純粋関数)
+// 文字数カウントのロジック（ブラウザ・Node.js 共用）
+
+import {
+  assertText,
+  graphemeSegments,
+} from "./text-count.mjs";
 
 /**
  * テキストの統計情報を返す。
- * - total: 文字数(Unicode コードポイント単位。絵文字も 1 文字扱い)
- * - noWhitespace: 空白・改行を除いた文字数
- * - lines: 行数(末尾の改行は行数に含めない。"a\n" は 1 行。空文字列は 0 行)
- * - utf8Bytes: UTF-8 でのバイト数
- * - manuscriptPages: 400 字詰め原稿用紙の換算枚数(切り上げ)
+ * - total: 画面上の1文字に近い単位（書記素クラスター）の数
+ * - codePoints: コンピューター内部の文字番号（Unicodeコードポイント）の数
+ * - noWhitespace: 空白・改行を除いた書記素クラスターの数
+ * - lines: 行数（末尾の改行は新しい行として数えない）
+ * - utf8Bytes: UTF-8形式でのデータ量
+ * - manuscriptPages: 400字詰め原稿用紙の換算枚数（切り上げ）
  */
 export function textStats(text) {
-  if (typeof text !== "string") {
-    throw new TypeError("text には文字列を渡してください");
-  }
-  const chars = [...text];
-  const total = chars.length;
-  const noWhitespace = chars.filter((c) => !/\s/u.test(c)).length;
-  // 末尾の改行は新しい行を作らない(エディタの行数表示に合わせる)。
-  const lines = text === "" ? 0 : text.split("\n").length - (text.endsWith("\n") ? 1 : 0);
+  assertText(text);
+  const graphemes = graphemeSegments(text);
+  const total = graphemes.length;
+  const codePoints = [...text].length;
+  const noWhitespace = graphemes.filter((segment) => !/^\s+$/u.test(segment)).length;
+  const lines = text === "" ? 0 : text.split(/\r\n|\r|\n/u).length - (/\r\n$|[\r\n]$/u.test(text) ? 1 : 0);
   const utf8Bytes = new TextEncoder().encode(text).length;
   const manuscriptPages = Math.ceil(total / 400);
-  return { total, noWhitespace, lines, utf8Bytes, manuscriptPages };
+  return { total, codePoints, noWhitespace, lines, utf8Bytes, manuscriptPages };
 }

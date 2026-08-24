@@ -1,34 +1,26 @@
-# LINKS.md — mini-tools.net URL 台帳（正本）
+# LINKS.md — mini-tools.net URL台帳（正本）
 
-> 公開中の全ページの URL 一覧。**ツール・ページを追加/削除したら必ずここも更新する**
-> （sitemap.xml・トップの一覧と三点セットで揃える）。
-> 環境全体の整理（検証環境との関係）は my-workshop リポの `URLS.md` を参照。
+> 公開中の全ページのURL一覧。ツール・ページを追加、保留、復帰したら
+> `sitemap.xml`・トップ（`index.html`）と三点セットで更新する。
 
-- 本番: https://mini-tools.net/ （このリポジトリの main ブランチ = GitHub Pages）
-- main に push すると自動で公開される。
+- 本番: https://mini-tools.net/
+- `main` へのpushでGitHub Pagesへ公開される。
 
-## ツール（19本）
+## 公開候補のツール（3本）
 
 | ツール | URL |
 |---|---|
-| 文字数カウント | https://mini-tools.net/chars.html |
-| SNS文字数チェッカー | https://mini-tools.net/sns.html |
-| 全角⇔半角 変換 | https://mini-tools.net/zenhan.html |
-| テキストケース変換（camel/snake/Pascal/kebab） | https://mini-tools.net/case.html |
-| テキスト整形・改行コード変換（CRLF⇔LF） | https://mini-tools.net/text.html |
-| テキスト差分(diff)チェッカー | https://mini-tools.net/diff.html |
-| 正規表現テスター | https://mini-tools.net/regex.html |
-| JSON整形・検証 | https://mini-tools.net/json.html |
-| 個人情報チェッカー(伏字化) | https://mini-tools.net/pii.html |
-| AIプロンプト トークン概算・軽量化 | https://mini-tools.net/prompt.html |
-| ローマ字スラッグ生成 | https://mini-tools.net/slug.html |
+| 文字数・SNS投稿チェック | https://mini-tools.net/chars.html |
 | 和暦・西暦・年齢計算 | https://mini-tools.net/wareki.html |
-| 消費税計算(税込⇔税抜) | https://mini-tools.net/tax.html |
-| Unixタイムスタンプ変換（JST・ISO 8601対応） | https://mini-tools.net/timestamp.html |
-| 時差計算・海外時刻→日本時間（JST）変換 | https://mini-tools.net/timezone.html |
-| 海外サイズ→日本サイズ変換(靴・服) | https://mini-tools.net/size.html |
-| 海外レシピ単位変換（カップ・oz・℉→ml・g・℃） | https://mini-tools.net/recipe.html |
-| あなたが生まれた年の日本は？ | https://mini-tools.net/birth-year.html |
+| 個人情報候補チェッカー（伏字化） | https://mini-tools.net/pii.html |
+
+> 上記も品質監査中の候補。根拠が不足する場合は公開対象から外す。
+
+## 旧URLの案内ページ
+
+| ページ | URL | 扱い |
+|---|---|---|
+| 旧SNS文字数チェッカー | https://mini-tools.net/sns.html | `chars.html#sns` への noindex 案内。公開ツール数・サイトマップには含めない |
 
 ## サイト共通ページ
 
@@ -46,3 +38,9 @@
 | sitemap | https://mini-tools.net/sitemap.xml |
 | robots.txt | https://mini-tools.net/robots.txt |
 | ads.txt（AdSense） | https://mini-tools.net/ads.txt |
+
+## 保留中（15本）
+
+`prompt` / `birth-year` / `tax` / `age` / `case` / `text` / `zenhan` / `diff` / `regex` / `json` / `slug` / `size` / `recipe` / `timestamp` / `timezone`
+
+`prompt` はモデル別の実測と誤差分布がなく、正規化が意味を変える反例もあるため公開保留。`birth-year` は一次情報との対応を再構築するまで公開しない。コードとテストは保持し、個別の品質条件を満たしたものだけ1本ずつ復帰を検討する。

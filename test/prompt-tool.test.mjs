@@ -46,6 +46,21 @@ test("optimize: 全角を減らすとトークンが減る", () => {
   assert.ok(r.savedTokens >= 0);
 });
 
+test("normalizeはJSON文字列内の連続空白を変える反例がある", () => {
+  assert.equal(
+    normalizeForPrompt('{"label":"a  b"}'),
+    '{"label":"a b"}',
+  );
+});
+
+test("normalizeはPythonのインデント階層を変える反例がある", () => {
+  const source = "if outer:\n    if inner:\n        run()";
+  assert.equal(
+    normalizeForPrompt(source),
+    "if outer:\n if inner:\n run()",
+  );
+});
+
 test("文字列以外はエラー", () => {
   assert.throws(() => estimateTokens(123), TypeError);
   assert.throws(() => optimizePrompt(null), TypeError);

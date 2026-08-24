@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>文字数カウント | サクッとツール箱</title>
-  <meta name="description" content="文字数・空白を除いた文字数・行数・UTF-8バイト数・400字詰め原稿用紙換算をリアルタイムで表示する無料ツール。入力内容はサーバーに送信されません。">
+  <title>文字数・SNS投稿チェック | 絵文字と日本語にも対応</title>
+  <meta name="description" content="文章の文字数、空白を除いた文字数、行数、データ量をリアルタイム表示。X・Threads・Blueskyの一般投稿上限も同時に確認できます。">
   <link rel="canonical" href="https://mini-tools.net/chars.html">
   <link rel="stylesheet" href="./style.css">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8445140707237231"
@@ -17,54 +17,116 @@
     </div>
   </header>
 
-  <main class="container">
-    <h1>文字数カウント</h1>
-    <p class="lead">テキストを貼り付けると、文字数・行数・バイト数をその場で数えます。</p>
-
-    <div class="card">
-      <label for="text">テキスト</label>
-      <textarea id="text" placeholder="ここに文章を入力または貼り付け" autofocus></textarea>
-
-      <table class="stats">
-        <tr><th>文字数(空白・改行を含む)</th><td id="total">0</td></tr>
-        <tr><th>文字数(空白・改行を除く)</th><td id="noWhitespace">0</td></tr>
-        <tr><th>行数</th><td id="lines">0</td></tr>
-        <tr><th>バイト数(UTF-8)</th><td id="utf8Bytes">0</td></tr>
-        <tr><th>原稿用紙換算(400字)</th><td id="manuscriptPages">0 枚</td></tr>
-      </table>
-      <p class="note">文字数は Unicode のコードポイント単位で数えます。多くの絵文字は 1 文字ですが、🇯🇵(国旗)や 👨‍👩‍👧‍👦(複数人の絵文字)など複数のコードポイントで構成される絵文字は複数文字として数えます。入力内容は端末内だけで処理されます。</p>
-    </div>
-
-    <!-- ▼ AdSense: 審査承認後にここへ広告ユニットのコードを貼る ▼ -->
-    <!-- ▲ AdSense ▲ -->
-
-    <div class="card">
-      <h2>使い方・補足</h2>
-      <ul>
-        <li>レポートの文字数制限、X(Twitter)・履歴書・エントリーシートの文字数確認などに使えます。</li>
-        <li>「空白・改行を除く」は、半角スペース・全角スペース・タブ・改行を除いた文字数です。</li>
-        <li>バイト数は UTF-8 換算です(日本語はおおむね 1 文字 3 バイト)。</li>
+  <main class="container content-narrow">
+    <section class="hero">
+      <p class="eyebrow">文章の長さを確認</p>
+      <h1>文字数とSNS投稿上限をまとめて確認</h1>
+      <p class="lead">文章を入力すると、画面上の文字数と、X・Threads・Blueskyの一般投稿に収まるかを同時に表示します。</p>
+      <ul class="trust-row" aria-label="このツールの特徴">
+        <li>結合絵文字を画面どおり1文字で計算</li>
+        <li>Xの重み付き計算に対応</li>
+        <li>計算はブラウザ内で実行</li>
       </ul>
-    </div>
-    <div class="card article">
-      <h2>文字数カウントツールについて</h2>
-      <p>このページは、入力した文章の文字数・行数・バイト数などをリアルタイムで数える無料ツールです。レポートや論文の字数制限、エントリーシートや履歴書の自己PR、SNS投稿やブログ記事の下書きなど、「あと何文字書けるか」「制限を超えていないか」をすぐ確認したい場面で役立ちます。入力した文章はあなたのブラウザの中だけで処理され、サーバーに送信・保存されることはありません。</p>
+    </section>
 
-      <h2>文字数の数え方について</h2>
-      <p>本ツールの「文字数」は Unicode のコードポイント単位で数えます。日本語の漢字・ひらがな・カタカナ、英数字、記号はいずれも1文字として数えられます。一方で、🇯🇵 のような国旗や 👨‍👩‍👧‍👦 のような結合絵文字は、内部的に複数のコードポイントで構成されているため、複数文字としてカウントされる点にご注意ください。</p>
-      <p>「空白・改行を除く」の項目では、半角スペース・全角スペース・タブ・改行をすべて除いた実質的な文字数を表示します。提出先の指定が「スペースを含まない」場合に便利です。バイト数は UTF-8 換算で、日本語はおおむね1文字3バイト、半角英数字は1バイトです。</p>
+    <nav class="section-nav" aria-label="ページ内の確認項目">
+      <a href="#counter">文字数</a>
+      <a href="#sns">SNS投稿上限</a>
+      <a href="#method">数え方</a>
+      <a href="#sources">参照資料</a>
+    </nav>
+
+    <section class="card tool-card" id="counter">
+      <h2>文章を入力</h2>
+      <p class="section-intro">入力と同時に結果が更新されます。改行や空白もそのまま確認できます。</p>
+      <label for="text">確認する文章</label>
+      <textarea id="text" placeholder="ここに文章を入力または貼り付け" autofocus></textarea>
+      <div class="actions">
+        <button type="button" class="secondary" id="clear-text">入力を消す</button>
+      </div>
+
+      <div class="metric-grid" aria-live="polite">
+        <div class="metric metric-primary">
+          <span class="metric-label">文字数</span>
+          <strong class="metric-value" id="total">0</strong>
+          <span class="metric-help">空白・改行を含む</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">空白を除く</span>
+          <strong class="metric-value" id="noWhitespace">0</strong>
+          <span class="metric-help">空白・改行・タブを除く</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">行数</span>
+          <strong class="metric-value" id="lines">0</strong>
+          <span class="metric-help">末尾の改行は追加しない</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">原稿用紙</span>
+          <strong class="metric-value"><span id="manuscriptPages">0</span><small>枚</small></strong>
+          <span class="metric-help">400字詰め・切り上げ</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">データ量</span>
+          <strong class="metric-value"><span id="utf8Bytes">0</span><small>バイト</small></strong>
+          <span class="metric-help">UTF-8方式</span>
+        </div>
+      </div>
+
+      <p class="note">UTF-8は「Unicode Transformation Format 8-bit」の略で、Webページなどで一般的に使われる文字の保存方式です。</p>
+
+      <details class="technical-counts">
+        <summary>内部の文字数も確認する</summary>
+        <p>Unicodeコードポイント：<strong id="codePoints">0</strong></p>
+        <p class="note">Unicodeコードポイントは、コンピューター内部で文字へ割り当てられた番号の単位です。結合絵文字は複数になることがあります。</p>
+      </details>
+    </section>
+
+    <section class="card tool-card" id="sns">
+      <h2>SNS投稿上限</h2>
+      <p class="section-intro">SNSは「ソーシャル・ネットワーキング・サービス」の略です。通常の短文投稿を対象にしています。</p>
+      <div class="platform-grid" id="platform-results" aria-live="polite"></div>
+      <p class="note warn">有料プランの長文投稿、返信時に自動挿入される宛先、アプリ独自の分割は対象外です。実際に投稿する前に、各サービスの入力画面でも最終確認してください。</p>
+    </section>
+
+    <!-- AdSenseの広告枠は、審査承認後に結果確認を妨げない位置へ設置する -->
+
+    <section class="card article" id="method">
+      <h2>画面上の1文字として数える</h2>
+      <p>通常の文字数は、見た目が一つの文字なら一つとして数えます。たとえば「👨‍👩‍👧‍👦」は複数の絵文字を内部で組み合わせていますが、画面上では一つなので1文字です。国旗や肌の色を指定した絵文字も同様です。</p>
+            <h2>Xの文字数</h2>
+      <p>Xの一般投稿は上限<span data-platform-limit="x">280</span>ですが、すべての文字を同じ数では数えません。日本語・中国語・韓国語の文字と絵文字は原則2、ラテン文字や一般的な半角記号は1として計算します。<code>http://</code>または<code>https://</code>から始まるURL（Webページの住所）は、長さにかかわらず23として計算します。</p>
+      <p>Xの判定には、公式文書が案内するtwitter-text 3.1.0をサイト内に同梱して使います。返信の宛先や有料プランなどX側だけが判断できる条件は対象外です。ライブラリを読み込めない場合だけ簡易計算へ切り替わり、結果欄にその旨を表示します。</p>
+
+      <h2>ThreadsとBluesky</h2>
+      <p>Threadsの公式ヘルプでは、<span data-platform-limit="threads">500</span>文字を超えると続きの投稿が自動的に追加されると案内されています。ただし、結合絵文字などUnicodeの厳密な数え方は公開資料で確認できないため、本ツールのThreads欄は画面上の1文字に近い単位による目安です。Blueskyは公式仕様どおりUnicode書記素クラスター単位で<span data-platform-limit="bluesky">300</span>文字を判定します。</p>
+
+      <h2>入力内容の取り扱い</h2>
+      <p>文字数の計算はこのページのプログラムがブラウザ内で行い、入力した文章をサイトのサーバーへ保存・送信する処理はありません。広告など第三者サービスとの通信については、<a href="./privacy.html">プライバシーポリシー</a>をご確認ください。公開できない機密情報や個人情報は入力しないでください。</p>
+
+      <h2 id="sources">参照資料</h2>
+      <ul id="platform-sources"></ul>
+      <p class="note">Xの判定にはtwitter-text 3.1.0（Apache License 2.0）を同梱しています。<a href="./js/vendor/twitter-text-LICENSE.txt">ライセンス全文</a></p>
+      <div class="data-note">
+        <strong>仕様確認日</strong><span id="spec-checked">2026年8月19日</span>
+        <strong>対象</strong><span>一般的な短文投稿</span>
+      </div>
 
       <h2>よくある質問</h2>
-      <details class="faq"><summary>原稿用紙の換算はどう計算していますか？</summary><p>400字詰め原稿用紙を基準に、全文字数を400で割って枚数を算出しています。提出先によって字詰め(360字・200字など)が異なる場合は、表示枚数を目安としてご利用ください。</p></details>
-      <details class="faq"><summary>Word の文字数と数が合いません。</summary><p>Word は「単語数」と「文字数」を別に数え、スペースの扱いも設定で変わります。本ツールはコードポイント単位での文字数表示なので、Word の「文字数(スペースを含めない)」に近い値になります。</p></details>
-      <details class="faq"><summary>入力した文章は外部に送られませんか？</summary><p>送られません。文字数の計算はすべてお使いのブラウザ内(JavaScript)で完結し、入力内容がネットワークに送信されることはありません。機密文書の文字数確認にも安心してお使いいただけます。</p></details>
-      <p class="related">関連ツール: <a href="./sns.html">SNS文字数チェッカー</a> ／ <a href="./zenhan.html">全角⇔半角変換</a></p>
-    </div>
+      <details class="faq">
+        <summary>文書作成ソフトと文字数が違うのはなぜですか？</summary>
+        <p>空白、改行、結合絵文字の扱いがソフトごとに異なるためです。提出先が特定のソフトを指定している場合は、そのソフトの結果を優先してください。</p>
+      </details>
+      <details class="faq">
+        <summary>Xで表示される残り文字数と違う場合はありますか？</summary>
+        <p>あります。返信時に自動挿入される宛先、リンクの判定、有料プランの長文投稿などはX側で決まります。このツールは一般投稿の下書き確認を目的にしています。</p>
+      </details>
+    </section>
   </main>
 
   <footer>
     <div class="container">
-      <nav>
+      <nav aria-label="サイト情報">
         <a href="./">ホーム</a>
         <a href="./about.html">運営者情報</a>
         <a href="./contact.html">お問い合わせ</a>
@@ -74,21 +136,66 @@
     </div>
   </footer>
 
+  <script src="./js/vendor/twitter-text-3.1.0.min.js"></script>
   <script type="module">
     import { textStats } from "./js/lib/textstats.mjs";
+    import { analyze, PLATFORMS, REFERENCES, SPEC_CHECKED_DATE } from "./js/lib/sns-count.mjs";
 
     const input = document.getElementById("text");
-    const cells = ["total", "noWhitespace", "lines", "utf8Bytes", "manuscriptPages"]
-      .map((id) => [id, document.getElementById(id)]);
+    const resultContainer = document.getElementById("platform-results");
+    const numberFormat = new Intl.NumberFormat("ja-JP");
+    const statKeys = ["total", "codePoints", "noWhitespace", "lines", "utf8Bytes", "manuscriptPages"];
+    const [year, month, day] = SPEC_CHECKED_DATE.split("-");
+    document.getElementById("spec-checked").textContent = `${year}年${Number(month)}月${Number(day)}日`;
+    for (const platform of PLATFORMS) {
+      document.querySelectorAll(`[data-platform-limit="${platform.id}"]`)
+        .forEach((element) => { element.textContent = numberFormat.format(platform.limit); });
+    }
+    const sourceList = document.getElementById("platform-sources");
+    for (const reference of REFERENCES) {
+      const item = document.createElement("li");
+      const link = document.createElement("a");
+      link.href = reference.url;
+      link.rel = "noopener";
+      link.textContent = reference.label;
+      item.append(link);
+      sourceList.append(item);
+    }
+
+    function platformCard(platform) {
+      const percentage = Math.min(Math.max(platform.ratio * 100, 0), 100);
+      const status = platform.over
+        ? `${numberFormat.format(Math.abs(platform.remaining))}超過`
+        : `残り${numberFormat.format(platform.remaining)}`;
+      const className = platform.over ? "platform-card platform-over" : "platform-card";
+      const note = platform.approximate
+        ? "公式twitter-textを読み込めないため簡易計算中"
+        : platform.note;
+      return `<article class="${className}">
+        <div class="platform-heading">
+          <h3>${platform.name}</h3>
+          <strong>${numberFormat.format(platform.used)} / ${numberFormat.format(platform.limit)}</strong>
+        </div>
+        <div class="progress" aria-hidden="true"><span style="width:${percentage}%"></span></div>
+        <p class="platform-status">${status}</p>
+        <p class="platform-note">${note}</p>
+      </article>`;
+    }
 
     function update() {
-      const s = textStats(input.value);
-      for (const [key, el] of cells) {
-        el.textContent = key === "manuscriptPages" ? `${s[key]} 枚` : s[key].toLocaleString("ja-JP");
+      const stats = textStats(input.value);
+      for (const key of statKeys) {
+        document.getElementById(key).textContent = numberFormat.format(stats[key]);
       }
+      resultContainer.innerHTML = analyze(input.value).map(platformCard).join("");
     }
 
     input.addEventListener("input", update);
+    document.getElementById("clear-text").addEventListener("click", () => {
+      input.value = "";
+      input.focus();
+      update();
+    });
     update();
   </script>
 </body>
