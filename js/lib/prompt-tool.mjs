@@ -1,7 +1,7 @@
-// 日本語プロンプト最適化のロジック(ブラウザ・Node 共用の純粋関数)
+// 日本語プロンプト検証用ロジック(ブラウザ・Node 共用の純粋関数)
 // 方針: 「賢い書き換え」はしない(それはLLMの仕事)。決定論的にできることだけ:
-//  ・トークン数の概算(日本語特性を考慮したヒューリスティック。あくまで目安)
-//  ・意味を変えない機械的な軽量化(全角英数記号→半角・余分な空白/改行の圧縮)
+//  ・トークン数の独自概算(モデル非依存のヒューリスティック。料金・上限判定には使わない)
+//  ・機械的な正規化(全角英数記号→半角・空白/改行の圧縮。コード・データ・Markdown・書式の意味や動作を変える場合がある)
 
 function assertString(text) {
   if (typeof text !== "string") {
@@ -46,7 +46,7 @@ export function estimateTokens(text) {
   return Math.round(tokens);
 }
 
-/** 意味を変えずにトークンを減らせる機械的な正規化を行う。 */
+/** 機械的な正規化を行う。入力の意味や動作を保持する保証はない。 */
 export function normalizeForPrompt(text) {
   assertString(text);
   let s = text.replace(/[！-～]/g, (c) =>
