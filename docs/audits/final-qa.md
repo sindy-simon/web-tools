@@ -14,7 +14,7 @@
 | 保留ツール | 成功 | 15本がトップ・サイトマップ・公開HTMLに存在しないことを検査 |
 | 旧SNS URL | 成功 | `noindex,follow`、canonicalは`chars.html`、サイトマップ外 |
 | robots.txt・ads.txt | 成功 | サイトマップURLとAdSense販売者行の形式を検査 |
-| GitHub Actions | PR作成後に確認 | `node --test` |
+| GitHub Actions | 成功 | CI #129、`node --test` |
 | スマートフォン／デスクトップ目視 | 未完了 | クラウドブラウザ環境を利用できず、実機確認が必要 |
 
 ## 公開候補
