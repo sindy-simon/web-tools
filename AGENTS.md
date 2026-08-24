@@ -8,6 +8,17 @@
 - Do not merge a pull request or publish to production without the user's explicit approval.
 - Keep changes small enough to test and review. Run `npm test` for behavior changes and report any validation that could not be completed.
 
+## Planning and delivery flow
+
+For work that needs product clarification and implementation planning, use this sequence when the corresponding skills are available:
+
+1. `grill-with-docs`: stress-test the idea and record resolved decisions.
+2. `to-spec`: publish the approved plan as a parent specification in GitHub Issues.
+3. `to-tickets`: split the specification into dependency-aware, independently verifiable vertical-slice issues.
+4. `implement`: implement ready tickets, test them, and open traceable pull requests.
+
+Persist decisions and progress in GitHub Issues rather than relying on chat history. Continue autonomously through reversible steps after the specification or ticket is approved; pause only at the boundaries listed above.
+
 ## Agent skills
 
 ### Issue tracker
